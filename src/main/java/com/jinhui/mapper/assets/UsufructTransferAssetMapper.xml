@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.assets.UsufructTransferAssetMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.UsufructTransferAsset" >
+    <id column="aid" property="aid" jdbcType="INTEGER" />
+    <result column="asset_type" property="assetType" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_type" property="projectType" jdbcType="INTEGER" />
+    <result column="borrower" property="borrower" jdbcType="VARCHAR" />
+    <result column="scale" property="scale" jdbcType="DECIMAL" />
+    <result column="tenor_type" property="tenorType" jdbcType="INTEGER" />
+    <result column="tenor" property="tenor" jdbcType="INTEGER" />
+    <result column="asset_mgr" property="assetMgr" jdbcType="VARCHAR" />
+    <result column="repurchase" property="repurchase" jdbcType="BIT" />
+    <result column="trading_structure" property="tradingStructure" jdbcType="VARCHAR" />
+    <result column="asset_sub_type" property="assetSubType" jdbcType="INTEGER" />
+    <result column="rate" property="rate" jdbcType="DECIMAL" />
+    <result column="related_agreement" property="relatedAgreement" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="short_name" property="shortName" jdbcType="VARCHAR" /> 
+    <result column="creator_id" property="creatorId" jdbcType="INTEGER" />
+    <result column="other_file" property="otherFile" jdbcType="VARCHAR" /> 
+    <result column="is_guarante" property="isGuarante" jdbcType="INTEGER" />
+    <result column="guarantor_type" property="guarantorType" jdbcType="INTEGER" />             
+  </resultMap>
+  <sql id="Base_Column_List" >
+    a.creator_id,a.name,a.short_name,u.aid, u.asset_type, u.project_name, u.project_type, u.borrower, u.scale, u.tenor_type, u.tenor, 
+    u.asset_mgr, u.repurchase, u.trading_structure, u.asset_sub_type, u.rate, u.related_agreement,u.other_file,u.is_guarante,u.guarantor_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from usufruct_transfer_asset
+    where aid = #{aid,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByAssetId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from usufruct_transfer_asset u
+    left join assets a on a.id = u.aid 
+    where u.aid = #{assetId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from usufruct_transfer_asset
+    where aid = #{aid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jinhui.model.UsufructTransferAsset" >
+    insert into usufruct_transfer_asset (aid, asset_type, project_name, 
+      project_type, borrower, scale, 
+      tenor_type, tenor, asset_mgr, 
+      repurchase, trading_structure, asset_sub_type, 
+      rate,is_guarante,guarantor_type, related_agreement)
+    values (#{aid,jdbcType=INTEGER}, #{assetType,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, 
+      #{projectType,jdbcType=INTEGER}, #{borrower,jdbcType=VARCHAR}, #{scale,jdbcType=DECIMAL}, 
+      #{tenorType,jdbcType=INTEGER}, #{tenor,jdbcType=INTEGER}, #{assetMgr,jdbcType=VARCHAR}, 
+      #{repurchase,jdbcType=BIT}, #{tradingStructure,jdbcType=VARCHAR}, #{assetSubType,jdbcType=INTEGER}, 
+      #{rate,jdbcType=DECIMAL},#{isGuarante,jdbcType=INTEGER},#{guarantorType,jdbcType=INTEGER}, #{relatedAgreement,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinhui.model.UsufructTransferAsset" >
+    insert into usufruct_transfer_asset
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="aid != null" >
+        aid,
+      </if>
+      <if test="assetType != null" >
+        asset_type,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="projectType != null" >
+        project_type,
+      </if>
+      <if test="borrower != null" >
+        borrower,
+      </if>
+      <if test="scale != null" >
+        scale,
+      </if>
+      <if test="tenorType != null" >
+        tenor_type,
+      </if>
+      <if test="tenor != null" >
+        tenor,
+      </if>
+      <if test="assetMgr != null" >
+        asset_mgr,
+      </if>
+      <if test="repurchase != null" >
+        repurchase,
+      </if>
+      <if test="tradingStructure != null" >
+        trading_structure,
+      </if>
+      <if test="assetSubType != null" >
+        asset_sub_type,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+      <if test="isGuarante != null" >
+        is_guarante,
+      </if>
+      <if test="guarantorType != null" >
+        guarantor_type,
+      </if>
+      <if test="relatedAgreement != null" >
+        related_agreement,
+      </if>
+      <if test="otherFile != null" >
+       other_file,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="aid != null" >
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="assetType != null" >
+        #{assetType,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        #{projectType,jdbcType=INTEGER},
+      </if>
+      <if test="borrower != null" >
+        #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null" >
+        #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="tenorType != null" >
+        #{tenorType,jdbcType=INTEGER},
+      </if>
+      <if test="tenor != null" >
+        #{tenor,jdbcType=INTEGER},
+      </if>
+      <if test="assetMgr != null" >
+        #{assetMgr,jdbcType=VARCHAR},
+      </if>
+      <if test="repurchase != null" >
+        #{repurchase,jdbcType=BIT},
+      </if>
+      <if test="tradingStructure != null" >
+        #{tradingStructure,jdbcType=VARCHAR},
+      </if>
+      <if test="assetSubType != null" >
+        #{assetSubType,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="isGuarante != null" >
+        #{isGuarante,jdbcType=INTEGER},
+      </if>
+      <if test="guarantorType != null" >
+       #{guarantorType,jdbcType=INTEGER},
+      </if>
+      <if test="relatedAgreement != null" >
+        #{relatedAgreement,jdbcType=VARCHAR},
+      </if>
+      <if test="otherFile != null" >
+        #{otherFile,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinhui.model.UsufructTransferAsset" >
+    update usufruct_transfer_asset
+    <set >
+      <if test="assetType != null" >
+        asset_type = #{assetType,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        project_type = #{projectType,jdbcType=INTEGER},
+      </if>
+      <if test="borrower != null" >
+        borrower = #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null" >
+        scale = #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="tenorType != null" >
+        tenor_type = #{tenorType,jdbcType=INTEGER},
+      </if>
+      <if test="tenor != null" >
+        tenor = #{tenor,jdbcType=INTEGER},
+      </if>
+      <if test="assetMgr != null" >
+        asset_mgr = #{assetMgr,jdbcType=VARCHAR},
+      </if>
+      <if test="repurchase != null" >
+        repurchase = #{repurchase,jdbcType=BIT},
+      </if>
+      <if test="tradingStructure != null" >
+        trading_structure = #{tradingStructure,jdbcType=VARCHAR},
+      </if>
+      <if test="assetSubType != null" >
+        asset_sub_type = #{assetSubType,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        rate = #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="isGuarante != null" >
+        is_guarante = #{isGuarante,jdbcType=INTEGER},
+      </if>
+      <if test="guarantorType != null" >
+        guarantor_type = #{guarantorType,jdbcType=INTEGER},
+      </if>
+      <if test="relatedAgreement != null" >
+        related_agreement = #{relatedAgreement,jdbcType=VARCHAR},
+      </if>
+      <if test="otherFile != null" >
+       other_file = #{otherFile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinhui.model.UsufructTransferAsset" >
+    update usufruct_transfer_asset
+    set asset_type = #{assetType,jdbcType=INTEGER},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      project_type = #{projectType,jdbcType=INTEGER},
+      borrower = #{borrower,jdbcType=VARCHAR},
+      scale = #{scale,jdbcType=DECIMAL},
+      tenor_type = #{tenorType,jdbcType=INTEGER},
+      tenor = #{tenor,jdbcType=INTEGER},
+      asset_mgr = #{assetMgr,jdbcType=VARCHAR},
+      repurchase = #{repurchase,jdbcType=BIT},
+      trading_structure = #{tradingStructure,jdbcType=VARCHAR},
+      asset_sub_type = #{assetSubType,jdbcType=INTEGER},
+      rate = #{rate,jdbcType=DECIMAL},
+       is_guarante = #{isGuarante,jdbcType=INTEGER},
+      guarantor_type = #{guarantorType,jdbcType=INTEGER},
+      related_agreement = #{relatedAgreement,jdbcType=VARCHAR}
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+  
+   <update id="updateByAssetsidSelective" parameterType="com.jinhui.model.UsufructTransferAsset" >
+    update usufruct_transfer_asset
+    <set >
+      <if test="assetType != null" >
+        asset_type = #{assetType,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        project_type = #{projectType,jdbcType=INTEGER},
+      </if>
+      <if test="borrower != null" >
+        borrower = #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null" >
+        scale = #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="tenorType != null" >
+        tenor_type = #{tenorType,jdbcType=INTEGER},
+      </if>
+      <if test="tenor != null" >
+        tenor = #{tenor,jdbcType=INTEGER},
+      </if>
+      <if test="assetMgr != null" >
+        asset_mgr = #{assetMgr,jdbcType=VARCHAR},
+      </if>
+      <if test="repurchase != null" >
+        repurchase = #{repurchase,jdbcType=BIT},
+      </if>
+      <if test="tradingStructure != null" >
+        trading_structure = #{tradingStructure,jdbcType=VARCHAR},
+      </if>
+      <if test="assetSubType != null" >
+        asset_sub_type = #{assetSubType,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        rate = #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="isGuarante != null" >
+        is_guarante = #{isGuarante,jdbcType=INTEGER},
+      </if>
+      <if test="guarantorType != null" >
+        guarantor_type = #{guarantorType,jdbcType=INTEGER},
+      </if>
+      <if test="relatedAgreement != null" >
+        related_agreement = #{relatedAgreement,jdbcType=VARCHAR},
+      </if>
+      <if test="otherFile != null" >
+       other_file = #{otherFile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+</mapper>

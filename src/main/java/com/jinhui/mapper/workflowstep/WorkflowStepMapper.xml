@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinhui.mapper.workflowstep.WorkflowStepMapper">
+
+	<resultMap id="WorkflowStep" type="com.jinhui.model.WorkflowStep">
+		<result column="wf_id" property="wfId" />
+		<result column="wf_name" property="wfName" />
+		<result column="step_id" property="stepId" />
+		<result column="step_name" property="stepName" />
+		<result column="step_orders" property="stepOrders" />
+		<result column="file_id" property="fileId" />
+		<result column="config_id" property="configId" />
+		<result column="onfig_time" property="onfigTime" />
+	</resultMap>
+
+	<!-- workflow_step table all fields -->
+	<sql id="Base_Column_List">
+		t.wf_id,t.step_id,t.step_name,t.step_orders,t.file_id,t.config_id,t.onfig_time
+	</sql>
+
+
+
+	<!-- 插入记录 [说明：如果要返回当前对象，需要如下配置：<insert id="addVo" parameterType="Object" 
+		useGeneratedKeys="true" keyProperty="id">] -->
+	<insert id="saveWorkflowStepInfo" parameterType="com.jinhui.model.WorkflowStep">
+		<selectKey keyProperty="stepId" resultType="java.lang.Long">
+			select
+			LAST_INSERT_ID()
+		</selectKey>
+		insert into
+		workflow_step(wf_id,step_name,step_orders,file_id,config_id,onfig_time)
+		values(#{record.wfId},#{record.stepName},#{record.stepOrders},#{record.fileId},#{record.configId},#{record.onfigTime})
+	</insert>
+
+	<!--批量插入记录 -->
+	<insert id="addList" parameterType="java.util.List">
+		insert into
+		workflow_step(wf_id,step_name,step_orders,file_id,config_id,onfig_time)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.wfId},#{item.stepName},#{item.stepOrders},#{item.fileId},#{item.configId},#{item.onfigTime}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="modVoNotNullWorkflowStep" parameterType="com.jinhui.model.WorkflowStep">
+		update workflow_step set
+		<trim suffixOverrides=",">
+			<if test="record.wfId != null  ">
+				wf_id=#{wfId},
+			</if>
+			<if test="record.stepName != null  and record.stepName != '' ">
+				step_name=#{record.stepName},
+			</if>
+			<if test="record.stepOrders != null  ">
+				step_orders=#{record.stepOrders},
+			</if>
+			<if test="record.fileId != null  and record.fileId != '' ">
+				file_id=#{record.fileId},
+			</if>
+			<if test="record.configId != null  ">
+				config_id=#{record.configId},
+			</if>
+			<if test="record.onfigTime != null  ">
+				onfig_time=#{record.onfigTime},
+			</if>
+		</trim>
+		where step_id=#{record.stepId}
+	</update>
+
+
+<!-- 	查询集合 -->
+	<select id="queryWorkflowStepList" resultMap="WorkflowStep"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from workflow_step t
+		where t.wf_id = #{wfId}
+	</select>
+
+<!-- 查询实体 -->
+	<select id="queryWorkflowStep" resultMap="WorkflowStep"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from workflow_step t
+		where t.step_id = #{stepId}
+	</select>
+	
+	<!-- 根据资产id查询备案流程 -->
+	<select id="queryWorkflowSteps" resultMap="WorkflowStep">
+		select w.id as wf_id,w.wf_name as wf_name,s.step_id,s.step_name,s.step_orders from workflow_step s,workflow w 
+		where s.wf_id = w.id and w.id = (select wf_type from assets a where a.id = #{assetId})
+	</select>
+
+</mapper>

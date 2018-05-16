@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.sales.SalesMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.Sales" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="shares" property="shares" jdbcType="DECIMAL" />
+    <result column="deal_limit" property="dealLimit" jdbcType="DECIMAL" />
+    <result column="deal_shares" property="dealShares" jdbcType="DECIMAL" />
+    <result column="asset_id" property="assetId" jdbcType="INTEGER" />
+    <result column="belong_gid" property="belongGid" jdbcType="INTEGER" />
+    <result column="name" property="belongName" jdbcType="VARCHAR" />
+    <result column="create_uid" property="createUid" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="INTEGER" />
+    <result column="update_at" property="updateAt" jdbcType="INTEGER" />
+    <result column="short_name" property="recordShortName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, product_id, shares, deal_limit, deal_shares, asset_id, belong_gid, create_uid, 
+    from_unixtime(create_at,'%Y-%m-%d %H:%i:%s'), from_unixtime(update_at,'%Y-%m-%d %H:%i:%s')
+  </sql>
+  <sql id="sales_List" >
+    s.id, o.name,s.product_id, s.shares, s.deal_limit, s.deal_shares, s.asset_id, s.belong_gid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sales
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 查询某个产品的销售计划列表 -->
+  <select id="getSalesListByProductId" resultMap="BaseResultMap" >
+    select 
+    <include refid="sales_List" />
+    from sales s 
+    left join products p on s.product_id = p.id
+    left join organization o on s.belong_gid = o.id
+    where s.product_id = #{productId,jdbcType=INTEGER}
+    <if test="belongGid != null" >
+        and belong_gid = #{belongGid}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sales
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jinhui.model.Sales" >
+    insert into sales (id, product_id, shares, 
+      deal_limit, deal_shares, asset_id, 
+      belong_gid, create_uid, create_at, 
+      update_at)
+    values (#{id,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{shares,jdbcType=DECIMAL}, 
+      #{dealLimit,jdbcType=DECIMAL}, #{dealShares,jdbcType=DECIMAL}, #{assetId,jdbcType=INTEGER}, 
+      #{belongGid,jdbcType=INTEGER}, #{createUid,jdbcType=INTEGER}, #{createAt,jdbcType=INTEGER}, 
+      #{updateAt,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinhui.model.Sales" >
+    insert into sales
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="shares != null" >
+        shares,
+      </if>
+      <if test="dealLimit != null" >
+        deal_limit,
+      </if>
+      <if test="dealShares != null" >
+        deal_shares,
+      </if>
+      <if test="assetId != null" >
+        asset_id,
+      </if>
+      <if test="belongGid != null" >
+        belong_gid,
+      </if>
+      <if test="createUid != null" >
+        create_uid,
+      </if>
+      <if test="1==1" >
+        create_at,
+      </if>
+      <if test="1==1" >
+        update_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="shares != null" >
+        #{shares,jdbcType=DECIMAL},
+      </if>
+      <if test="dealLimit != null" >
+        #{dealLimit,jdbcType=DECIMAL},
+      </if>
+      <if test="dealShares != null" >
+        #{dealShares,jdbcType=DECIMAL},
+      </if>
+      <if test="assetId != null" >
+        #{assetId,jdbcType=INTEGER},
+      </if>
+      <if test="belongGid != null" >
+        #{belongGid,jdbcType=INTEGER},
+      </if>
+      <if test="createUid != null" >
+        #{createUid,jdbcType=INTEGER},
+      </if>
+      <if test="1==1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+      <if test="1==1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinhui.model.Sales" >
+    update sales
+    <set >
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="shares != null" >
+        shares = #{shares,jdbcType=DECIMAL},
+      </if>
+      <if test="dealLimit != null" >
+        deal_limit = #{dealLimit,jdbcType=DECIMAL},
+      </if>
+      <if test="dealShares != null" >
+        deal_shares = #{dealShares,jdbcType=DECIMAL},
+      </if>
+      <if test="assetId != null" >
+        asset_id = #{assetId,jdbcType=INTEGER},
+      </if>
+      <if test="belongGid != null" >
+        belong_gid = #{belongGid,jdbcType=INTEGER},
+      </if>
+      <if test="createUid != null" >
+        create_uid = #{createUid,jdbcType=INTEGER},
+      </if>
+      <if test="1==1" >
+        update_at = UNIX_TIMESTAMP(now()),
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinhui.model.Sales" >
+    update sales
+    set product_id = #{productId,jdbcType=INTEGER},
+      shares = #{shares,jdbcType=DECIMAL},
+      deal_limit = #{dealLimit,jdbcType=DECIMAL},
+      deal_shares = #{dealShares,jdbcType=DECIMAL},
+      asset_id = #{assetId,jdbcType=INTEGER},
+      belong_gid = #{belongGid,jdbcType=INTEGER},
+      create_uid = #{createUid,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=INTEGER},
+      update_at = #{updateAt,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

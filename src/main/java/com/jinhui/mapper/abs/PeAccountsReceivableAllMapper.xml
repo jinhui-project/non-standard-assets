@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.abs.PeAccountsReceivableAllMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.abs.PeAccountsReceivableAll" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="file_id" property="fileId" jdbcType="VARCHAR" />
+    <result column="debtor_name" property="debtorName" jdbcType="VARCHAR" />
+    <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+    <result column="custormer_number" property="custormerNumber" jdbcType="VARCHAR" />
+    <result column="original_holder" property="originalHolder" jdbcType="VARCHAR" />
+    <result column="invoiced_amount" property="invoicedAmount" jdbcType="DECIMAL" />
+    <result column="bill_amount" property="billAmount" jdbcType="DECIMAL" />
+    <result column="bill_balance" property="billBalance" jdbcType="DECIMAL" />
+    <result column="invoice_no" property="invoiceNo" jdbcType="VARCHAR" />
+    <result column="invoice_code" property="invoiceCode" jdbcType="VARCHAR" />
+    <result column="invoiced_date" property="invoicedDate" jdbcType="DATE" />
+    <result column="returned_date" property="returnedDate" jdbcType="DATE" />
+    <result column="arrival_date" property="arrivalDate" jdbcType="DATE" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="is_exception" property="isException" jdbcType="CHAR" />
+    <result column="exception_desc" property="exceptionDesc" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    id, file_name, file_id, debtor_name, customer_name, custormer_number, original_holder, 
+    invoiced_amount, bill_amount, bill_balance, invoice_no, invoice_code, invoiced_date, 
+    returned_date, arrival_date, project_name, is_exception, exception_desc, creator, 
+    create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from pe_accounts_receivable_all
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    delete from pe_accounts_receivable_all
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jinhui.model.abs.PeAccountsReceivableAll" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    insert into pe_accounts_receivable_all (id, file_name, file_id, 
+      debtor_name, customer_name, custormer_number, 
+      original_holder, invoiced_amount, bill_amount, 
+      bill_balance, invoice_no, invoice_code, 
+      invoiced_date, returned_date, arrival_date, 
+      project_name, is_exception, exception_desc, 
+      creator, create_time)
+    values (#{id,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, #{fileId,jdbcType=VARCHAR}, 
+      #{debtorName,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR}, #{custormerNumber,jdbcType=VARCHAR}, 
+      #{originalHolder,jdbcType=VARCHAR}, #{invoicedAmount,jdbcType=DECIMAL}, #{billAmount,jdbcType=DECIMAL}, 
+      #{billBalance,jdbcType=DECIMAL}, #{invoiceNo,jdbcType=VARCHAR}, #{invoiceCode,jdbcType=VARCHAR}, 
+      #{invoicedDate,jdbcType=DATE}, #{returnedDate,jdbcType=DATE}, #{arrivalDate,jdbcType=DATE}, 
+      #{projectName,jdbcType=VARCHAR}, #{isException,jdbcType=CHAR}, #{exceptionDesc,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinhui.model.abs.PeAccountsReceivableAll" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    insert into pe_accounts_receivable_all
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+      <if test="fileId != null" >
+        file_id,
+      </if>
+      <if test="debtorName != null" >
+        debtor_name,
+      </if>
+      <if test="customerName != null" >
+        customer_name,
+      </if>
+      <if test="custormerNumber != null" >
+        custormer_number,
+      </if>
+      <if test="originalHolder != null" >
+        original_holder,
+      </if>
+      <if test="invoicedAmount != null" >
+        invoiced_amount,
+      </if>
+      <if test="billAmount != null" >
+        bill_amount,
+      </if>
+      <if test="billBalance != null" >
+        bill_balance,
+      </if>
+      <if test="invoiceNo != null" >
+        invoice_no,
+      </if>
+      <if test="invoiceCode != null" >
+        invoice_code,
+      </if>
+      <if test="invoicedDate != null" >
+        invoiced_date,
+      </if>
+      <if test="returnedDate != null" >
+        returned_date,
+      </if>
+      <if test="arrivalDate != null" >
+        arrival_date,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="isException != null" >
+        is_exception,
+      </if>
+      <if test="exceptionDesc != null" >
+        exception_desc,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileId != null" >
+        #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="debtorName != null" >
+        #{debtorName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null" >
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="custormerNumber != null" >
+        #{custormerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="originalHolder != null" >
+        #{originalHolder,jdbcType=VARCHAR},
+      </if>
+      <if test="invoicedAmount != null" >
+        #{invoicedAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="billAmount != null" >
+        #{billAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="billBalance != null" >
+        #{billBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="invoiceNo != null" >
+        #{invoiceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceCode != null" >
+        #{invoiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invoicedDate != null" >
+        #{invoicedDate,jdbcType=DATE},
+      </if>
+      <if test="returnedDate != null" >
+        #{returnedDate,jdbcType=DATE},
+      </if>
+      <if test="arrivalDate != null" >
+        #{arrivalDate,jdbcType=DATE},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="isException != null" >
+        #{isException,jdbcType=CHAR},
+      </if>
+      <if test="exceptionDesc != null" >
+        #{exceptionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinhui.model.abs.PeAccountsReceivableAll" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    update pe_accounts_receivable_all
+    <set >
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileId != null" >
+        file_id = #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="debtorName != null" >
+        debtor_name = #{debtorName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null" >
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="custormerNumber != null" >
+        custormer_number = #{custormerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="originalHolder != null" >
+        original_holder = #{originalHolder,jdbcType=VARCHAR},
+      </if>
+      <if test="invoicedAmount != null" >
+        invoiced_amount = #{invoicedAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="billAmount != null" >
+        bill_amount = #{billAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="billBalance != null" >
+        bill_balance = #{billBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="invoiceNo != null" >
+        invoice_no = #{invoiceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceCode != null" >
+        invoice_code = #{invoiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invoicedDate != null" >
+        invoiced_date = #{invoicedDate,jdbcType=DATE},
+      </if>
+      <if test="returnedDate != null" >
+        returned_date = #{returnedDate,jdbcType=DATE},
+      </if>
+      <if test="arrivalDate != null" >
+        arrival_date = #{arrivalDate,jdbcType=DATE},
+      </if>
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="isException != null" >
+        is_exception = #{isException,jdbcType=CHAR},
+      </if>
+      <if test="exceptionDesc != null" >
+        exception_desc = #{exceptionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinhui.model.abs.PeAccountsReceivableAll" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    update pe_accounts_receivable_all
+    set file_name = #{fileName,jdbcType=VARCHAR},
+      file_id = #{fileId,jdbcType=VARCHAR},
+      debtor_name = #{debtorName,jdbcType=VARCHAR},
+      customer_name = #{customerName,jdbcType=VARCHAR},
+      custormer_number = #{custormerNumber,jdbcType=VARCHAR},
+      original_holder = #{originalHolder,jdbcType=VARCHAR},
+      invoiced_amount = #{invoicedAmount,jdbcType=DECIMAL},
+      bill_amount = #{billAmount,jdbcType=DECIMAL},
+      bill_balance = #{billBalance,jdbcType=DECIMAL},
+      invoice_no = #{invoiceNo,jdbcType=VARCHAR},
+      invoice_code = #{invoiceCode,jdbcType=VARCHAR},
+      invoiced_date = #{invoicedDate,jdbcType=DATE},
+      returned_date = #{returnedDate,jdbcType=DATE},
+      arrival_date = #{arrivalDate,jdbcType=DATE},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      is_exception = #{isException,jdbcType=CHAR},
+      exception_desc = #{exceptionDesc,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

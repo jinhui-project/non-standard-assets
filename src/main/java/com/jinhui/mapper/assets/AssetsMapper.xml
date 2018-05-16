@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.assets.AssetsMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.Assets" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="short_name" property="shortName" jdbcType="VARCHAR" /> 
+    <result column="record_name" property="recordName" jdbcType="VARCHAR" /> 
+    <result column="step_name" property="stepName" jdbcType="VARCHAR" /> 
+    <result column="sales_model" property="salesModel" jdbcType="INTEGER" />
+    <result column="asset_type" property="assetType" jdbcType="BIT" />
+    <result column="borrower" property="borrower" jdbcType="VARCHAR" />
+    <result column="tenor_type" property="tenorType" jdbcType="INTEGER" /> 
+    <result column="tenor_day" property="tenorDay" jdbcType="INTEGER" />
+    <result column="tenor" property="tenor" jdbcType="INTEGER" />
+    <result column="scale" property="scale" jdbcType="DECIMAL" />
+    <result column="financing_cost" property="financingCost" jdbcType="DECIMAL" />
+    <result column="record_gid" property="recordGid" jdbcType="INTEGER" />
+    <result column="wf_type" property="wfType" jdbcType="INTEGER" />
+    <result column="wf_id" property="wfId" jdbcType="INTEGER" />
+    <result column="wf_status" property="wfStatus" jdbcType="INTEGER" />
+    <result column="materials" property="materials" jdbcType="VARCHAR" />
+    <result column="due_reports" property="dueReports" jdbcType="VARCHAR" />
+    <result column="pass_result" property="passResult" jdbcType="INTEGER" />
+    <result column="pass_content" property="passContent" jdbcType="VARCHAR" />
+    <result column="belong_gid" property="belongGid" jdbcType="INTEGER" />
+    <result column="creator_id" property="creatorId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="INTEGER" />
+    <result column="editor_id" property="editorId" jdbcType="INTEGER" />
+    <result column="edit_time" property="editTime" jdbcType="INTEGER" />
+    <result column="auditor_id" property="auditorId" jdbcType="INTEGER" />
+    <result column="audit_time" property="auditTime" jdbcType="INTEGER" />
+    <result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+    <result column="publish_time" property="publishTime" jdbcType="INTEGER" />
+    <result column="confirmer_id" property="confirmerId" jdbcType="INTEGER" />
+    <result column="confirm_time" property="confirmTime" jdbcType="INTEGER" />
+    <result column="broker_id" property="brokerId" jdbcType="INTEGER" />
+    <result column="broker_time" property="brokerTime" jdbcType="INTEGER" />
+    <result column="referee_id" property="refereeId" jdbcType="INTEGER" />
+    <result column="referee_time" property="refereeTime" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="is_hot" property="isHot" jdbcType="INTEGER" />
+    <result column="step_id" property="stepId" jdbcType="INTEGER" />     
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, short_name, sales_model, asset_type, borrower, tenor_type, tenor, scale, 
+    financing_cost, record_gid,  wf_type, wf_id, wf_status, materials, due_reports, pass_result, 
+    pass_content, belong_gid, creator_id, from_unixtime(create_time,'%Y-%m-%d %H:%i:%s') as create_time, editor_id, from_unixtime(edit_time,'%Y-%m-%d %H:%i:%s') as edit_time, auditor_id, 
+    from_unixtime(audit_time,'%Y-%m-%d %H:%i:%s') as audit_time, publisher_id, from_unixtime(publish_time,'%Y-%m-%d %H:%i:%s') as publish_time, confirmer_id, from_unixtime(confirm_time,'%Y-%m-%d %H:%i:%s') as confirm_time, broker_id, from_unixtime(broker_time,'%Y-%m-%d %H:%i:%s') as broker_time, 
+    referee_id, referee_time, status
+  </sql>
+  <sql id="Condition_Assets_List" >
+    a.id, a.name, a.short_name, a.sales_model, a.asset_type, a.borrower, a.tenor_type, a.tenor, a.scale, 
+    a.financing_cost, a.record_gid, a.wf_type, a.wf_id, a.wf_status, a.materials, a.due_reports, a.pass_result, 
+    a.pass_content, a.belong_gid, a.creator_id, from_unixtime(a.create_time,'%Y-%m-%d %H:%i:%s') as create_time, a.editor_id, from_unixtime(a.edit_time,'%Y-%m-%d %H:%i:%s') as edit_time, a.auditor_id, 
+    from_unixtime(a.audit_time,'%Y-%m-%d %H:%i:%s') as audit_time, a.publisher_id, from_unixtime(a.publish_time,'%Y-%m-%d %H:%i:%s') as publish_time, a.confirmer_id, from_unixtime(a.confirm_time,'%Y-%m-%d %H:%i:%s') as confirm_time, a.broker_id, from_unixtime(a.broker_time,'%Y-%m-%d %H:%i:%s') as broker_time, 
+    a.referee_id, a.referee_time, a.status
+  </sql>
+  <sql id="Assets_List" >
+    distinct a.id, a.name, a.short_name, a.sales_model, a.asset_type, a.borrower, a.tenor_type, a.tenor, a.scale, 
+    a.financing_cost, a.record_gid, a.wf_type, a.wf_id, a.wf_status, a.materials, a.due_reports, a.pass_result, 
+    a.pass_content, a.belong_gid, a.creator_id, from_unixtime(a.create_time,'%Y-%m-%d %H:%i:%s') as create_time, a.editor_id, from_unixtime(a.edit_time,'%Y-%m-%d %H:%i:%s') as edit_time, a.auditor_id, 
+    from_unixtime(a.audit_time,'%Y-%m-%d %H:%i:%s') as audit_time, a.publisher_id, from_unixtime(a.publish_time,'%Y-%m-%d %H:%i:%s') as publish_time, a.confirmer_id, from_unixtime(a.confirm_time,'%Y-%m-%d %H:%i:%s') as confirm_time, a.broker_id, from_unixtime(a.broker_time,'%Y-%m-%d %H:%i:%s') as broker_time, 
+    a.referee_id, a.referee_time, a.status from assets a
+    left join organization o on a.belong_gid = o.id  
+  </sql>
+  <sql id="Query_Assets_List" >
+    distinct o.name as record_name, a.id, a.name, a.short_name, a.sales_model, a.asset_type, a.borrower, a.tenor_type, a.tenor, a.scale, 
+    a.financing_cost, a.record_gid,  a.wf_type, a.wf_id, a.wf_status, a.materials, a.due_reports, a.pass_result, 
+    a.pass_content, a.belong_gid, a.creator_id, from_unixtime(a.create_time,'%Y-%m-%d %H:%i:%s') as create_time, a.editor_id, from_unixtime(a.edit_time,'%Y-%m-%d %H:%i:%s') as edit_time, a.auditor_id, 
+    from_unixtime(a.audit_time,'%Y-%m-%d %H:%i:%s') as audit_time, a.publisher_id, from_unixtime(a.publish_time,'%Y-%m-%d %H:%i:%s') as publish_time, a.confirmer_id, from_unixtime(a.confirm_time,'%Y-%m-%d %H:%i:%s') as confirm_time, a.broker_id, from_unixtime(a.broker_time,'%Y-%m-%d %H:%i:%s') as broker_time, 
+    a.referee_id, a.referee_time, a.status
+  </sql>
+  <sql id="Contion_Query_Assets_List" >
+    distinct ws.step_name, r.name as record_name,a.id, a.name, a.short_name, a.sales_model, a.asset_type, a.borrower, a.tenor_type, a.tenor, a.scale, 
+    a.financing_cost, a.record_gid,  a.wf_type, a.wf_id, a.wf_status, a.materials, a.due_reports, a.pass_result, 
+    a.pass_content, a.belong_gid, a.creator_id, from_unixtime(a.create_time,'%Y-%m-%d %H:%i:%s') as create_time, a.editor_id, from_unixtime(a.edit_time,'%Y-%m-%d %H:%i:%s') as edit_time, a.auditor_id, 
+    from_unixtime(a.audit_time,'%Y-%m-%d %H:%i:%s') as audit_time, a.publisher_id, from_unixtime(a.publish_time,'%Y-%m-%d %H:%i:%s') as publish_time, a.confirmer_id, from_unixtime(a.confirm_time,'%Y-%m-%d %H:%i:%s') as confirm_time, a.broker_id, from_unixtime(a.broker_time,'%Y-%m-%d %H:%i:%s') as broker_time, 
+    a.referee_id, a.referee_time, a.status, a.is_hot,
+    case when a.status = 6
+	then 0
+	when a.status !=6
+	then 1
+	end as status_order
+  </sql>
+  <!-- 分页查询我的资产-资产列表(备案机构方_我备案的) -->
+  <select id="getMyRecordAssetsList" resultMap="BaseResultMap" >
+    select 
+    <include refid="Assets_List" />
+    where a.record_gid =#{orgId,jdbcType=INTEGER} order by edit_time desc
+  </select>
+   <!-- 分页查询我的资产-资产列表(备案机构方_我反馈的) -->
+  <select id="getFeedBackRecordAssetsList" resultMap="BaseResultMap" >
+    select 
+    <include refid="Assets_List" />
+    left join sale_feedbacks f on f.asset_id = a.id
+    where f.gid =#{orgId,jdbcType=INTEGER} and f.feed_type = 0 order by edit_time desc
+  </select>
+  <!-- 分页查询我的资产-资产列表(资金方_我反馈的) -->
+  <select id="getFeedBackFundsAssetsList" resultMap="BaseResultMap" >
+    select 
+    <include refid="Assets_List" />
+    left join sale_feedbacks f on f.asset_id = a.id
+    where f.gid =#{orgId,jdbcType=INTEGER} and f.feed_type = 0 order by edit_time desc
+  </select>
+  <!-- 分页查询我的资产-资产列表(资金方_我销售的) -->
+  <select id="getSaleFundsAssetsList" resultMap="BaseResultMap" >
+    select 
+    <include refid="Assets_List" />
+    left join sales s on a.id = s.asset_id
+    where s.belong_gid =#{orgId,jdbcType=INTEGER} order by edit_time desc
+  </select>
+   <!-- 分页查询我的资产-资产列表(资产方) -->
+  <select id="getPropertyAssetsList" resultMap="BaseResultMap" >
+    select 
+    <include refid="Assets_List" />
+    where a.belong_gid = #{orgId,jdbcType=INTEGER} order by edit_time desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Query_Assets_List" />
+    from assets a
+    left join organization o on a.record_gid = o.id 
+    where a.id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 查询我的资产 -->
+  <select id="getMyAssets" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from assets where belong_gid = #{orgId,jdbcType=INTEGER}
+    order by from_unixtime(edit_time,'%Y-%m-%d %H:%i:%s') desc
+  </select>
+  <!-- 查询所有的资产 -->
+  <select id="getAllAssets" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from assets
+  </select>
+  <!-- 按条件查询资产 -->
+  <select id="getAssets" resultMap="BaseResultMap" parameterType="com.jinhui.model.Assets">
+    select 
+    <include refid="Contion_Query_Assets_List" />
+    from assets a
+    left join organization o on a.belong_gid = o.id 
+    left join organization r on a.record_gid = r.id 
+    left join workflow_step ws  on  a.wf_status = ws.step_orders
+    left join workflow w on ws.wf_id = w.wf_id
+    where a.status != 0 and a.status != 1  and a.status != 7
+    <if test="status != null and status != 3" > 
+       and a.status = #{status,jdbcType=BIT}
+    </if>
+    <if test="status != null and status == 3" > <!-- 资产“备案”和“产品筹备”状态 -->
+       and (a.status = 3 or a.status = 4)
+    </if>
+    <if test="tenorRoleType != null and tenorRoleType == 1" > 
+       and (a.tenor_day between  #{tenorDayStart ,jdbcType=DECIMAL} and  #{tenorDayEnd,jdbcType=DECIMAL})
+    </if>
+    <if test="tenorRoleType != null and tenorRoleType == 2" > 
+       and (a.tenor_day between  #{tenorDayStart ,jdbcType=DECIMAL} and  #{tenorDayEnd,jdbcType=DECIMAL})
+    </if>
+    <if test="tenorRoleType != null and tenorRoleType == 3" > 
+       and (a.tenor_day between  #{tenorDayStart ,jdbcType=DECIMAL} and  #{tenorDayEnd,jdbcType=DECIMAL})
+    </if>
+    <if test="tenorRoleType != null and tenorRoleType == 4" > 
+       and a.tenor_day >=  #{tenorDayStart ,jdbcType=DECIMAL}
+    </if>
+    <if test="scaleType != null and scaleType == 1" >
+       and (a.scale between  #{scaleStart ,jdbcType=DECIMAL} and  #{scaleEnd,jdbcType=DECIMAL})
+     </if>  
+     <if test="scaleType != null and scaleType == 2" >
+       and (a.scale between  #{scaleStart ,jdbcType=DECIMAL} and  #{scaleEnd,jdbcType=DECIMAL})
+     </if> 
+     <if test="scaleType != null and scaleType == 3" >
+       and (a.scale between  #{scaleStart ,jdbcType=DECIMAL} and  #{scaleEnd,jdbcType=DECIMAL})
+     </if> 
+     <if test="scaleType != null and scaleType == 4" >
+       and a.scale >=  #{scaleStart ,jdbcType=DECIMAL}
+     </if>    
+     <if test="assetType != null" >
+       and a.asset_type = #{assetType,jdbcType=BIT}
+     </if>
+     <if test="financingCostStart != null and financingCostEnd != null"  >
+       and (a.financing_cost between  #{financingCostStart ,jdbcType=DECIMAL} and  #{financingCostEnd,jdbcType=DECIMAL})
+     </if>
+     order by is_hot desc,status_order desc,edit_time desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from assets
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jinhui.model.Assets" useGeneratedKeys="true" keyProperty="id">   
+    insert into assets (id, name, short_name, 
+      sales_model, asset_type, borrower, 
+      tenor_type, tenor, scale, 
+      financing_cost, record_gid, wf_type, 
+      wf_id, wf_status, materials, 
+      due_reports, pass_result, pass_content, 
+      belong_gid, creator_id, create_time, 
+      editor_id, edit_time, auditor_id, 
+      audit_time, publisher_id, publish_time, 
+      confirmer_id, confirm_time, broker_id, 
+      broker_time, referee_id, referee_time, 
+      status)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR}, 
+      #{salesModel,jdbcType=INTEGER}, #{assetType,jdbcType=BIT}, #{borrower,jdbcType=VARCHAR}, 
+      #{tenorType,jdbcType=INTEGER}, #{tenor,jdbcType=INTEGER}, #{scale,jdbcType=DECIMAL}, 
+      #{financingCost,jdbcType=DECIMAL}, #{recordGid,jdbcType=INTEGER}, #{wfType,jdbcType=INTEGER}, 
+      #{wfId,jdbcType=INTEGER}, #{wfStatus,jdbcType=INTEGER}, #{materials,jdbcType=VARCHAR}, 
+      #{dueReports,jdbcType=VARCHAR}, #{passResult,jdbcType=INTEGER}, #{passContent,jdbcType=VARCHAR}, 
+      #{belongGid,jdbcType=INTEGER}, #{creatorId,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER}, 
+      #{editorId,jdbcType=INTEGER}, #{editTime,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER}, 
+      #{auditTime,jdbcType=INTEGER}, #{publisherId,jdbcType=INTEGER}, #{publishTime,jdbcType=INTEGER}, 
+      #{confirmerId,jdbcType=INTEGER}, #{confirmTime,jdbcType=INTEGER}, #{brokerId,jdbcType=INTEGER}, 
+      #{brokerTime,jdbcType=INTEGER}, #{refereeId,jdbcType=INTEGER}, #{refereeTime,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinhui.model.Assets" useGeneratedKeys="true" keyProperty="id">
+    insert into assets
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="shortName != null" >
+        short_name,
+      </if>
+      <if test="salesModel != null" >
+        sales_model,
+      </if>
+      <if test="assetType != null" >
+        asset_type,
+      </if>
+      <if test="borrower != null" >
+        borrower,
+      </if>
+      <if test="tenorType != null" >
+        tenor_type,
+      </if> 
+      <if test="tenorDay != null" >
+        tenor_day,
+      </if>
+      <if test="tenor != null" >
+        tenor,
+      </if>
+      <if test="scale != null" >
+        scale,
+      </if>
+      <if test="financingCost != null" >
+        financing_cost,
+      </if>
+      <if test="recordGid != null" >
+        record_gid,
+      </if>
+      <if test="wfType != null" >
+        wf_type,
+      </if>
+      <if test="wfId != null" >
+        wf_id,
+      </if>
+      <if test="wfStatus != null" >
+        wf_status,
+      </if>
+      <if test="materials != null" >
+        materials,
+      </if>
+      <if test="dueReports != null" >
+        due_reports,
+      </if>
+      <if test="passResult != null" >
+        pass_result,
+      </if>
+      <if test="passContent != null" >
+        pass_content,
+      </if>
+      <if test="belongGid != null" >
+        belong_gid,
+      </if>
+      <if test="creatorId != null" >
+        creator_id,
+      </if>
+      <if test="createTime != null and  createTime != ''" >
+        create_time,
+      </if>
+      <if test="editorId != null" >
+        editor_id,
+      </if>
+      <if test="editTime != null and editTime != ''" >
+        edit_time,
+      </if>
+      <if test="auditorId != null" >
+        auditor_id,
+      </if>
+      <if test="auditTime != null and auditTime != ''" >
+        audit_time,
+      </if>
+      <if test="publisherId != null" >
+        publisher_id,
+      </if>
+      <if test="publishTime != null and publishTime != ''" >
+        publish_time,
+      </if>
+      <if test="confirmerId != null" >
+        confirmer_id,
+      </if>
+      <if test="confirmTime != null and confirmTime != ''" >
+        confirm_time,
+      </if>
+      <if test="brokerId != null" >
+        broker_id,
+      </if>
+      <if test="brokerTime != null and brokerTime != ''" >
+        broker_time,
+      </if>
+      <if test="refereeId != null" >
+        referee_id,
+      </if>
+      <if test="refereeTime != null and refereeTime != ''" >
+        referee_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null" >
+        #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="salesModel != null" >
+        #{salesModel,jdbcType=INTEGER},
+      </if>
+      <if test="assetType != null" >
+        #{assetType,jdbcType=BIT},
+      </if>
+      <if test="borrower != null" >
+        #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="tenorType != null" >
+        #{tenorType,jdbcType=INTEGER},
+      </if>
+      <if test="tenorDay != null" >
+        #{tenorDay,jdbcType=INTEGER},
+      </if>
+      <if test="tenor != null" >
+        #{tenor,jdbcType=INTEGER},
+      </if>
+      <if test="scale != null" >
+        #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="financingCost != null" >
+        #{financingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="recordGid != null" >
+        #{recordGid,jdbcType=INTEGER},
+      </if>
+      <if test="wfType != null" >
+        #{wfType,jdbcType=INTEGER},
+      </if>
+      <if test="wfId != null" >
+        #{wfId,jdbcType=INTEGER},
+      </if>
+      <if test="wfStatus != null" >
+        #{wfStatus,jdbcType=INTEGER},
+      </if>
+      <if test="materials != null" >
+        #{materials,jdbcType=VARCHAR},
+      </if>
+      <if test="dueReports != null" >
+        #{dueReports,jdbcType=VARCHAR},
+      </if>
+      <if test="passResult != null" >
+        #{passResult,jdbcType=INTEGER},
+      </if>
+      <if test="passContent != null" >
+        #{passContent,jdbcType=VARCHAR},
+      </if>
+      <if test="belongGid != null" >
+        #{belongGid,jdbcType=INTEGER},
+      </if>
+      <if test="creatorId != null" >
+        #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null and createTime != ''" >
+        UNIX_TIMESTAMP(#{createTime,jdbcType=INTEGER}),
+      </if>
+      <if test="editorId != null" >
+        #{editorId,jdbcType=INTEGER},
+      </if>
+      <if test="editTime != null and editTime != ''" >
+        UNIX_TIMESTAMP(#{editTime,jdbcType=INTEGER}),
+      </if>
+      <if test="auditorId != null" >
+        #{auditorId,jdbcType=INTEGER},
+      </if>
+      <if test="auditTime != null and auditTime != ''" >
+        UNIX_TIMESTAMP(#{auditTime,jdbcType=INTEGER}),
+      </if>
+      <if test="publisherId != null" >
+        #{publisherId,jdbcType=INTEGER},
+      </if>
+      <if test="publishTime != null and publishTime != ''" >
+        UNIX_TIMESTAMP(#{publishTime,jdbcType=INTEGER}),
+      </if>
+      <if test="confirmerId != null" >
+        #{confirmerId,jdbcType=INTEGER},
+      </if>
+      <if test="confirmTime != null and confirmTime != ''" >
+        UNIX_TIMESTAMP(#{confirmTime,jdbcType=INTEGER}),
+      </if>
+      <if test="brokerId != null" >
+        #{brokerId,jdbcType=INTEGER},
+      </if>
+      <if test="brokerTime != null and brokerTime != ''" >
+        UNIX_TIMESTAMP(#{brokerTime,jdbcType=INTEGER}),
+      </if>
+      <if test="refereeId != null" >
+        #{refereeId,jdbcType=INTEGER},
+      </if>
+      <if test="refereeTime != null and refereeTime != ''" >
+        UNIX_TIMESTAMP(#{refereeTime,jdbcType=INTEGER}),
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinhui.model.Assets" >
+    update assets
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null" >
+        short_name = #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="salesModel != null" >
+        sales_model = #{salesModel,jdbcType=INTEGER},
+      </if>
+      <if test="assetType != null" >
+        asset_type = #{assetType,jdbcType=BIT},
+      </if>
+      <if test="borrower != null" >
+        borrower = #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="tenorType != null" >
+        tenor_type = #{tenorType,jdbcType=INTEGER},
+      </if>
+      <if test="tenorDay != null" >
+        tenor_day = #{tenorDay,jdbcType=INTEGER},
+      </if>
+      <if test="tenor != null" >
+        tenor = #{tenor,jdbcType=INTEGER},
+      </if>
+      <if test="scale != null" >
+        scale = #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="financingCost != null" >
+        financing_cost = #{financingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="recordGid != null" >
+        record_gid = #{recordGid,jdbcType=INTEGER},
+      </if>
+      <if test="wfType != null" >
+        wf_type = #{wfType,jdbcType=INTEGER},
+      </if>
+      <if test="wfId != null" >
+        wf_id = #{wfId,jdbcType=INTEGER},
+      </if>
+      <if test="wfStatus != null" >
+        wf_status = #{wfStatus,jdbcType=INTEGER},
+      </if>
+      <if test="materials != null" >
+        materials = #{materials,jdbcType=VARCHAR},
+      </if>
+      <if test="dueReports != null" >
+        due_reports = #{dueReports,jdbcType=VARCHAR},
+      </if>
+      <if test="passResult != null" >
+        pass_result = #{passResult,jdbcType=INTEGER},
+      </if>
+      <if test="passContent != null" >
+        pass_content = #{passContent,jdbcType=VARCHAR},
+      </if>
+      <if test="belongGid != null" >
+        belong_gid = #{belongGid,jdbcType=INTEGER},
+      </if>
+      <if test="creatorId != null" >
+        creator_id = #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null and createTime !=''" >
+        create_time = UNIX_TIMESTAMP(#{createTime,jdbcType=INTEGER}),
+      </if>
+      <if test="editorId != null" >
+        editor_id = #{editorId,jdbcType=INTEGER},
+      </if>
+      <if test="editTime != null and editTime != ''" >
+        edit_time = UNIX_TIMESTAMP(#{editTime,jdbcType=INTEGER}),
+      </if>
+      <if test="auditorId != null" >
+        auditor_id = #{auditorId,jdbcType=INTEGER},
+      </if>
+      <if test="auditTime != null and auditTime !=''" >
+        audit_time = UNIX_TIMESTAMP(#{auditTime,jdbcType=INTEGER}),
+      </if>
+      <if test="publisherId != null" >
+        publisher_id = #{publisherId,jdbcType=INTEGER},
+      </if>
+      <if test="publishTime != null and publishTime !=''" >
+        publish_time = UNIX_TIMESTAMP(#{publishTime,jdbcType=INTEGER}),
+      </if>
+      <if test="confirmerId != null" >
+        confirmer_id = #{confirmerId,jdbcType=INTEGER},
+      </if>
+      <if test="confirmTime != null and confirmTime !=''" >
+        confirm_time = UNIX_TIMESTAMP(#{confirmTime,jdbcType=INTEGER}),
+      </if>
+      <if test="brokerId != null" >
+        broker_id = #{brokerId,jdbcType=INTEGER},
+      </if>
+      <if test="brokerTime != null and brokerTime !=''" >
+        broker_time = UNIX_TIMESTAMP(#{brokerTime,jdbcType=INTEGER}),
+      </if>
+      <if test="refereeId != null" >
+        referee_id = #{refereeId,jdbcType=INTEGER},
+      </if>
+      <if test="refereeTime != null and refereeTime !=''" >
+        referee_time = UNIX_TIMESTAMP(#{refereeTime,jdbcType=INTEGER}),
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinhui.model.Assets" >
+    update assets
+    set name = #{name,jdbcType=VARCHAR},
+      short_name = #{shortName,jdbcType=VARCHAR},
+      sales_model = #{salesModel,jdbcType=INTEGER},
+      asset_type = #{assetType,jdbcType=BIT},
+      borrower = #{borrower,jdbcType=VARCHAR},
+      tenor_type = #{tenorType,jdbcType=INTEGER},
+      tenor = #{tenor,jdbcType=INTEGER},
+      scale = #{scale,jdbcType=DECIMAL},
+      financing_cost = #{financingCost,jdbcType=DECIMAL},
+      record_gid = #{recordGid,jdbcType=INTEGER},
+      wf_type = #{wfType,jdbcType=INTEGER},
+      wf_id = #{wfId,jdbcType=INTEGER},
+      wf_status = #{wfStatus,jdbcType=INTEGER},
+      materials = #{materials,jdbcType=VARCHAR},
+      due_reports = #{dueReports,jdbcType=VARCHAR},
+      pass_result = #{passResult,jdbcType=INTEGER},
+      pass_content = #{passContent,jdbcType=VARCHAR},
+      belong_gid = #{belongGid,jdbcType=INTEGER},
+      creator_id = #{creatorId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=INTEGER},
+      editor_id = #{editorId,jdbcType=INTEGER},
+      edit_time = #{editTime,jdbcType=INTEGER},
+      auditor_id = #{auditorId,jdbcType=INTEGER},
+      audit_time = #{auditTime,jdbcType=INTEGER},
+      publisher_id = #{publisherId,jdbcType=INTEGER},
+      publish_time = #{publishTime,jdbcType=INTEGER},
+      confirmer_id = #{confirmerId,jdbcType=INTEGER},
+      confirm_time = #{confirmTime,jdbcType=INTEGER},
+      broker_id = #{brokerId,jdbcType=INTEGER},
+      broker_time = #{brokerTime,jdbcType=INTEGER},
+      referee_id = #{refereeId,jdbcType=INTEGER},
+      referee_time = #{refereeTime,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <!-- 查询我的资产 -->
+  <select id="getMyAssets1" resultMap="BaseResultMap1" >
+    select 
+    <include refid="Base_Column_List1" />
+    from assets, users u,organization o where assets.creator_id = #{creatorId,jdbcType=INTEGER} and assets.creator_id=u.id and u.gid=o.id
+  </select>
+  <sql id="Base_Column_List1" >
+    assets.id, assets.name, assets.short_name, assets.sales_model, assets.asset_type, assets.borrower, assets.tenor_type, assets.tenor, assets.scale, 
+    assets.financing_cost, assets.record_gid, assets.wf_type, assets.wf_id, assets.wf_status, assets.materials, assets.due_reports, assets.pass_result, 
+    assets.pass_content, assets.belong_gid, assets.creator_id, from_unixtime(assets.create_time,'%Y-%m-%d %H:%i:%s') as create_time, assets.editor_id, from_unixtime(assets.edit_time,'%Y-%m-%d %H:%i:%s') as edit_time, assets.auditor_id, 
+    from_unixtime(assets.audit_time,'%Y-%m-%d %H:%i:%s') as audit_time, assets.publisher_id, from_unixtime(assets.publish_time,'%Y-%m-%d %H:%i:%s') as publish_time, assets.confirmer_id, from_unixtime(assets.confirm_time,'%Y-%m-%d %H:%i:%s') as confirm_time, assets.broker_id, from_unixtime(assets.broker_time,'%Y-%m-%d %H:%i:%s') as broker_time, 
+    assets.referee_id, from_unixtime(assets.referee_time,'%Y-%m-%d %H:%i:%s') as referee_time, assets.status
+  </sql>
+  <resultMap id="BaseResultMap1" type="com.jinhui.model.Assets" >
+    <id column="assets.id" property="id" jdbcType="INTEGER" />
+    <result column="assets.name" property="name" jdbcType="VARCHAR" />
+    <result column="assets.short_name" property="shortName" jdbcType="VARCHAR" />
+    <result column="assets.sales_model" property="salesModel" jdbcType="INTEGER" />
+    <result column="assets.asset_type" property="assetType" jdbcType="BIT" />
+    <result column="assets.borrower" property="borrower" jdbcType="VARCHAR" />
+    <result column="assets.tenor_type" property="tenorType" jdbcType="INTEGER" />
+    <result column="assets.tenor" property="tenor" jdbcType="INTEGER" />
+    <result column="assets.scale" property="scale" jdbcType="DECIMAL" />
+    <result column="assets.financing_cost" property="financingCost" jdbcType="DECIMAL" />
+    <result column="assets.record_gid" property="recordGid" jdbcType="INTEGER" />
+    <result column="assets.wf_type" property="wfType" jdbcType="INTEGER" />
+    <result column="assets.wf_id" property="wfId" jdbcType="INTEGER" />
+    <result column="assets.wf_status" property="wfStatus" jdbcType="INTEGER" />
+    <result column="assets.materials" property="materials" jdbcType="VARCHAR" />
+    <result column="assets.due_reports" property="dueReports" jdbcType="VARCHAR" />
+    <result column="assets.pass_result" property="passResult" jdbcType="INTEGER" />
+    <result column="assets.pass_content" property="passContent" jdbcType="VARCHAR" />
+    <result column="assets.belong_gid" property="belongGid" jdbcType="INTEGER" />
+    <result column="assets.creator_id" property="creatorId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="INTEGER" />
+    <result column="assets.editor_id" property="editorId" jdbcType="INTEGER" />
+    <result column="edit_time" property="editTime" jdbcType="INTEGER" />
+    <result column="assets.auditor_id" property="auditorId" jdbcType="INTEGER" />
+    <result column="audit_time" property="auditTime" jdbcType="INTEGER" />
+    <result column="assets.publisher_id" property="publisherId" jdbcType="INTEGER" />
+    <result column="publish_time" property="publishTime" jdbcType="INTEGER" />
+    <result column="assets.confirmer_id" property="confirmerId" jdbcType="INTEGER" />
+    <result column="confirm_time" property="confirmTime" jdbcType="INTEGER" />
+    <result column="assets.broker_id" property="brokerId" jdbcType="INTEGER" />
+    <result column="broker_time" property="brokerTime" jdbcType="INTEGER" />
+    <result column="assets.referee_id" property="refereeId" jdbcType="INTEGER" />
+    <result column="referee_time" property="refereeTime" jdbcType="INTEGER" />
+    <result column="assets.status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+
+
+  <!-- 查询“到期兑付”的ABS资产包，优先回款 -->
+  <select id="getABSAssetsToPay" resultMap="BaseResultMap">
+    select id from assets a where a.warn_status = 2
+  </select>
+
+  <resultMap id="assetsPackageMap" type="com.jinhui.model.abs.AssetPackage" >
+    <result property="name" column="name" jdbcType="VARCHAR" />
+    <result property="shortName" column="short_name" jdbcType="VARCHAR" />
+    <result property="issueDate" column="issue_date" jdbcType="VARCHAR" />
+    <result property="setupDate" column="setup_date" jdbcType="VARCHAR" />
+    <result property="scale" column="scale" jdbcType="DECIMAL" />
+    <result property="assetMgr" column="asset_mgr" jdbcType="VARCHAR" />
+    <result property="setTrench" column="set_trench" jdbcType="VARCHAR" />
+    <result property="seniorPercent" column="senior_percent" jdbcType="VARCHAR" />
+    <result property="seniorRating" column="senior_rating" jdbcType="INTEGER" />
+    <result property="warnScale" column="warn_scale" jdbcType="DECIMAL" />
+    <result property="tenor" column="tenor" jdbcType="INTEGER" />
+    <result property="rate" column="rate" jdbcType="DECIMAL" />
+    <result property="assetsCount" column="assetsCount" jdbcType="INTEGER" />
+    <result property="packageAmount" column="packageAmount" jdbcType="DECIMAL" />
+    <result property="debtorNames" column="debtorNames" jdbcType="VARCHAR" />
+    <result property="warnStatus" column="warn_status" jdbcType="VARCHAR" />
+    <result property="setupDate" column="setup_date" jdbcType="VARCHAR" />
+    <result property="editDate" column="edit_date" jdbcType="VARCHAR" />
+    <result property="status" column="status" jdbcType="VARCHAR" />
+    <result property="assetType" column="asset_type" jdbcType="VARCHAR" />
+    <result property="isHot" column="is_hot" jdbcType="VARCHAR" />
+    <result property="id" column="id" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 查询未到兑付状态且基础资产规模小于预警规模的资产包列表-->
+  <select id="queryAssetPackageList" resultMap="assetsPackageMap" >
+        select * from (select a.id,a.name,
+              a.short_name,
+              a.scale,
+              p.asset_mgr,
+              p.issue_date,
+              p.setup_date,
+              p.set_trench,
+              p.senior_percent,
+              p.senior_rating,
+              p.warn_scale,
+              p.tenor,
+              p.rate,
+              (select count(*) from pe_accounts_receivable ar where ar.aid = a.id) as assetsCount,
+              ifnull((select sum(bill_balance) from pe_accounts_receivable ar where ar.aid = a.id),0) as packageAmount,
+              (select group_concat(distinct debtor_name) from pe_accounts_receivable ar where ar.aid = a.id) as debtorNames
+            from assets a,pe_abs_asset p where a.id = p.aid and p.asset_provider = 1 and a.status != 6 and a.status != 7 and (a.warn_status = 0 or a.warn_status = 1)) m
+    where m.warn_scale > m.packageAmount
+  </select>
+
+  <!-- 查询某个资产的基础资产金额-->
+  <select id="queryAssetBaseAmount" resultMap="assetsPackageMap" parameterType="java.lang.Integer" >
+    select a.id,a.name,
+              a.short_name,
+              p.warn_scale,
+              (select count(*) from pe_accounts_receivable ar where ar.aid = a.id) as assetsCount,
+              ifnull((select sum(bill_amount) from pe_accounts_receivable ar where ar.aid = a.id),0) as packageAmount,
+              (select group_concat(distinct debtor_name) from pe_accounts_receivable ar where ar.aid = a.id) as debtorNames
+            from assets a,pe_abs_asset p where a.id = p.aid and p.asset_provider = 1 and (a.warn_status = 0 or a.warn_status = 1)
+     and a.id = #{aid}
+  </select>
+
+  <!-- 资产包预警状态修改为正常(资产包中匹配的基础资产规模大于等于预警规模)-->
+  <update id="normalAssetPackage" parameterType="java.lang.Integer" >
+    update assets set warn_status = 0 where id = #{aid}
+  </update>
+
+  <!-- 资产包预警状态修改为2兑付-->
+  <update id="expiredAssetPackage" parameterType="java.lang.Integer" >
+    update assets set warn_status = 2 where id in (select aid from pe_abs_asset where expired_date &lt;= now())
+  </update>
+</mapper>

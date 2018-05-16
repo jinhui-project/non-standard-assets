@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinhui.mapper.menus.MenusMapper" >
+
+<resultMap id="Menus" type="com.jinhui.model.Menus" >
+<result column="id"  property="id"/> 
+<result column="pid"  property="pid"/> 
+<result column="name"  property="name"/> 
+<result column="language"  property="language"/> 
+<result column="icon"  property="icon"/> 
+<result column="slug"  property="slug"/> 
+<result column="url"  property="url"/> 
+<result column="description"  property="description"/> 
+<result column="sort"  property="sort"/> 
+<result column="status"  property="status"/> 
+<result column="created_at"  property="createdAt"/> 
+<result column="updated_at"  property="updatedAt"/> 
+	
+</resultMap>
+
+<!-- menus table all fields -->
+<sql id="Base_Column_List" >
+	 t.id,t.pid,t.name,t.language,t.icon,t.slug,t.url,t.description,t.sort,t.status,t.created_at,t.updated_at
+</sql>
+
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+<where>
+	<if test="id != null  ">
+		 and t.id=#{id}
+	</if>
+	<if test="pid != null  ">
+		 and t.pid=#{pid}
+	</if>
+	<if test="name != null  and name != '' ">
+		 and t.name=#{name}
+	</if>
+	<if test="language != null  and language != '' ">
+		 and t.language=#{language}
+	</if>
+	<if test="icon != null  and icon != '' ">
+		 and t.icon=#{icon}
+	</if>
+	<if test="slug != null  and slug != '' ">
+		 and t.slug=#{slug}
+	</if>
+	<if test="url != null  and url != '' ">
+		 and t.url=#{url}
+	</if>
+	<if test="description != null  and description != '' ">
+		 and t.description=#{description}
+	</if>
+	<if test="sort != null  ">
+		 and t.sort=#{sort}
+	</if>
+	<if test="status != null  ">
+		 and t.status=#{status}
+	</if>
+	<if test="createdAt != null  ">
+		 and t.created_at=#{createdAt}
+	</if>
+	<if test="updatedAt != null  ">
+		 and t.updated_at=#{updatedAt}
+	</if>
+
+</where>
+</sql>
+   
+
+<!-- 插入记录 [说明：如果要返回当前对象，需要如下配置：<insert id="addVo" parameterType="Object" useGeneratedKeys="true" keyProperty="id">] -->
+<insert id="addMenus" parameterType="com.jinhui.model.Menus" >
+  insert into menus(id,pid,name,language,icon,slug,url,description,sort,status,created_at,updated_at)
+ values(#{id},#{pid},#{name},#{language},#{icon},#{slug},#{url},#{description},#{sort},#{status},#{createdAt},#{updatedAt})
+</insert>
+
+
+
+<!-- 删除记录 -->
+<delete id="delIdMenus" parameterType="com.jinhui.model.Menus">
+	delete 	 from menus where id = #{id}
+</delete>
+
+
+<!-- 根据id，修改记录-->  
+<!--  <update id="modVo" parameterType="Object" > -->
+<!--   update menus set pid=#{pid},name=#{name},language=#{language},icon=#{icon},slug=#{slug},url=#{url},description=#{description},sort=#{sort},status=#{status},created_at=#{createdAt},updated_at=#{updatedAt} where id=#{id} -->
+<!--  </update> -->
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateNotNullMenus" parameterType="com.jinhui.model.Menus" >
+	update menus set 
+	<trim  suffixOverrides="," >
+	<if test="pid != null  ">
+		pid=#{pid},
+	</if>
+	<if test="name != null  and name != '' ">
+		name=#{name},
+	</if>
+	<if test="language != null  and language != '' ">
+		language=#{language},
+	</if>
+	<if test="icon != null  and icon != '' ">
+		icon=#{icon},
+	</if>
+	<if test="slug != null  and slug != '' ">
+		slug=#{slug},
+	</if>
+	<if test="url != null  and url != '' ">
+		url=#{url},
+	</if>
+	<if test="description != null  and description != '' ">
+		description=#{description},
+	</if>
+	<if test="sort != null  ">
+		sort=#{sort},
+	</if>
+	<if test="status != null  ">
+		status=#{status},
+	</if>
+	<if test="createdAt != null  ">
+		created_at=#{createdAt},
+	</if>
+	<if test="updatedAt != null  ">
+		updated_at=#{updatedAt},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+
+ 
+<!-- 根据id查询 菜单表 -->
+<select id="queryByIdMenus"  resultMap="Menus" parameterType="com.jinhui.model.Menus">
+	select <include refid="Base_Column_List" /> 
+	 from menus t where t.id = #{id}
+</select>
+
+
+
+
+<!-- 查询菜单表列表 -->
+<select id="queryByListMenus" resultMap="Menus"  parameterType="com.jinhui.model.Menus">
+	select 
+	<include refid="Base_Column_List"/>
+	from menus t 
+	<include refid="Example_Where_Clause"/>
+</select>
+
+
+<select id="queryByPidListMenus" resultMap="Menus"  parameterType="java.lang.Long">
+	select 
+	<include refid="Base_Column_List"/>
+	from menus t 
+	where t.pid in (#{id})
+</select>
+
+</mapper>

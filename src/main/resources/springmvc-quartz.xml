@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd 
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd"
+	default-autowire="default">
+	<!-- 定时任务 -->
+	<bean id="productJob" class="com.jinhui.quartz.ProductQuartz" />
+	<bean id="ABSAssetsQuartz" class="com.jinhui.quartz.ABSAssetsQuartz" />
+	<!-- 产品起息日当天自动将产品状态更新为“收益中” -->
+	<bean id="statusToBenifit"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="productJob" />
+		<property name="targetMethod" value="statusToBenifit" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="statusToBenifitTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="statusToBenifit" />
+		<property name="cronExpression" value="0 0 4 * * ?" /><!-- 每天4点 -->
+	</bean>
+	<!-- 产品到期日当天自动将产品状态更新为“已兑付” -->
+	<bean id="statusToAlreadyHonor"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="productJob" />
+		<property name="targetMethod" value="statusToAlreadyHonor" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="statusToAlreadyHonorTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="statusToAlreadyHonor" />
+		<property name="cronExpression" value="0 0 5 * * ?" /><!-- 每天5点 -->
+	</bean>
+	<!-- 查询“开发销售”状态的产品，用于“强制结束产品”定时任务 -->
+	<bean id="statusToSaleOver"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="productJob" />
+		<property name="targetMethod" value="statusToSaleOver" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="statusToSaleOverTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="statusToSaleOver" />
+		<property name="cronExpression" value="0 0 15 * * ?" /><!-- 每天15点 -->
+	</bean>
+
+	<!-- 回款 -->
+	<bean id="backPayment"
+		  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="ABSAssetsQuartz" />
+		<property name="targetMethod" value="backPayment" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="backPaymentTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="backPayment" />
+		<property name="cronExpression" value="0 0 23 * * ?" /><!-- 每天23点 -->
+	</bean>
+
+	<!-- 替换已回款的基础资产(应收账款) -->
+	<bean id="replace"
+		  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="ABSAssetsQuartz" />
+		<property name="targetMethod" value="replaceBaseAssets" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="replaceTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="replace" />
+		<property name="cronExpression" value="0 30 23 * * ?" /><!-- 每天23:30点 -->
+	</bean>
+
+	<!-- 准备到期 -->
+	<bean id="readyToExpire"
+		  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="ABSAssetsQuartz" />
+		<property name="targetMethod" value="readyToExpire" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="readyToExpireTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="readyToExpire" />
+		<property name="cronExpression" value="0 0 1 * * ?" /><!-- 每天1点 -->
+	</bean>
+
+	<bean lazy-init="false"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="statusToBenifitTrigger" />
+				<ref bean="statusToAlreadyHonorTrigger" />
+				<ref bean="statusToSaleOverTrigger" />
+				<ref bean="backPaymentTrigger" />
+				<ref bean="replaceTrigger" />
+				<ref bean="readyToExpireTrigger" />
+			</list>
+		</property>
+	</bean>
+</beans>

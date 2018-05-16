@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.products.ProductsMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.Products" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="asset_id" property="assetId" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="publish_name" property="publishName" jdbcType="VARCHAR" />
+    <result column="short_name" property="shortName" jdbcType="VARCHAR" />
+    <result column="product_type" property="productType" jdbcType="VARCHAR" />
+    <result column="risk_level" property="riskLevel" jdbcType="INTEGER" />
+    <result column="is_protected" property="isProtected" jdbcType="INTEGER" />
+    <result column="scale" property="scale" jdbcType="DECIMAL" />
+    <result column="surplus_scale" property="surplusScale" jdbcType="DECIMAL" />
+    <result column="term" property="term" jdbcType="INTEGER" />
+    <result column="term_type" property="termType" jdbcType="INTEGER" />
+    <result column="term_day" property="termDay" jdbcType="INTEGER" />
+    <result column="annualized_day" property="annualizedDay" jdbcType="INTEGER" />
+    <result column="begin_amount" property="beginAmount" jdbcType="INTEGER" />
+    <result column="increase_amount" property="increaseAmount" jdbcType="INTEGER" />
+    <result column="buyer_limits" property="buyerLimits" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="is_hot" property="isHot" jdbcType="INTEGER" />
+    <result column="sales_model" property="salesModel" jdbcType="INTEGER" />
+    <result column="begin_sale_date" property="beginSaleDate" jdbcType="INTEGER" />
+    <result column="end_sale_date" property="endSaleDate" jdbcType="INTEGER" />
+    <result column="begin_income_date" property="beginIncomeDate" jdbcType="INTEGER" />
+    <result column="expired_date" property="expiredDate" jdbcType="INTEGER" />
+    <result column="income_type" property="incomeType" jdbcType="INTEGER" />
+    <result column="fixed_ratio" property="fixedRatio" jdbcType="DECIMAL" />
+    <result column="float_ratio" property="floatRatio" jdbcType="DECIMAL" />
+    <result column="income_way" property="incomeWay" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="record_keeping" property="recordKeeping" jdbcType="INTEGER" />
+    <result column="record_keeping_name" property="recordKeepingName" jdbcType="VARCHAR" />
+    <result column="record_keeping_short_name" property="recordKeepingShortName" jdbcType="VARCHAR" />
+    <result column="creator_id" property="creatorId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="editor_id" property="editorId" jdbcType="INTEGER" />
+    <result column="editor_time" property="editorTime" jdbcType="VARCHAR" />
+    <result column="is_published" property="isPublished" jdbcType="INTEGER" />
+    <result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+    <result column="publish_time" property="publishTime" jdbcType="VARCHAR" />
+    <result column="broker_id" property="brokerId" jdbcType="INTEGER" />
+    <result column="broker_time" property="brokerTime" jdbcType="VARCHAR" />
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR" />
+    <result column="server_time" property="serverTime" jdbcType="VARCHAR" />
+    <result column="asset_short_name" property="assetShortName" jdbcType="VARCHAR" />
+    <result column="scale_pro" property="scalePro" jdbcType="VARCHAR" />
+    <result column="is_collect" property="isCollect" jdbcType="INTEGER" />
+    <result column="gid" property="gid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    distinct p.id, p.asset_id,a.short_name as asset_short_name, p.code, p.name, p.short_name, p.product_type, p.risk_level, p.is_protected, p.scale, 
+    p.surplus_scale, p.term, p.term_type, p.annualized_day, p.begin_amount, p.increase_amount, p.buyer_limits, 
+    p.status, p.sales_model, from_unixtime(p.begin_sale_date,'%Y-%m-%d %H:%i:%s') as begin_sale_date, from_unixtime(p.end_sale_date,'%Y-%m-%d %H:%i:%s') as end_sale_date, 
+    from_unixtime(p.begin_income_date,'%Y-%m-%d %H:%i:%s') as begin_income_date, from_unixtime(p.expired_date,'%Y-%m-%d %H:%i:%s') as expired_date, 
+    p.income_type, p.fixed_ratio, p.float_ratio, p.income_way, p.description, p.record_keeping,o.name as record_keeping_name,o.short_name as record_keeping_short_name, p.creator_id, 
+    from_unixtime(p.create_time,'%Y-%m-%d %H:%i:%s') as create_time, p.editor_id, from_unixtime(p.editor_time,'%Y-%m-%d %H:%i:%s') as editor_time, p.is_published, p.publisher_id, 
+    from_unixtime(p.publish_time,'%Y-%m-%d %H:%i:%s') as publish_time, p.broker_id, from_unixtime(p.broker_time,'%Y-%m-%d %H:%i:%s') as broker_time, from_unixtime(p.record_time,'%Y-%m-%d %H:%i:%s') as record_time,
+    from_unixtime(unix_timestamp(now()),'%Y-%m-%d %H:%i:%s') as server_time,format((select sum(s.deal_shares) from sales s where s.product_id = #{id})/p.scale,2) as scale_pro,if(f.feed_type is null,0,1) as is_collect
+  </sql>
+  <sql id="product_List">
+    distinct p.id,p.code,ao.name as publish_name,o.name as record_keeping_name,o.short_name as record_keeping_short_name,p.short_name,p.product_type,p.status,from_unixtime(p.begin_income_date,'%Y-%m-%d %H:%i:%s') as begin_income_date,
+    from_unixtime(p.expired_date,'%Y-%m-%d %H:%i:%s') as expired_date,p.risk_level,p.scale,p.term,p.term_type, p.begin_amount,from_unixtime(p.begin_sale_date,'%Y-%m-%d %H:%i:%s') as begin_sale_date,
+    from_unixtime(p.end_sale_date,'%Y-%m-%d %H:%i:%s') as end_sale_date,from_unixtime(p.editor_time,'%Y-%m-%d %H:%i:%s') as editor_time,p.income_type,p.fixed_ratio 
+    from products p 
+    left join organization o on p.record_keeping = o.id 
+    left join (select a.id,a.belong_gid,orn.name from assets a, organization orn where a.belong_gid = orn.id) ao on ao.id=p.asset_id
+  </sql>
+  <sql id="product_List_quartz">
+   p.id,p.code,p.short_name,p.product_type,p.status,p.is_hot,from_unixtime(p.begin_income_date,'%Y-%m-%d %H:%i:%s') as begin_income_date,from_unixtime(p.expired_date,'%Y-%m-%d %H:%i:%s') as expired_date,p.risk_level,p.scale,p.term,p.term_type,
+   p.begin_amount,from_unixtime(p.begin_sale_date,'%Y-%m-%d %H:%i:%s') as begin_sale_date,from_unixtime(p.end_sale_date,'%Y-%m-%d %H:%i:%s') as end_sale_date,p.income_type,p.income_way,p.fixed_ratio,from_unixtime(p.editor_time,'%Y-%m-%d %H:%i:%s') as editor_time
+   ,from_unixtime(p.create_time,'%Y-%m-%d %H:%i:%s') as create_time
+  </sql>
+  <sql id="product_special_List">
+   p.id,p.code,p.short_name,o.name as record_keeping_name,o.short_name as record_keeping_short_name,p.product_type,p.status,p.is_hot,from_unixtime(p.begin_income_date,'%Y-%m-%d %H:%i:%s') as begin_income_date,from_unixtime(p.expired_date,'%Y-%m-%d %H:%i:%s') as expired_date,p.risk_level,p.scale,p.term,p.term_type,
+   p.begin_amount,from_unixtime(p.begin_sale_date,'%Y-%m-%d %H:%i:%s') as begin_sale_date,from_unixtime(p.end_sale_date,'%Y-%m-%d %H:%i:%s') as end_sale_date,p.income_type,p.income_way,p.fixed_ratio,from_unixtime(p.editor_time,'%Y-%m-%d %H:%i:%s') as editor_time
+   ,from_unixtime(p.create_time,'%Y-%m-%d %H:%i:%s') as create_time
+  </sql>
+  <!-- 根据产品ID查产品信息 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from products p 
+    left join assets a on p.asset_id = a.id
+    left join organization o on p.record_keeping = o.id
+    left join collection f on p.id = f.asset_id and f.feed_type = 3 and f.gid = #{gid}
+    where p.id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 分页查询我的工作台-产品列表(备案机构方) -->
+  <select id="getRecordProductList" resultMap="BaseResultMap" >
+    select 
+    <include refid="product_List" />
+    where p.record_keeping =#{orgId} and p.is_published = 1 and p.status not in (5,6,7)
+    order by editor_time desc
+  </select>
+  <!-- 分页查询我的工作台-产品列表(资金方_我关注的) -->
+  <select id="getFeedBackProductList" resultMap="BaseResultMap" >
+    select 
+    <include refid="product_List" />
+    left join sale_feedbacks f on f.asset_id = p.id
+    where f.gid =#{orgId} and f.feed_type = 1 and p.is_published = 1 and p.status not in (5,6,7)
+    order by editor_time desc
+  </select>
+  <!-- 分页查询我的工作台-产品列表(资金方_我销售的) -->
+  <select id="getSaleProductList" resultMap="BaseResultMap" >
+    select 
+    <include refid="product_List" />
+    left join sales s on p.id = s.product_id
+    where s.belong_gid =#{orgId} and p.is_published = 1 and p.status not in (5,6,7)
+    order by editor_time desc
+  </select>
+  <!-- 分页查询我的工作台-产品列表(资产方) -->
+  <select id="getPropertyProductList" resultMap="BaseResultMap" >
+    select 
+    <include refid="product_List" />
+    where ao.belong_gid = #{orgId} and p.is_published = 1 and p.status not in (5,6,7)
+    order by editor_time desc
+  </select>
+  <!-- 我的收藏夹-收藏的产品 -->
+  <select id="getCollectProducts" resultMap="BaseResultMap" >
+    select 
+    <include refid="product_List" />
+    left join collection f on f.asset_id = p.id
+    where f.gid =#{orgId} and f.feed_type = 3 and p.is_published = 1 and p.status not in (5,6,7)
+    order by editor_time desc
+  </select>
+  <!-- 分页查询产品专场所有产品 -->
+  <select id="getAllProductList" resultMap="BaseResultMap" >
+    select 
+    <include refid="product_special_List" />
+    from products p
+    left join organization o on p.record_keeping = o.id
+    where p.is_published = 1  and p.status not in (5,6,7)
+    <if test="status != null" >
+       and p.status = #{status}
+    </if>
+    <if test="termDay != null and termDay == 0" >
+       and p.term_day  &lt; 180 and p.term &gt; 0 
+    </if>
+    <if test="termDay != null and termDay == 1" >
+       and p.term_day  &lt;= 360 and p.term &gt;= 180 
+    </if>
+    <if test="termDay != null and termDay == 2" >
+       and p.term_day &gt; 360 
+    </if>
+    <if test="beginAmount != null and beginAmount == 0" >
+       and (p.begin_amount &lt; #{beginAmount} or p.begin_amount in (9,10,11,12))
+    </if>
+    <if test="beginAmount != null and beginAmount == 1" >
+       and p.begin_amount &lt; 2 and p.begin_amount &gt;= 0
+    </if>
+    <if test="beginAmount != null and beginAmount == 2" >
+       and p.begin_amount &lt; 4 and p.begin_amount &gt;= 2
+    </if>
+    <if test="beginAmount != null and beginAmount == 3" >
+       and p.begin_amount &lt; 6 and p.begin_amount &gt;= 4
+    </if>
+    <if test="beginAmount != null and beginAmount == 4" >
+       and p.begin_amount &gt;= 6 and p.begin_amount not in (9,10,11,12)
+    </if>
+    <if test="incomeWay != null" >
+       and p.income_way = #{incomeWay}
+    </if>
+    <if test="yieldRateBegin != null" >
+       and p.fixed_ratio &gt;= ${yieldRateBegin}
+    </if>
+    <if test="yieldRateEnd != null and  yieldRateBegin != yieldRateEnd" >
+       and p.fixed_ratio &lt; ${yieldRateEnd}
+    </if>
+    <if test="yieldRateEnd != null and  yieldRateBegin == yieldRateEnd" >
+       and p.fixed_ratio &lt;= ${yieldRateEnd}
+    </if>
+    order by p.is_hot desc,p.create_time desc
+  </select>
+  <!-- 查询“销售结束”状态的产品，用于“收益中”的定时任务 -->
+  <select id="getProductsForIncomeQuartz" resultMap="BaseResultMap" >
+    select 
+    <include refid="product_List_quartz" />
+    from products p
+    where p.status = 2 and p.is_published = 1
+  </select>
+  <!-- 查询“收益中”状态的产品，用于“已兑付”的定时任务 -->
+  <select id="getProductsForOverQuartz" resultMap="BaseResultMap" >
+    select 
+    <include refid="product_List_quartz" />
+    from products p
+    where p.status = 3 and p.is_published = 1
+  </select>
+  <!-- 查询“开发销售”状态的产品，用于“强制结束产品”定时任务 -->
+  <select id="getProductsForOpenQuartz" resultMap="BaseResultMap" >
+    select 
+    <include refid="product_List_quartz" />
+    from products p
+    where p.status = 1 and p.is_published = 1
+  </select>
+  <!--  查询资产生成的产品列表 -->
+  <select id="getProductsByAssetId" resultMap="BaseResultMap" >
+    select 
+    <include refid="product_List_quartz" />
+    from products p
+    where p.asset_id = #{assetId} and p.is_published = 1 and p.status not in (5,6,7)
+  </select>
+  <delete id="deleteByPrimaryKey">
+    update products 
+    set is_published = #{isPublished,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <!-- 删除产品 -->
+  <delete id="deleteProduct">
+    update products 
+    set is_published = 0
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jinhui.model.Products" >
+    insert into products (id, asset_id, code, 
+      name, short_name, product_type, 
+      risk_level, is_protected, scale, 
+      surplus_scale, term, term_type
+      annualized_day, begin_amount, increase_amount, 
+      buyer_limits, status, sales_model, 
+      begin_sale_date, end_sale_date, begin_income_date, 
+      expired_date, income_type, fixed_ratio, 
+      float_ratio, income_way, description, 
+      record_keeping, creator_id, create_time, 
+      editor_id, editor_time, is_published, 
+      publisher_id, publish_time, broker_id, 
+      broker_time, record_time)
+    values (#{id,jdbcType=INTEGER}, #{assetId,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR}, #{productType,jdbcType=VARCHAR}, 
+      #{riskLevel,jdbcType=INTEGER}, #{isProtected,jdbcType=INTEGER}, #{scale,jdbcType=DECIMAL}, 
+      #{surplusScale,jdbcType=DECIMAL}, #{term,jdbcType=INTEGER}, #{termType,jdbcType=BIT}
+      #{annualizedDay,jdbcType=INTEGER}, #{beginAmount,jdbcType=INTEGER}, #{increaseAmount,jdbcType=INTEGER}, 
+      #{buyerLimits,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{salesModel,jdbcType=INTEGER}, 
+      #{beginSaleDate,jdbcType=INTEGER}, #{endSaleDate,jdbcType=INTEGER}, #{beginIncomeDate,jdbcType=INTEGER}, 
+      #{expiredDate,jdbcType=INTEGER}, #{incomeType,jdbcType=INTEGER}, #{fixedRatio,jdbcType=DECIMAL}, 
+      #{floatRatio,jdbcType=DECIMAL}, #{incomeWay,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{recordKeeping,jdbcType=INTEGER}, #{creatorId,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER}, 
+      #{editorId,jdbcType=INTEGER}, #{editorTime,jdbcType=INTEGER}, #{isPublished,jdbcType=INTEGER}, 
+      #{publisherId,jdbcType=INTEGER}, #{publishTime,jdbcType=INTEGER}, #{brokerId,jdbcType=INTEGER}, 
+      #{brokerTime,jdbcType=INTEGER}, #{recordTime,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinhui.model.Products" >
+    insert into products
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="assetId != null" >
+        asset_id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="shortName != null" >
+        short_name,
+      </if>
+      <if test="productType != null" >
+        product_type,
+      </if>
+      <if test="riskLevel != null" >
+        risk_level,
+      </if>
+      <if test="isProtected != null" >
+        is_protected,
+      </if>
+      <if test="scale != null" >
+        scale,
+      </if>
+      <if test="scale != null" >
+        surplus_scale,
+      </if>
+      <if test="term != null" >
+        term,
+      </if>
+      <if test="termType != null" >
+        term_type,
+      </if>
+      <if test="term != null and termType != null" >
+        term_day,
+      </if>
+      <if test="annualizedDay != null" >
+        annualized_day,
+      </if>
+      <if test="beginAmount != null" >
+        begin_amount,
+      </if>
+      <if test="increaseAmount != null" >
+        increase_amount,
+      </if>
+      <if test="buyerLimits != null" >
+        buyer_limits,
+      </if>
+      <if test="1==1" >
+        status,
+      </if>
+      <if test="salesModel != null" >
+        sales_model,
+      </if>
+      <if test="beginSaleDate != null" >
+        begin_sale_date,
+      </if>
+      <if test="endSaleDate != null" >
+        end_sale_date,
+      </if>
+      <if test="beginIncomeDate != null" >
+        begin_income_date,
+      </if>
+      <if test="expiredDate != null" >
+        expired_date,
+      </if>
+      <if test="incomeType != null" >
+        income_type,
+      </if>
+      <if test="fixedRatio != null" >
+        fixed_ratio,
+      </if>
+      <if test="floatRatio != null" >
+        float_ratio,
+      </if>
+      <if test="incomeWay != null" >
+        income_way,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="recordKeeping != null" >
+        record_keeping,
+      </if>
+      <if test="creatorId != null" >
+        creator_id,
+      </if>
+      <if test="1==1" >
+        create_time,
+      </if>
+      <if test="editorId != null" >
+        editor_id,
+      </if>
+      <if test="1==1" >
+        editor_time,
+      </if>
+      <if test="1==1" >
+        is_published,
+      </if>
+      <if test="publisherId != null" >
+        publisher_id,
+      </if>
+      <if test="publishTime != null" >
+        publish_time,
+      </if>
+      <if test="brokerId != null" >
+        broker_id,
+      </if>
+      <if test="brokerTime != null" >
+        broker_time,
+      </if>
+      <if test="recordTime != null" >
+        record_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="assetId != null" >
+        #{assetId,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null" >
+        #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        #{productType,jdbcType=VARCHAR},
+      </if>
+      <if test="riskLevel != null" >
+        #{riskLevel,jdbcType=INTEGER},
+      </if>
+      <if test="isProtected != null" >
+        #{isProtected,jdbcType=INTEGER},
+      </if>
+      <if test="scale != null" >
+        #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="scale != null" >
+        #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="term != null" >
+        #{term,jdbcType=INTEGER},
+      </if>
+      <if test="termType != null" >
+        #{termType,jdbcType=INTEGER},
+      </if>
+      <if test="term != null and termType != null" >
+         case 
+		 when term_type= 1
+		 then term
+		 when term_type= 2
+		 then term * 30
+		 when term_type= 3
+		 then term * 365
+		 end,
+      </if>
+      <if test="annualizedDay != null" >
+        #{annualizedDay,jdbcType=INTEGER},
+      </if>
+      <if test="beginAmount != null" >
+        #{beginAmount,jdbcType=INTEGER},
+      </if>
+      <if test="increaseAmount != null" >
+        #{increaseAmount,jdbcType=INTEGER},
+      </if>
+      <if test="buyerLimits != null" >
+        #{buyerLimits,jdbcType=INTEGER},
+      </if>
+      <if test="1==1" >
+        0,
+      </if>
+      <if test="salesModel != null" >
+        #{salesModel,jdbcType=INTEGER},
+      </if>
+      <if test="beginSaleDate != null" >
+        UNIX_TIMESTAMP(#{beginSaleDate,jdbcType=INTEGER}),
+      </if>
+      <if test="endSaleDate != null" >
+        UNIX_TIMESTAMP(#{endSaleDate,jdbcType=INTEGER}),
+      </if>
+      <if test="beginIncomeDate != null" >
+        UNIX_TIMESTAMP(#{beginIncomeDate,jdbcType=INTEGER}),
+      </if>
+      <if test="expiredDate != null" >
+        UNIX_TIMESTAMP(#{expiredDate,jdbcType=INTEGER}),
+      </if>
+      <if test="incomeType != null" >
+        #{incomeType,jdbcType=INTEGER},
+      </if>
+      <if test="fixedRatio != null" >
+        #{fixedRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="floatRatio != null" >
+        #{floatRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeWay != null" >
+        #{incomeWay,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="recordKeeping != null" >
+        #{recordKeeping,jdbcType=INTEGER},
+      </if>
+      <if test="creatorId != null" >
+        #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="1==1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+      <if test="editorId != null" >
+        #{editorId,jdbcType=INTEGER},
+      </if>
+      <if test="1==1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+      <if test="1==1" >
+        1,
+      </if>
+      <if test="publisherId != null" >
+        #{publisherId,jdbcType=INTEGER},
+      </if>
+      <if test="publishTime != null" >
+        UNIX_TIMESTAMP(#{publishTime,jdbcType=INTEGER}),
+      </if>
+      <if test="brokerId != null" >
+        #{brokerId,jdbcType=INTEGER},
+      </if>
+      <if test="brokerTime != null" >
+        UNIX_TIMESTAMP(#{brokerTime,jdbcType=INTEGER}),
+      </if>
+      <if test="recordTime != null" >
+        UNIX_TIMESTAMP(#{recordTime,jdbcType=INTEGER}),
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinhui.model.Products" >
+    update products
+    <set >
+      <if test="assetId != null" >
+        asset_id = #{assetId,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null" >
+        short_name = #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        product_type = #{productType,jdbcType=VARCHAR},
+      </if>
+      <if test="riskLevel != null" >
+        risk_level = #{riskLevel,jdbcType=INTEGER},
+      </if>
+      <if test="isProtected != null" >
+        is_protected = #{isProtected,jdbcType=INTEGER},
+      </if>
+      <if test="scale != null" >
+        scale = #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="surplusScale != null" >
+        surplus_scale = #{surplusScale,jdbcType=DECIMAL},
+      </if>
+      <if test="term != null" >
+        term = #{term,jdbcType=INTEGER},
+      </if>
+      <if test="termType != null" >
+        term_type = #{termType,jdbcType=BIT},
+      </if>
+      <if test="term != null and termType != null" >
+        term_day = 
+         case 
+		 when term_type= 1
+		 then term
+		 when term_type= 2
+		 then term * 30
+		 when term_type= 3
+		 then term * 365
+		 end,
+      </if>
+      <if test="annualizedDay != null" >
+        annualized_day = #{annualizedDay,jdbcType=INTEGER},
+      </if>
+      <if test="beginAmount != null" >
+        begin_amount = #{beginAmount,jdbcType=INTEGER},
+      </if>
+      <if test="increaseAmount != null" >
+        increase_amount = #{increaseAmount,jdbcType=INTEGER},
+      </if>
+      <if test="buyerLimits != null" >
+        buyer_limits = #{buyerLimits,jdbcType=INTEGER},
+      </if>
+      <if test="1==1" >
+        status = 0,
+      </if>
+      <if test="salesModel != null" >
+        sales_model = #{salesModel,jdbcType=INTEGER},
+      </if>
+      <if test="beginSaleDate != null" >
+        begin_sale_date = UNIX_TIMESTAMP(#{beginSaleDate,jdbcType=INTEGER}),
+      </if>
+      <if test="endSaleDate != null" >
+        end_sale_date = UNIX_TIMESTAMP(#{endSaleDate,jdbcType=INTEGER}),
+      </if>
+      <if test="beginIncomeDate != null" >
+        begin_income_date = UNIX_TIMESTAMP(#{beginIncomeDate,jdbcType=INTEGER}),
+      </if>
+      <if test="expiredDate != null" >
+        expired_date = UNIX_TIMESTAMP(#{expiredDate,jdbcType=INTEGER}),
+      </if>
+      <if test="incomeType != null" >
+        income_type = #{incomeType,jdbcType=INTEGER},
+      </if>
+      <if test="fixedRatio != null" >
+        fixed_ratio = #{fixedRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="floatRatio != null" >
+        float_ratio = #{floatRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeWay != null" >
+        income_way = #{incomeWay,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="recordKeeping != null" >
+        record_keeping = #{recordKeeping,jdbcType=INTEGER},
+      </if>
+      <if test="editorId != null" >
+        editor_id = #{editorId,jdbcType=INTEGER},
+      </if>
+      <if test="1==1" >
+        editor_time = UNIX_TIMESTAMP(now()),
+      </if>
+      <if test="isPublished != null" >
+        is_published = #{isPublished,jdbcType=INTEGER},
+      </if>
+      <if test="publisherId != null" >
+        publisher_id = #{publisherId,jdbcType=INTEGER},
+      </if>
+      <if test="publishTime != null" >
+        publish_time = #{publishTime},
+      </if>
+      <if test="brokerId != null" >
+        broker_id = #{brokerId,jdbcType=INTEGER},
+      </if>
+      <if test="brokerTime != null" >
+        broker_time = UNIX_TIMESTAMP(#{brokerTime}),
+      </if>
+      <if test="recordTime != null" >
+        record_time = UNIX_TIMESTAMP(#{recordTime,jdbcType=INTEGER}),
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinhui.model.Products" >
+    update products
+    set asset_id = #{assetId,jdbcType=INTEGER},
+      code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      short_name = #{shortName,jdbcType=VARCHAR},
+      product_type = #{productType,jdbcType=VARCHAR},
+      risk_level = #{riskLevel,jdbcType=INTEGER},
+      is_protected = #{isProtected,jdbcType=INTEGER},
+      scale = #{scale,jdbcType=DECIMAL},
+      surplus_scale = #{surplusScale,jdbcType=DECIMAL},
+      term = #{term,jdbcType=INTEGER},
+      term_type = #{termType,jdbcType=BIT},
+      annualized_day = #{annualizedDay,jdbcType=INTEGER},
+      begin_amount = #{beginAmount,jdbcType=INTEGER},
+      increase_amount = #{increaseAmount,jdbcType=INTEGER},
+      buyer_limits = #{buyerLimits,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      sales_model = #{salesModel,jdbcType=INTEGER},
+      begin_sale_date = #{beginSaleDate,jdbcType=INTEGER},
+      end_sale_date = #{endSaleDate,jdbcType=INTEGER},
+      begin_income_date = #{beginIncomeDate,jdbcType=INTEGER},
+      expired_date = #{expiredDate,jdbcType=INTEGER},
+      income_type = #{incomeType,jdbcType=INTEGER},
+      fixed_ratio = #{fixedRatio,jdbcType=DECIMAL},
+      float_ratio = #{floatRatio,jdbcType=DECIMAL},
+      income_way = #{incomeWay,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      record_keeping = #{recordKeeping,jdbcType=INTEGER},
+      creator_id = #{creatorId,jdbcType=INTEGER},
+      create_time = #{createTime},
+      editor_id = #{editorId,jdbcType=INTEGER},
+      editor_time = #{editorTime},
+      is_published = #{isPublished,jdbcType=INTEGER},
+      publisher_id = #{publisherId,jdbcType=INTEGER},
+      publish_time = #{publishTime},
+      broker_id = #{brokerId,jdbcType=INTEGER},
+      broker_time = #{brokerTime},
+      record_time = #{recordTime,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 定时任务修改产品状态 -->
+  <update id="updateProductStatusForQuartz" parameterType="com.jinhui.model.Products" >
+      update products p set p.status = #{status} where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinhui.mapper.organization.OrganizationMapper" >
+
+	<resultMap id="Organization" type="com.jinhui.model.Organization" >
+	<result column="id"  property="id"/> 
+	<result column="fid"  property="fid"/> 
+	<result column="name"  property="name"/> 
+	<result column="short_name"  property="shortName"/> 
+	<result column="power"  property="power"/> 
+	<result column="is_super"  property="isSuper"/> 
+	<result column="is_limits"  property="isLimits"/> 
+	<result column="server_type"  property="serverType"/> 
+	<result column="record_type"  property="recordType"/> 
+	<result column="assets_type"  property="assetsType"/> 
+	<result column="fund_type"  property="fundType"/>
+	<result column="other_type"  property="otherType"/>
+	<result column="interest"  property="interest"/> 
+	<result column="legal_person"  property="legalPerson"/> 
+	<result column="regit_fund"  property="regitFund"/> 
+	<result column="home_page"  property="homePage"/> 
+	<result column="credit_code"  property="creditCode"/> 
+	<result column="busi_licence"  property="busiLicence"/> 
+	<result column="certificate"  property="certificate"/>
+	<result column="plat_buss_report"  property="platBussReport"/> 
+	<result column="address"  property="address"/> 
+	<result column="contact"  property="contact"/> 
+	<result column="tel"  property="tel"/> 
+	<result column="mobile"  property="mobile"/> 
+	<result column="email"  property="email"/> 
+	<result column="referee_id"  property="refereeId"/> 
+	<result column="referee_num"  property="refereeNum"/> 
+	<result column="creator_id"  property="creatorId"/> 
+	<result column="create_time"  property="createTime"/> 
+	<result column="editor_id"  property="editorId"/> 
+	<result column="editor_time"  property="editorTime"/> 
+	<result column="audit_status"  property="auditStatus"/> 
+	
+</resultMap>
+
+<!-- organization table all fields -->
+<sql id="Base_Column_List" >
+	 t.id,t.fid,t.name,t.short_name,t.power,t.is_super,t.is_limits,t.server_type,t.record_type,t.assets_type,t.fund_type,t.other_type,t.interest,t.legal_person,t.regit_fund,t.home_page,t.credit_code,t.busi_licence,t.certificate,t.plat_buss_report,t.address,t.contact,t.tel,t.mobile,t.email,t.referee_id,t.referee_num,t.creator_id,t.create_time,t.editor_id,t.editor_time,t.audit_status
+</sql>
+
+
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+	 <where>
+		 <if test="name != null  and name != '' ">
+				and t.name like   CONCAT('%',#{name},'%' )   
+		 </if>
+		 <if test="serverType != null  ">
+				and t.server_type =   #{serverType}
+		 </if>
+		 <if test="recordType != null  ">
+				and t.record_type =   #{recordType}
+		 </if>
+		 <if test="assetsType != null  ">
+				and t.assets_type =   #{assetsType}
+		 </if>
+		 <if test="fundType != null  ">
+				and fund_type =   #{fundType}
+		 </if>
+		 <if test="otherType != null  ">
+			 and t.other_type =   #{otherType}
+		 </if>
+		
+		 <if test="creatStartTime != null  ">
+				 <![CDATA[and t.create_time >= #{creatStartTime} ]]>	
+		 </if>
+		 <if test="creatEndTime != null  ">
+				 <![CDATA[ and t.create_time <= #{creatEndTime}]]>	
+		 </if>
+		 
+		 
+	 </where>
+
+</sql>   
+
+<!-- 插入记录 [说明：如果要返回当前对象，需要如下配置：<insert id="addVo" parameterType="Object" useGeneratedKeys="true" keyProperty="id">] -->
+<insert id="insert" parameterType="com.jinhui.model.Organization" >
+  insert into organization(fid,name,short_name,power,is_super,is_limits,server_type,record_type,assets_type,fund_type,other_type,interest,legal_person,regit_fund,home_page,credit_code,busi_licence,certificate,address,contact,tel,mobile,email,referee_id,referee_num,creator_id,create_time,editor_id,editor_time,audit_status)
+ values(
+			 #{record.fid},
+			 #{record.name},
+			 #{record.shortName},
+			 #{record.power},
+			 #{record.isSuper},
+			 #{record.isLimits},
+			 #{record.serverType},
+			 #{record.recordType},
+			 #{record.assetsType},
+			 #{record.fundType},
+			 #{record.otherType},
+			 #{record.interest},
+			 #{record.legalPerson},
+			 #{record.regitFund},
+			 #{record.homePage},
+			 #{record.creditCode},
+			 #{record.busiLicence},
+			 #{record.certificate},
+			 #{record.address},
+			 #{record.contact},
+			 #{record.tel},
+			 #{record.mobile},
+			 #{record.email},
+			 #{record.refereeId},
+			 #{record.refereeNum},
+			 #{record.creatorId},
+			 #{record.createTime},
+			 #{record.editorId},
+			 #{record.editorTime},
+			 #{record.auditStatus})
+</insert>
+
+
+
+<!-- 删除记录 -->
+<!-- <delete id="delId" parameterType="Object"> -->
+<!-- 	delete 	 from organization where id = #{id} -->
+<!-- </delete> -->
+
+
+<!-- 根据id，修改记录-->  
+<!--  <update id="modVo" parameterType="com.jinhui.model.Organization" > -->
+<!--   update organization set fid=#{fid},name=#{name},short_name=#{shortName},power=#{power},is_super=#{isSuper},is_limits=#{isLimits},server_type=#{serverType},record_type=#{recordType},assets_type=#{assetsType},fund_type=#{fundType},interest=#{interest},legal_person=#{legalPerson},regit_fund=#{regitFund},home_page=#{homePage},credit_code=#{creditCode},busi_licence=#{busiLicence},certificate=#{certificate},address=#{address},contact=#{contact},tel=#{tel},mobile=#{mobile},email=#{email},referee_id=#{refereeId},referee_num=#{refereeNum},creator_id=#{creatorId},create_time=#{createTime},editor_id=#{editorId},editor_time=#{editorTime},audit_status=#{auditStatus} where id=#{id} -->
+<!--  </update> -->
+ <!-- 修改记录，只修改只不为空的字段 -->
+<!-- <update id="modVoNotNull" parameterType="Object" > -->
+<!-- 	update organization set  -->
+<!-- 	<trim  suffixOverrides="," > -->
+<!-- 	<if test="fid != null  "> -->
+<!-- 		fid=#{fid}, -->
+<!-- 	</if> -->
+<!-- 	<if test="name != null  and name != '' "> -->
+<!-- 		name=#{name}, -->
+<!-- 	</if> -->
+<!-- 	<if test="shortName != null  and shortName != '' "> -->
+<!-- 		short_name=#{shortName}, -->
+<!-- 	</if> -->
+<!-- 	<if test="power != null  and power != '' "> -->
+<!-- 		power=#{power}, -->
+<!-- 	</if> -->
+<!-- 	<if test="isSuper != null  "> -->
+<!-- 		is_super=#{isSuper}, -->
+<!-- 	</if> -->
+<!-- 	<if test="isLimits != null  "> -->
+<!-- 		is_limits=#{isLimits}, -->
+<!-- 	</if> -->
+<!-- 	<if test="serverType != null  "> -->
+<!-- 		server_type=#{serverType}, -->
+<!-- 	</if> -->
+<!-- 	<if test="recordType != null  "> -->
+<!-- 		record_type=#{recordType}, -->
+<!-- 	</if> -->
+<!-- 	<if test="assetsType != null  "> -->
+<!-- 		assets_type=#{assetsType}, -->
+<!-- 	</if> -->
+<!-- 	<if test="fundType != null  "> -->
+<!-- 		fund_type=#{fundType}, -->
+<!-- 	</if> -->
+<!-- 	<if test="interest != null  and interest != '' "> -->
+<!-- 		interest=#{interest}, -->
+<!-- 	</if> -->
+<!-- 	<if test="legalPerson != null  and legalPerson != '' "> -->
+<!-- 		legal_person=#{legalPerson}, -->
+<!-- 	</if> -->
+<!-- 	<if test="regitFund != null  and regitFund != '' "> -->
+<!-- 		regit_fund=#{regitFund}, -->
+<!-- 	</if> -->
+<!-- 	<if test="homePage != null  and homePage != '' "> -->
+<!-- 		home_page=#{homePage}, -->
+<!-- 	</if> -->
+<!-- 	<if test="creditCode != null  and creditCode != '' "> -->
+<!-- 		credit_code=#{creditCode}, -->
+<!-- 	</if> -->
+<!-- 	<if test="busiLicence != null  and busiLicence != '' "> -->
+<!-- 		busi_licence=#{busiLicence}, -->
+<!-- 	</if> -->
+<!-- 	<if test="certificate != null  and certificate != '' "> -->
+<!-- 		certificate=#{certificate}, -->
+<!-- 	</if> -->
+<!-- 	<if test="address != null  and address != '' "> -->
+<!-- 		address=#{address}, -->
+<!-- 	</if> -->
+<!-- 	<if test="contact != null  and contact != '' "> -->
+<!-- 		contact=#{contact}, -->
+<!-- 	</if> -->
+<!-- 	<if test="tel != null  and tel != '' "> -->
+<!-- 		tel=#{tel}, -->
+<!-- 	</if> -->
+<!-- 	<if test="mobile != null  and mobile != '' "> -->
+<!-- 		mobile=#{mobile}, -->
+<!-- 	</if> -->
+<!-- 	<if test="email != null  and email != '' "> -->
+<!-- 		email=#{email}, -->
+<!-- 	</if> -->
+<!-- 	<if test="refereeId != null  and refereeId != '' "> -->
+<!-- 		referee_id=#{refereeId}, -->
+<!-- 	</if> -->
+<!-- 	<if test="refereeNum != null  "> -->
+<!-- 		referee_num=#{refereeNum}, -->
+<!-- 	</if> -->
+<!-- 	<if test="creatorId != null  "> -->
+<!-- 		creator_id=#{creatorId}, -->
+<!-- 	</if> -->
+<!-- 	<if test="createTime != null  "> -->
+<!-- 		create_time=#{createTime}, -->
+<!-- 	</if> -->
+<!-- 	<if test="editorId != null  "> -->
+<!-- 		editor_id=#{editorId}, -->
+<!-- 	</if> -->
+<!-- 	<if test="editorTime != null  "> -->
+<!-- 		editor_time=#{editorTime}, -->
+<!-- 	</if> -->
+<!-- 	<if test="auditStatus != null  "> -->
+<!-- 		audit_status=#{auditStatus}, -->
+<!-- 	</if> -->
+<!-- 	</trim> where id=#{id} -->
+<!-- </update> -->
+
+
+ 
+<!--机构信息表 列表 -->
+<!-- <select id="findVo"  resultMap="Organization" parameterType="Object"> -->
+<!-- 	select <include refid="Base_Column_List" />  -->
+<!-- 	 from organization t where t.id = #{id} -->
+<!-- </select> -->
+
+<!-- 机构信息表 列表总数-->
+<select id="queryOrganizationCount" resultType="java.lang.Integer"  parameterType="com.jinhui.model.Organization">
+	select count(1) from organization t <include refid="Example_Where_Clause"/>
+
+</select>
+
+<!-- 分页查询机构信息表列表 -->
+<select id="queryOrganizationPage" resultMap="Organization"  parameterType="com.jinhui.model.Organization">
+	select 
+	<include refid="Base_Column_List"/>
+	from organization t 
+	
+	<include refid="Example_Where_Clause"/>
+	order by t.create_time desc limit #{offset},#{limit}
+
+</select>
+
+<!-- 根据id查询  查询机构信息表 -->
+<select id="queryOrganizationDetail" resultMap="Organization"  parameterType="java.lang.Integer">
+	select 
+	<include refid="Base_Column_List"/>
+	from organization t  where t.id = #{id}
+
+</select>
+
+
+<!-- 查询机构信息表列表 -->
+<select id="queryOrganizationAll" resultMap="Organization"  parameterType="com.jinhui.model.Organization">
+	select 
+	<include refid="Base_Column_List"/>
+	from organization t 
+	
+	<include refid="Example_Where_Clause"/>
+	order by t.create_time desc 
+
+</select>
+
+
+
+
+
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateNotNullOrganization" parameterType="com.jinhui.model.Organization" >
+	update organization set 
+	<trim  suffixOverrides="," >
+	<if test="fid != null  ">
+		fid=#{fid},
+	</if>
+	<if test="name != null  and name != '' ">
+		name=#{name},
+	</if>
+	<if test="shortName != null  and shortName != '' ">
+		short_name=#{shortName},
+	</if>
+	<if test="power != null  and power != '' ">
+		power=#{power},
+	</if>
+	<if test="isSuper != null  ">
+		is_super=#{isSuper},
+	</if>
+	<if test="isLimits != null  ">
+		is_limits=#{isLimits},
+	</if>
+	<if test="serverType != null  ">
+		server_type=#{serverType},
+	</if>
+	<if test="recordType != null  ">
+		record_type=#{recordType},
+	</if>
+	<if test="assetsType != null  ">
+		assets_type=#{assetsType},
+	</if>
+	<if test="fundType != null  ">
+		fund_type=#{fundType},
+	</if>
+	<if test="otherType != null  ">
+		other_type=#{otherType},
+	</if>
+
+	<if test="interest != null  and interest != '' ">
+		interest=#{interest},
+	</if>
+	<if test="legalPerson != null  and legalPerson != '' ">
+		legal_person=#{legalPerson},
+	</if>
+	<if test="regitFund != null  and regitFund != '' ">
+		regit_fund=#{regitFund},
+	</if>
+	<if test="homePage != null  and homePage != '' ">
+		home_page=#{homePage},
+	</if>
+	<if test="creditCode != null  and creditCode != '' ">
+		credit_code=#{creditCode},
+	</if>
+	<if test="busiLicence != null  and busiLicence != '' ">
+		busi_licence=#{busiLicence},
+	</if>
+	<if test="certificate != null  and certificate != '' ">
+		certificate=#{certificate},
+	</if>
+	<if test="address != null  and address != '' ">
+		address=#{address},
+	</if>
+	<if test="contact != null  and contact != '' ">
+		contact=#{contact},
+	</if>
+	<if test="tel != null  and tel != '' ">
+		tel=#{tel},
+	</if>
+	<if test="mobile != null  and mobile != '' ">
+		mobile=#{mobile},
+	</if>
+	<if test="email != null  and email != '' ">
+		email=#{email},
+	</if>
+	<if test="refereeId != null  and refereeId != '' ">
+		referee_id=#{refereeId},
+	</if>
+	<if test="refereeNum != null  ">
+		referee_num=#{refereeNum},
+	</if>
+	<if test="creatorId != null  ">
+		creator_id=#{creatorId},
+	</if>
+	<if test="createTime != null  ">
+		create_time=#{createTime},
+	</if>
+	<if test="editorId != null  ">
+		editor_id=#{editorId},
+	</if>
+	<if test="editorTime != null  ">
+		editor_time=#{editorTime},
+	</if>
+	<if test="auditStatus != null  ">
+		audit_status=#{auditStatus},
+	</if>
+	</trim> where id=#{id}
+</update>
+</mapper>

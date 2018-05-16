@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.abs.PeBackpaymentRecordAllMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.abs.PeBackpaymentRecordAll" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="file_id" property="fileId" jdbcType="VARCHAR" />
+    <result column="receivable_debtor" property="receivableDebtor" jdbcType="VARCHAR" />
+    <result column="original_holder" property="originalHolder" jdbcType="VARCHAR" />
+    <result column="trade_timestamp" property="tradeTimestamp" jdbcType="VARCHAR" />
+    <result column="trade_time" property="tradeTime" jdbcType="DATE" />
+    <result column="backpay_amount" property="backpayAmount" jdbcType="DECIMAL" />
+    <result column="backpay_balance" property="backpayBalance" jdbcType="DECIMAL" />
+    <result column="payer_account" property="payerAccount" jdbcType="VARCHAR" />
+    <result column="payer_name" property="payerName" jdbcType="VARCHAR" />
+    <result column="tade_bank_name" property="tadeBankName" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="is_exception" property="isException" jdbcType="CHAR" />
+    <result column="exception_desc" property="exceptionDesc" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    id, file_name, file_id, receivable_debtor, original_holder, trade_timestamp, trade_time, 
+    backpay_amount, backpay_balance, payer_account, payer_name, tade_bank_name, remark, 
+    is_exception, exception_desc, creator, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from pe_backpayment_record_all
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    delete from pe_backpayment_record_all
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jinhui.model.abs.PeBackpaymentRecordAll" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    insert into pe_backpayment_record_all (id, file_name, file_id, 
+      receivable_debtor, original_holder, trade_timestamp, 
+      trade_time, backpay_amount, backpay_balance, 
+      payer_account, payer_name, tade_bank_name, 
+      remark, is_exception, exception_desc, 
+      creator, create_time)
+    values (#{id,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, #{fileId,jdbcType=VARCHAR}, 
+      #{receivableDebtor,jdbcType=VARCHAR}, #{originalHolder,jdbcType=VARCHAR}, #{tradeTimestamp,jdbcType=VARCHAR}, 
+      #{tradeTime,jdbcType=DATE}, #{backpayAmount,jdbcType=DECIMAL}, #{backpayBalance,jdbcType=DECIMAL}, 
+      #{payerAccount,jdbcType=VARCHAR}, #{payerName,jdbcType=VARCHAR}, #{tadeBankName,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{isException,jdbcType=CHAR}, #{exceptionDesc,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinhui.model.abs.PeBackpaymentRecordAll" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    insert into pe_backpayment_record_all
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+      <if test="fileId != null" >
+        file_id,
+      </if>
+      <if test="receivableDebtor != null" >
+        receivable_debtor,
+      </if>
+      <if test="originalHolder != null" >
+        original_holder,
+      </if>
+      <if test="tradeTimestamp != null" >
+        trade_timestamp,
+      </if>
+      <if test="tradeTime != null" >
+        trade_time,
+      </if>
+      <if test="backpayAmount != null" >
+        backpay_amount,
+      </if>
+      <if test="backpayBalance != null" >
+        backpay_balance,
+      </if>
+      <if test="payerAccount != null" >
+        payer_account,
+      </if>
+      <if test="payerName != null" >
+        payer_name,
+      </if>
+      <if test="tadeBankName != null" >
+        tade_bank_name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="isException != null" >
+        is_exception,
+      </if>
+      <if test="exceptionDesc != null" >
+        exception_desc,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileId != null" >
+        #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="receivableDebtor != null" >
+        #{receivableDebtor,jdbcType=VARCHAR},
+      </if>
+      <if test="originalHolder != null" >
+        #{originalHolder,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeTimestamp != null" >
+        #{tradeTimestamp,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeTime != null" >
+        #{tradeTime,jdbcType=DATE},
+      </if>
+      <if test="backpayAmount != null" >
+        #{backpayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="backpayBalance != null" >
+        #{backpayBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="payerAccount != null" >
+        #{payerAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="payerName != null" >
+        #{payerName,jdbcType=VARCHAR},
+      </if>
+      <if test="tadeBankName != null" >
+        #{tadeBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isException != null" >
+        #{isException,jdbcType=CHAR},
+      </if>
+      <if test="exceptionDesc != null" >
+        #{exceptionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinhui.model.abs.PeBackpaymentRecordAll" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    update pe_backpayment_record_all
+    <set >
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileId != null" >
+        file_id = #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="receivableDebtor != null" >
+        receivable_debtor = #{receivableDebtor,jdbcType=VARCHAR},
+      </if>
+      <if test="originalHolder != null" >
+        original_holder = #{originalHolder,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeTimestamp != null" >
+        trade_timestamp = #{tradeTimestamp,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeTime != null" >
+        trade_time = #{tradeTime,jdbcType=DATE},
+      </if>
+      <if test="backpayAmount != null" >
+        backpay_amount = #{backpayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="backpayBalance != null" >
+        backpay_balance = #{backpayBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="payerAccount != null" >
+        payer_account = #{payerAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="payerName != null" >
+        payer_name = #{payerName,jdbcType=VARCHAR},
+      </if>
+      <if test="tadeBankName != null" >
+        tade_bank_name = #{tadeBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isException != null" >
+        is_exception = #{isException,jdbcType=CHAR},
+      </if>
+      <if test="exceptionDesc != null" >
+        exception_desc = #{exceptionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinhui.model.abs.PeBackpaymentRecordAll" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    update pe_backpayment_record_all
+    set file_name = #{fileName,jdbcType=VARCHAR},
+      file_id = #{fileId,jdbcType=VARCHAR},
+      receivable_debtor = #{receivableDebtor,jdbcType=VARCHAR},
+      original_holder = #{originalHolder,jdbcType=VARCHAR},
+      trade_timestamp = #{tradeTimestamp,jdbcType=VARCHAR},
+      trade_time = #{tradeTime,jdbcType=DATE},
+      backpay_amount = #{backpayAmount,jdbcType=DECIMAL},
+      backpay_balance = #{backpayBalance,jdbcType=DECIMAL},
+      payer_account = #{payerAccount,jdbcType=VARCHAR},
+      payer_name = #{payerName,jdbcType=VARCHAR},
+      tade_bank_name = #{tadeBankName,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      is_exception = #{isException,jdbcType=CHAR},
+      exception_desc = #{exceptionDesc,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.abs.PeAccountsReceivableMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.abs.PeAccountsReceivable" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="aid" property="aid" jdbcType="INTEGER" />
+    <result column="debtor_name" property="debtorName" jdbcType="VARCHAR" />
+    <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+    <result column="custormer_number" property="custormerNumber" jdbcType="VARCHAR" />
+    <result column="original_holder" property="originalHolder" jdbcType="VARCHAR" />
+    <result column="invoiced_amount" property="invoicedAmount" jdbcType="DECIMAL" />
+    <result column="bill_amount" property="billAmount" jdbcType="DECIMAL" />
+    <result column="bill_balance" property="billBalance" jdbcType="DECIMAL" />
+    <result column="invoice_no" property="invoiceNo" jdbcType="VARCHAR" />
+    <result column="invoice_code" property="invoiceCode" jdbcType="VARCHAR" />
+    <result column="invoiced_date" property="invoicedDate" jdbcType="DATE" />
+    <result column="returned_date" property="returnedDate" jdbcType="DATE" />
+    <result column="receivable_period" property="receivablePeriod" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="arrival_date" property="arrivalDate" jdbcType="DATE" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="warn_status" property="warnStatus" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, aid, debtor_name, customer_name, custormer_number, original_holder, invoiced_amount,
+    bill_amount, bill_balance, invoice_no, invoice_code, invoiced_date, returned_date, 
+    receivable_period, project_name, arrival_date, status
+  </sql>
+
+  <sql id="search_List" >
+    p.id, p.aid, p.debtor_name, p.customer_name, p.custormer_number, p.original_holder, p.invoiced_amount,
+    p.bill_amount, p.bill_balance, p.invoice_no, p.invoice_code, p.invoiced_date, p.returned_date,
+    p.receivable_period, p.project_name, p.arrival_date, p.status,a.warn_status
+  </sql>
+
+  <select id="selectByQueryParam" resultMap="BaseResultMap"  >
+
+    select
+    <include refid="Base_Column_List" />
+    from pe_accounts_receivable
+    where
+    original_holder = #{originalHolder}
+    <if test="debtorName != null" >
+      and debtor_name = #{debtorName}
+    </if>
+    <if test="billBalanceStart != null" >
+      and bill_amount &gt;= #{billBalanceStart}
+    </if>
+    <if test="billBalanceEnd != null" >
+      and bill_amount &lt;= #{billBalanceEnd}
+    </if>
+    <if test="returnedDateStart != null" >
+      and returned_date &gt;= #{returnedDateStart}
+    </if>
+    <if test="returnedDateEnd != null" >
+      and returned_date &lt;= #{returnedDateEnd}
+    </if>
+    order by invoiced_date,id desc
+  </select>
+
+
+  <select id="selectByInvoiceNoAndBillAmount" resultMap="BaseResultMap"  >
+
+    select
+    <include refid="Base_Column_List" />
+    from pe_accounts_receivable
+    where invoice_no = #{invoiceNo}
+    and invoice_code=#{invoiceCode}
+    and bill_amount = #{billAmount}
+    and status in (1,2,3,5,6)
+  </select>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from pe_accounts_receivable
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    delete from pe_accounts_receivable
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jinhui.model.abs.PeAccountsReceivable" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    insert into pe_accounts_receivable (id, aid, debtor_name, 
+      customer_name, custormer_number, original_holder, 
+      invoiced_amount, bill_amount, bill_balance, 
+      invoice_no, invoice_code, invoiced_date, 
+      returned_date, receivable_period, project_name, 
+      arrival_date, status)
+    values (#{id,jdbcType=INTEGER}, #{aid,jdbcType=INTEGER}, #{debtorName,jdbcType=VARCHAR}, 
+      #{customerName,jdbcType=VARCHAR}, #{custormerNumber,jdbcType=VARCHAR}, #{originalHolder,jdbcType=VARCHAR}, 
+      #{invoicedAmount,jdbcType=DECIMAL}, #{billAmount,jdbcType=DECIMAL}, #{billBalance,jdbcType=DECIMAL}, 
+      #{invoiceNo,jdbcType=VARCHAR}, #{invoiceCode,jdbcType=VARCHAR}, #{invoicedDate,jdbcType=DATE}, 
+      #{returnedDate,jdbcType=DATE}, #{receivablePeriod,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, 
+      #{arrivalDate,jdbcType=DATE}, #{status,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinhui.model.abs.PeAccountsReceivable" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    insert into pe_accounts_receivable
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="aid != null" >
+        aid,
+      </if>
+      <if test="debtorName != null" >
+        debtor_name,
+      </if>
+      <if test="customerName != null" >
+        customer_name,
+      </if>
+      <if test="custormerNumber != null" >
+        custormer_number,
+      </if>
+      <if test="originalHolder != null" >
+        original_holder,
+      </if>
+      <if test="invoicedAmount != null" >
+        invoiced_amount,
+      </if>
+      <if test="billAmount != null" >
+        bill_amount,
+      </if>
+      <if test="billBalance != null" >
+        bill_balance,
+      </if>
+      <if test="invoiceNo != null" >
+        invoice_no,
+      </if>
+      <if test="invoiceCode != null" >
+        invoice_code,
+      </if>
+      <if test="invoicedDate != null" >
+        invoiced_date,
+      </if>
+      <if test="returnedDate != null" >
+        returned_date,
+      </if>
+      <if test="receivablePeriod != null" >
+        receivable_period,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="arrivalDate != null" >
+        arrival_date,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="aid != null" >
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="debtorName != null" >
+        #{debtorName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null" >
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="custormerNumber != null" >
+        #{custormerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="originalHolder != null" >
+        #{originalHolder,jdbcType=VARCHAR},
+      </if>
+      <if test="invoicedAmount != null" >
+        #{invoicedAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="billAmount != null" >
+        #{billAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="billBalance != null" >
+        #{billBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="invoiceNo != null" >
+        #{invoiceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceCode != null" >
+        #{invoiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invoicedDate != null" >
+        #{invoicedDate,jdbcType=DATE},
+      </if>
+      <if test="returnedDate != null" >
+        #{returnedDate,jdbcType=DATE},
+      </if>
+      <if test="receivablePeriod != null" >
+        #{receivablePeriod,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalDate != null" >
+        #{arrivalDate,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="insertList" parameterType="java.util.List" >
+
+    insert into pe_accounts_receivable (id, aid, debtor_name,
+    customer_name, custormer_number, original_holder,
+    invoiced_amount, bill_amount, bill_balance,
+    invoice_no, invoice_code, invoiced_date,
+    returned_date, project_name, arrival_date,
+    status)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      ( #{item.id,jdbcType=INTEGER}, #{item.aid,jdbcType=INTEGER}, #{item.debtorName,jdbcType=VARCHAR},
+      #{item.customerName,jdbcType=VARCHAR}, #{item.custormerNumber,jdbcType=VARCHAR}, #{item.originalHolder,jdbcType=VARCHAR},
+      #{item.invoicedAmount,jdbcType=DECIMAL}, #{item.billAmount,jdbcType=DECIMAL}, #{item.billBalance,jdbcType=DECIMAL},
+      #{item.invoiceNo,jdbcType=VARCHAR}, #{item.invoiceCode,jdbcType=VARCHAR}, #{item.invoicedDate,jdbcType=DATE},
+      #{item.returnedDate,jdbcType=DATE}, #{item.projectName,jdbcType=VARCHAR}, #{item.arrivalDate,jdbcType=DATE},
+      #{item.status,jdbcType=CHAR})
+    </foreach>
+  </insert>
+
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinhui.model.abs.PeAccountsReceivable" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    update pe_accounts_receivable
+    <set >
+      <if test="aid != null" >
+        aid = #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="debtorName != null" >
+        debtor_name = #{debtorName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null" >
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="custormerNumber != null" >
+        custormer_number = #{custormerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="originalHolder != null" >
+        original_holder = #{originalHolder,jdbcType=VARCHAR},
+      </if>
+      <if test="invoicedAmount != null" >
+        invoiced_amount = #{invoicedAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="billAmount != null" >
+        bill_amount = #{billAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="billBalance != null" >
+        bill_balance = #{billBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="invoiceNo != null" >
+        invoice_no = #{invoiceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceCode != null" >
+        invoice_code = #{invoiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invoicedDate != null" >
+        invoiced_date = #{invoicedDate,jdbcType=DATE},
+      </if>
+      <if test="returnedDate != null" >
+        returned_date = #{returnedDate,jdbcType=DATE},
+      </if>
+      <if test="receivablePeriod != null" >
+        receivable_period = #{receivablePeriod,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalDate != null" >
+        arrival_date = #{arrivalDate,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinhui.model.abs.PeAccountsReceivable" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    update pe_accounts_receivable
+    set aid = #{aid,jdbcType=INTEGER},
+      debtor_name = #{debtorName,jdbcType=VARCHAR},
+      customer_name = #{customerName,jdbcType=VARCHAR},
+      custormer_number = #{custormerNumber,jdbcType=VARCHAR},
+      original_holder = #{originalHolder,jdbcType=VARCHAR},
+      invoiced_amount = #{invoicedAmount,jdbcType=DECIMAL},
+      bill_amount = #{billAmount,jdbcType=DECIMAL},
+      bill_balance = #{billBalance,jdbcType=DECIMAL},
+      invoice_no = #{invoiceNo,jdbcType=VARCHAR},
+      invoice_code = #{invoiceCode,jdbcType=VARCHAR},
+      invoiced_date = #{invoicedDate,jdbcType=DATE},
+      returned_date = #{returnedDate,jdbcType=DATE},
+      receivable_period = #{receivablePeriod,jdbcType=INTEGER},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      arrival_date = #{arrivalDate,jdbcType=DATE},
+      status = #{status,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- 根据资产ID查询资产包中的基础资产(应收账款) -->
+  <select id="selectAssetByAids" resultMap="BaseResultMap" parameterType="java.util.List">
+    select
+    <include refid="search_List" />
+    from pe_accounts_receivable p,assets a
+    where (p.status = 1 or p.status = 3) and p.aid = a.id
+          and p.aid in <foreach collection="list" separator="," open="(" close=")" index="index" item="item">#{item.aid}</foreach>
+          and p.debtor_name in <foreach collection="list" separator="," open="(" close=")" index="index" item="item">#{item.debtorName}</foreach>
+          and p.original_holder in <foreach collection="list" separator="," open="(" close=")" index="index" item="item">#{item.originalHolder}</foreach>
+    order by a.warn_status desc,p.returned_date,p.id
+  </select>
+
+  <!--查询应收债务人的基础资产 -->
+  <select id="selectAssetByDebtor" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from pe_accounts_receivable
+    where (status = 1 or status = 3)
+    and debtor_name = #{debtorName}
+    and original_holder = #{originalHolder}
+    order by returned_date,id
+  </select>
+
+  <!-- 部分回款 -->
+  <update id="partialPayment" parameterType="com.jinhui.model.abs.PeAccountsReceivable">
+     update pe_accounts_receivable set
+            bill_balance = bill_balance - #{billBalance},
+            arrival_date = now(),
+            backpayment_id = if(backpayment_id = '',#{backpaymentID},concat_ws(',',backpayment_id,#{backpaymentID}))
+     where id = #{id}
+  </update>
+
+  <!-- 完全回款 -->
+  <update id="perfectPayment" parameterType="com.jinhui.model.abs.PeAccountsReceivable">
+      update pe_accounts_receivable set
+             bill_balance = 0,
+             status = case when status = 1 then 2 when status = 3 then 5 else status end,
+             arrival_date = now(),
+             backpayment_id = if(backpayment_id = '',#{backpaymentID},concat_ws(',',backpayment_id,#{backpaymentID}))
+      where id = #{id}
+  </update>
+
+
+
+
+
+  <!--查询应收债务人的基础资产(除了冲销状态外) -->
+  <select id="selectByOriginalExcludeWriteOff" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from pe_accounts_receivable
+    where status in (1,2,3,5,6)
+    and original_holder = #{originalHolder}
+  </select>
+
+
+
+  <!-- 查询资产包中已回款需要被替换的基础资产-->
+  <select id="selectHavePayed" resultMap="BaseResultMap" >
+    select
+    <include refid="search_List" />
+    from pe_accounts_receivable p, assets a
+    where p.aid = a.id and (p.status = 2 or p.status = 3 or p.status = 5) and p.aid is not null and a.warn_status != 2
+    order by p.returned_date,p.id
+  </select>
+
+  <!-- 查询可以用来替换的基础资产-->
+  <select id="selectCouldReplace" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from pe_accounts_receivable
+    where status = 1 and aid is null
+    order by returned_date,id
+  </select>
+
+  <!-- 被替换的基础资产-->
+  <update id="beReplaced" parameterType="java.lang.Integer">
+    update pe_accounts_receivable set aid = null where id = #{id}
+  </update>
+
+  <!-- 用来替换的基础资产-->
+  <update id="toReplace" parameterType="com.jinhui.model.abs.PeAccountsReceivable">
+    update pe_accounts_receivable set aid = #{aid} where id = #{id}
+  </update>
+
+  <!-- 逾期-->
+  <update id="overdue">
+    update pe_accounts_receivable p set p.status = 3 where id = #{id}
+  </update>
+
+  <!-- 逾期-->
+  <update id="overdueToRemove">
+    update pe_accounts_receivable p set p.aid = null where id = #{id}
+  </update>
+
+  <!-- 查询资产包中逾期的基础资产-->
+  <select id="selectOverdueBaseAssets" resultMap="BaseResultMap">
+     select <include refid="search_List" />
+    from pe_accounts_receivable p
+    left join assets a on p.aid = a.id
+    where p.returned_date &lt; now() and p.aid is not null and p.status = 1
+  </select>
+
+  <select id="selectByInvoiceNoAndInvoiceCode" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from pe_accounts_receivable
+    where invoice_no = #{invoiceNo}
+    and invoice_code = #{invoiceCode}
+    and status in (1,2,3,5,6)
+  </select>
+
+</mapper>

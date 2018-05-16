@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinhui.mapper.agreementpowertemplate.AgreementPowerTemplateMapper" >
+
+<resultMap id="AgreementPowerTemplate" type="com.jinhui.model.AgreementPowerTemplate" >
+	 <result column="gid"  property="gid"/> 
+<result column="product_type"  property="productType"/> 
+<result column="record_institutions_type"  property="recordInstitutionsType"/> 
+<result column="signing_type"  property="signingType"/> 
+<result column="money_side_type"  property="moneySideType"/> 
+<result column="asset_type"  property="assetType"/> 
+<result column="organization_type"  property="organizationType"/> 
+<result column="trustee_type"  property="trusteeType"/> 
+<result column="service_type"  property="serviceType"/> 
+<result column="other_type"  property="otherType"/> 
+	
+</resultMap>
+
+<!-- agreement_power_template table all fields -->
+<sql id="Base_Column_List" >
+	 t.gid,t.product_type,t.record_institutions_type,t.signing_type,t.money_side_type,t.asset_type,t.organization_type,t.trustee_type,t.service_type,t.other_type
+</sql>
+
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+<where>
+	<if test="gid != null  ">
+		 and t.gid=#{gid}
+	</if>
+	<if test="productType != null  and productType != '' ">
+		 and t.product_type=#{productType}
+	</if>
+	<if test="recordInstitutionsType != null and  recordInstitutionsType != '' ">
+		 and t.record_institutions_type=#{recordInstitutionsType}
+	</if>
+	<if test="signingType != null  ">
+		 and t.signing_type=#{signingType}
+	</if>
+	<if test="moneySideType != null  ">
+		 and t.money_side_type=#{moneySideType}
+	</if>
+	<if test="assetType != null  ">
+		 and t.asset_type=#{assetType}
+	</if>
+	<if test="organizationType != null  ">
+		 and t.organization_type=#{organizationType}
+	</if>
+	<if test="trusteeType != null  ">
+		 and t.trustee_type=#{trusteeType}
+	</if>
+	<if test="serviceType != null  ">
+		 and t.service_type=#{serviceType}
+	</if>
+	<if test="otherType != null  ">
+		 and t.other_type=#{otherType}
+	</if>
+
+</where>
+</sql>
+   
+
+<!-- 插入记录 [说明：如果要返回当前对象，需要如下配置：<insert id="addVo" parameterType="Object" useGeneratedKeys="true" keyProperty="id">] -->
+<insert id="addAgreementPower" parameterType="com.jinhui.model.AgreementPowerTemplate" >
+  insert into agreement_power_template(gid,product_type,record_institutions_type,signing_type,money_side_type,asset_type,organization_type,trustee_type,service_type,other_type)
+ values(#{gid},#{productType},#{recordInstitutionsType},#{signingType},#{moneySideType},#{assetType},#{organizationType},#{trusteeType},#{serviceType},#{otherType})
+</insert>
+
+
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="modNotNullAgreementPower" parameterType="com.jinhui.model.AgreementPowerTemplate" >
+	update agreement_power_template set 
+	<trim  suffixOverrides="," >
+	<if test="productType != null  and productType != '' ">
+		product_type=#{productType},
+	</if>
+	<if test="recordInstitutionsType != null and  recordInstitutionsType != ''  ">
+		record_institutions_type=#{recordInstitutionsType},
+	</if>
+	<if test="signingType != null  ">
+		signing_type=#{signingType},
+	</if>
+	<if test="moneySideType != null  ">
+		money_side_type=#{moneySideType},
+	</if>
+	<if test="assetType != null  ">
+		asset_type=#{assetType},
+	</if>
+	<if test="organizationType != null  ">
+		organization_type=#{organizationType},
+	</if>
+	<if test="trusteeType != null  ">
+		trustee_type=#{trusteeType},
+	</if>
+	<if test="serviceType != null  ">
+		service_type=#{serviceType},
+	</if>
+	<if test="otherType != null  ">
+		other_type=#{otherType},
+	</if>
+	</trim> where gid=#{gid}
+</update>
+
+
+ 
+<!-- 根据id查询 (权限)协议模板里三个分类方式和可选值表 -->
+<select id="queryAgreementPower"  resultMap="AgreementPowerTemplate" parameterType="com.jinhui.model.AgreementPowerTemplate">
+	select <include refid="Base_Column_List" /> 
+	 from agreement_power_template t where t.gid = #{gid}
+</select>
+
+
+</mapper>

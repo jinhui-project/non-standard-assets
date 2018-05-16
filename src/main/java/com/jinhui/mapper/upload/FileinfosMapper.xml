@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinhui.mapper.upload.FileinfosMapper">
+	<!-- Result Map com.jinhui.fileinfos.vo.Fileinfos -->
+	<resultMap id="Fileinfos" type="com.jinhui.model.Fileinfos">
+		<result column="id" property="id" />
+		<result column="file_path" property="filePath" />
+		<result column="file_name" property="fileName" />
+		<result column="file_type" property="fileType" />
+		<result column="upload_time" property="uploadTime" />
+		<result column="edit_time" property="editTime" />
+		<result column="type"  property="type"/> 
+		<result column="first_letter"  property="firstLetter"/> 
+	</resultMap>
+
+	<!-- fileinfos table all fields -->
+	<sql id="Base_Column_List">
+		t.id,t.file_path,t.file_name,t.file_type,t.upload_time,t.edit_time,t.type,t.first_letter
+	</sql>
+
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+<where>
+	<if test="id != null  ">
+		 and t.id=#{id}
+	</if>
+	<if test="filePath != null  and filePath != '' ">
+		 and t.file_path=#{filePath}
+	</if>
+	<if test="fileName != null  and fileName != '' ">
+		 and t.file_name like   CONCAT('%',#{fileName},'%' )   
+	</if>
+	<if test="fileType != null  and fileType != '' ">
+		 and t.file_type=#{fileType}
+	</if>
+	<if test="creatStartTime != null  ">
+			 <![CDATA[and t.upload_time>= #{creatStartTime} ]]>	
+	 </if>
+	 <if test="creatEndTime != null  ">
+			 <![CDATA[ and t.upload_time<=#{creatEndTime}]]>	
+	 </if>
+	<if test="editTime != null  ">
+		 and t.edit_time=#{editTime}
+	</if>
+	<if test="type != null  ">
+		 and t.type=#{type}
+	</if>
+
+		 
+</where>
+</sql>
+
+
+	<!-- 插入记录 [说明：如果要返回当前对象，需要如下配置：<insert id="addVo" parameterType="Object" 
+		useGeneratedKeys="true" keyProperty="id">] -->
+	<insert id="saveFileinfosInfo"   parameterType="com.jinhui.model.Fileinfos" useGeneratedKeys="true" keyProperty="record.id"  >
+		insert into
+		fileinfos(file_path,file_name,file_type,upload_time,edit_time,type,first_letter)
+		values(#{record.filePath},#{record.fileName},#{record.fileType},#{record.uploadTime},#{record.editTime},#{record.type},#{record.firstLetter})
+	</insert>
+
+<!-- 查询文件信息表列表 -->
+<select id="queryList" resultMap="Fileinfos"  parameterType="java.util.List">
+	select 
+	<include refid="Base_Column_List"/>
+	from fileinfos t where  t.id in
+				<foreach item="item" index="index" collection="list" 
+                         open="(" separator="," close=")">
+                        #{item}
+                </foreach>
+</select>
+
+<!-- 查询文件信息表实体 -->
+<select id="queryEntity" resultMap="Fileinfos"  parameterType="java.lang.Long">
+	select 
+	<include refid="Base_Column_List"/>
+	from fileinfos t where  t.id = #{id}
+</select>
+
+<!-- 删除记录 -->
+	<delete id="delId" parameterType="java.lang.Long">
+	delete from fileinfos where id = #{id}
+	</delete>
+<!-- 	分页 -->
+	<select id="queryPageList" resultMap="Fileinfos"  parameterType="com.jinhui.model.Fileinfos">
+		select 
+		<include refid="Base_Column_List"/>
+		from fileinfos t
+		<include refid="Example_Where_Clause" />
+		
+		  order by 
+		  <trim  suffixOverrides="," >
+		  <if test="fTypeOrderBy != null  and fTypeOrderBy != ''">
+				t.type ${fTypeOrderBy},
+			</if>
+			<if test="fNameOrderBy != null  and fNameOrderBy != ''">
+				t.file_name ${fNameOrderBy},
+			</if>
+		  	<if test="fDateOrderBy != null  and fDateOrderBy != ''">
+				t.upload_time ${fDateOrderBy},
+			</if>
+		  </trim> 
+		  
+		  limit #{offset},#{limit}
+	</select>
+	
+	<select id="queryPageCount"  resultType="java.lang.Integer" parameterType="com.jinhui.model.Fileinfos">
+	 select count(1) from 
+	  fileinfos t  <include refid="Example_Where_Clause" />
+	</select>
+
+
+
+
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateNotNullFileinfos"  parameterType="com.jinhui.model.Fileinfos" >
+	update fileinfos set 
+	<trim  suffixOverrides="," >
+	<if test="filePath != null  and filePath != '' ">
+		file_path=#{filePath},
+	</if>
+	<if test="fileName != null  and fileName != '' ">
+		file_name=#{fileName},
+	</if>
+	<if test="fileType != null  and fileType != '' ">
+		file_type=#{fileType},
+	</if>
+	<if test="uploadTime != null  ">
+		upload_time=#{uploadTime},
+	</if>
+	<if test="editTime != null  ">
+		edit_time=#{editTime},
+	</if>
+	<if test="type != null  ">
+		type=#{type},
+	</if>
+	<if test="firstLetter != null  and firstLetter != '' ">
+		first_letter=#{firstLetter},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+
+
+
+
+	<!-- 模版分页查询条件 -->
+<sql id="Template_Example_Where_Clause">
+<where>
+	<if test="productType != null  ">
+		 and a.product_type=#{productType}
+	</if>
+	<if test="recordInstitutionsType != null  ">
+		 and a.record_institutions_type=#{recordInstitutionsType}
+	</if>
+	<if test="signingType != null  ">
+		 and a.signing_type =#{signingType}
+	</if> 
+	
+	<if test="moneySideType != null  ">
+		and a.money_side_type=#{moneySideType}
+	</if>
+	<if test="assetType != null  ">
+		and a.asset_type=#{assetType}
+	</if>
+	<if test="organizationType != null  ">
+		and a.organization_type=#{organizationType}
+	</if>
+	<if test="trusteeType != null  ">
+		and a.trustee_type=#{trusteeType}
+	</if>
+	<if test="serviceType != null  ">
+		and a.service_type=#{serviceType}
+	</if>
+	<if test="otherType != null  ">
+		and a.other_type=#{otherType}
+	</if>
+</where>
+</sql>
+	<select id="queryTemplateFilePage" resultMap="Fileinfos"  parameterType="com.jinhui.model.Fileinfos">
+		select 
+		<include refid="Base_Column_List"/>
+		from fileinfos t
+		where t.id in 
+		(
+		 select fid  from agreement_template a
+		 <include refid="Template_Example_Where_Clause" />
+		)
+		<if test="fileName != null  and fileName != '' ">
+		 and t.file_name like   CONCAT('%',#{fileName},'%' )   
+		</if>
+		  limit #{offset},#{limit}
+	</select>
+	
+	<select id="queryTemplateFilePageCount"  resultType="java.lang.Integer" parameterType="com.jinhui.model.Fileinfos">
+	 select count(1) from 
+	  fileinfos t  where t.id in 
+		(
+		 select fid  from agreement_template a
+		 <include refid="Template_Example_Where_Clause" />
+		)
+	   <if test="fileName != null  and fileName != '' ">
+		 and t.file_name like   CONCAT('%',#{fileName},'%' )   
+	   </if>
+	</select>
+</mapper>

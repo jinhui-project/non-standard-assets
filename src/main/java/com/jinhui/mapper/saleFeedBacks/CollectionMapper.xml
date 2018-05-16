@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.saleFeedBacks.CollectionMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.Collection" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="asset_id" property="assetId" jdbcType="INTEGER" />
+    <result column="gid" property="gid" jdbcType="INTEGER" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="INTEGER" />
+    <result column="update_at" property="updateAt" jdbcType="INTEGER" />
+    <result column="feed_type" property="feedType" jdbcType="VARCHAR" />
+    <result column="short_name" property="shortName" jdbcType="VARCHAR" />
+    <result column="asset_type" property="assetType" jdbcType="INTEGER" />
+    <result column="borrower" property="borrower" jdbcType="VARCHAR" />
+    <result column="scale" property="scale" jdbcType="DECIMAL" />
+    <result column="financing_cost" property="financingCost" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, asset_id, gid, org_name, from_unixtime(create_at,'%Y-%m-%d %H:%i:%s'), from_unixtime(update_at,'%Y-%m-%d %H:%i:%s'), feed_type
+  </sql>
+   <sql id="Base_Column_List_Collection" >
+    asset_id,gid, org_name,from_unixtime(create_at,'%Y-%m-%d %H:%i:%s'), 
+    from_unixtime(update_at,'%Y-%m-%d %H:%i:%s'), feed_type,short_name,asset_type,borrower,scale,financing_cost,status
+  </sql>
+  <!-- 查询存在记录数 -->
+  <select id="countBySelective" resultType="java.lang.Integer">
+    select count(*) from collection
+    where asset_id=#{productId} and gid=#{gid} and feed_type=#{feedType}
+  </select>
+  <!-- 取消收藏 -->
+  <delete id="cancelCollect">
+    delete from collection
+    where asset_id=#{productId} and gid=#{gid} and feed_type=#{feedType}
+  </delete>
+  <select id="getCollectionAsset" resultMap="BaseResultMap" parameterType="com.jinhui.model.Assets" >
+    select 
+    <include refid="Base_Column_List" />
+    from collection
+    where asset_id = #{assetId} and gid = #{gid} and feed_type = #{feedType}
+  </select>
+  <select id="getCollectionAssetList" resultMap="BaseResultMap" parameterType="com.jinhui.model.Assets" >
+    select 
+    <include refid="Base_Column_List_Collection" />    
+    from collection s
+    left join assets a on a.id = s.asset_id
+    where  gid = #{gid} and feed_type = 2
+  </select>
+  <insert id="insertSelective" parameterType="com.jinhui.model.Collection" >
+    insert into collection
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="assetId != null" >
+        asset_id,
+      </if>
+      <if test="orgId != null" >
+        gid,
+      </if>
+      <if test="orgName != null" >
+        org_name,
+      </if>
+      <if test="1==1" >
+        create_at,
+      </if>
+      <if test="1==1" >
+        update_at,
+      </if>
+      <if test="feedType != null" >
+        feed_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="assetId != null" >
+        #{assetId,jdbcType=INTEGER},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="orgName != null" >
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="1==1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+      <if test="1==1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+      <if test="feedType != null" >
+        #{feedType,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd 
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd"
+	default-autowire="default">
+	<mvc:default-servlet-handler />
+	<context:annotation-config />
+	<context:component-scan base-package="com.jinhui.*" />
+
+<!-- 	<mvc:annotation-driven /> -->
+
+	<!--swagger config start-->
+	<!--<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>-->
+	<!--<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>-->
+	<!--<bean name="/applicationSwaggerConfig" class="com.jinhui.swagger.ApplicationSwaggerConfig"/>-->
+	<!--swagger config stop-->
+
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<context:property-placeholder location="classpath:mysql.properties" />
+	
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+	</bean>
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="sqlSessionFactory" name="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:com/jinhui/mapper/**/**/*Mapper.xml</value>
+			</list>
+		</property>
+		<property name="configLocation">
+			<value>classpath:mybatis-config.xml</value>
+		</property>
+		<property name="databaseIdProvider">
+			<bean class="org.apache.ibatis.mapping.VendorDatabaseIdProvider" />
+		</property>
+	</bean>
+
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.jinhui.mapper" />
+		<property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate" />
+	</bean>
+	
+
+
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<!-- the transactional semantics... -->
+		<tx:attributes>
+			<!-- all methods starting with 'get' are read-only -->
+			<tx:method name="get*" read-only="true" />
+			<!-- other methods use the default transaction settings (see below) -->
+			<tx:method name="*" rollback-for="java.lang.Exception" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="fooServiceOperation"
+			expression="execution(* com.jinhui.service.*.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="fooServiceOperation" />
+	</aop:config>
+
+	<!-- similarly, don'data forget the PlatformTransactionManager -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" />
+	<!-- jsp视图解析器 -->
+	<bean id="jspViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="2" />
+	</bean>
+	
+     <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+         <property name="defaultEncoding" value="UTF-8" />
+         <property name="maxUploadSize" value="204800000" />
+     </bean>
+     
+      <!-- 拦截器 -->  
+        <!--<mvc:interceptors>
+            &lt;!&ndash; 多个拦截器，顺序执行 &ndash;&gt;
+            <mvc:interceptor>  
+                <mvc:mapping path="/**"/>  
+		        &lt;!&ndash;拦截的url &ndash;&gt;
+		            <mvc:mapping path="/admin/**"/>
+				&lt;!&ndash; 不拦截的url &ndash;&gt;
+		            <mvc:exclude-mapping path="/admin/login"/> 
+		            <mvc:exclude-mapping path="/admin/code"/>
+		            <mvc:exclude-mapping path="/admin/sendsms"/>
+		             <mvc:exclude-mapping path="/admin/exitUser"/>
+		             <mvc:exclude-mapping path="/admin/queryFileInfoPage"/>
+		              <mvc:exclude-mapping path="/indexData/queryIndexData"/>
+		              <mvc:exclude-mapping path="/admin/ckToken"/>
+		               <mvc:exclude-mapping path="/admin/publicUploadInfo"/>
+		               <mvc:exclude-mapping path="/admin/download"/>
+		               <mvc:exclude-mapping path="/admin/registeredInfo"/>
+		               <mvc:exclude-mapping path="/admin/queryTemplateFilePage"/>
+		               <mvc:exclude-mapping path="/admin/pwdModify"/>
+		               <mvc:exclude-mapping path="/admin/sendsmsPwd"/>
+		                <mvc:exclude-mapping path="/admin/isUserInfo"/>
+		                <mvc:exclude-mapping path="/admin/msgErrorInfo"/>
+				&lt;!&ndash;不拦截的url &ndash;&gt;
+                <bean class="com.jinhui.interceptor.LoginInterceptor"></bean>  
+            </mvc:interceptor>
+            
+            &lt;!&ndash; 记录操作日志拦截器 &ndash;&gt;
+            <mvc:interceptor>  
+                <mvc:mapping path="/**"/>  
+                <bean class="com.jinhui.interceptor.OperateLogInterceptor"></bean>  
+            </mvc:interceptor>
+
+        </mvc:interceptors> -->
+        
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="${redis.pool.maxIdle}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${redis.pool.timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${redis.pool.minEvictableIdleTimeMillis}" />
+		<property name="testOnBorrow" value="${redis.pool.testOnBorrow}" />
+		<property name="maxTotal" value="${redis.pool.maxTotal}" />
+		<property name="testWhileIdle" value="${redis.pool.testWhileIdle}" />
+	</bean>
+	<bean id="jedisConnectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		p:use-pool="true" p:database="${redis.db}" p:host-name="${redis.host}"
+		p:password="${redis.password}"
+		p:port="${redis.port}" p:poolConfig-ref="jedisPoolConfig" p:timeout="${redis.timeout}" />
+	<bean id="redisStringTemplate" class="org.springframework.data.redis.core.StringRedisTemplate"
+		p:connection-factory-ref="jedisConnectionFactory" />
+
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+		p:connection-factory-ref="jedisConnectionFactory">
+		<property name="KeySerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
+		</property>
+
+	</bean>
+
+	<bean id="springContextHolder" class="com.jinhui.util.SpringContextHolder"
+		lazy-init="false" />
+
+
+
+
+
+</beans>

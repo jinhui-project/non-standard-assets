@@ -1,0 +1,710 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.assets.SupplyChainAssetMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.SupplyChainAsset" >
+    <id column="aid" property="aid" jdbcType="INTEGER" />
+    <result column="asset_type" property="assetType" jdbcType="INTEGER" />
+    <result column="borrower" property="borrower" jdbcType="VARCHAR" />
+    <result column="scale" property="scale" jdbcType="DECIMAL" />
+    <result column="tenor_type" property="tenorType" jdbcType="INTEGER" />
+    <result column="tenor" property="tenor" jdbcType="INTEGER" />
+    <result column="core_enterprise" property="coreEnterprise" jdbcType="VARCHAR" />
+    <result column="industry_chain" property="industryChain" jdbcType="VARCHAR" />
+    <result column="industry" property="industry" jdbcType="INTEGER" />
+    <result column="financing_cost" property="financingCost" jdbcType="DECIMAL" />
+    <result column="financing_type" property="financingType" jdbcType="INTEGER" />
+    <result column="major_business" property="majorBusiness" jdbcType="VARCHAR" />
+    <result column="trade_type" property="tradeType" jdbcType="VARCHAR" />
+    <result column="repayment_period" property="repaymentPeriod" jdbcType="VARCHAR" />
+    <result column="avg_ar_age" property="avgArAge" jdbcType="VARCHAR" />
+    <result column="total_asset" property="totalAsset" jdbcType="DECIMAL" />
+    <result column="total_debt" property="totalDebt" jdbcType="DECIMAL" />
+    <result column="net_asset" property="netAsset" jdbcType="DECIMAL" />
+    <result column="inventory" property="inventory" jdbcType="DECIMAL" />
+    <result column="ac_receiveable" property="acReceiveable" jdbcType="DECIMAL" />
+    <result column="prepayment" property="prepayment" jdbcType="DECIMAL" />
+    <result column="main_income" property="mainIncome" jdbcType="DECIMAL" />
+    <result column="ar_rotation_ratio" property="arRotationRatio" jdbcType="DECIMAL" />
+    <result column="inventory_ration" property="inventoryRation" jdbcType="DECIMAL" />
+    <result column="net_profit" property="netProfit" jdbcType="DECIMAL" />
+    <result column="gross_profit_ratio" property="grossProfitRatio" jdbcType="DECIMAL" />
+    <result column="trasaction_history" property="trasactionHistory" jdbcType="VARCHAR" />
+    <result column="settlement_type" property="settlementType" jdbcType="INTEGER" />
+    <result column="logistic_type" property="logisticType" jdbcType="INTEGER" />
+    <result column="lisence_needed" property="lisenceNeeded" jdbcType="VARCHAR" />
+    <result column="line_granding_policy" property="lineGrandingPolicy" jdbcType="VARCHAR" />
+    <result column="rating" property="rating" jdbcType="INTEGER" />
+    <result column="credit_enforce" property="creditEnforce" jdbcType="INTEGER" />
+    <result column="lisence" property="lisence" jdbcType="VARCHAR" />
+    <result column="org_inst_code" property="orgInstCode" jdbcType="VARCHAR" />
+    <result column="tax_reg" property="taxReg" jdbcType="VARCHAR" />
+    <result column="article" property="article" jdbcType="VARCHAR" />
+    <result column="captial_ver" property="captialVer" jdbcType="VARCHAR" />
+    <result column="feasibility" property="feasibility" jdbcType="VARCHAR" />
+    <result column="audit_report" property="auditReport" jdbcType="VARCHAR" />
+    <result column="3year_transaction" property="yearTransaction" jdbcType="VARCHAR" />
+    <result column="finance_dvalid" property="financeDvalid" jdbcType="TIMESTAMP" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="short_name" property="shortName" jdbcType="VARCHAR" /> 
+    <result column="creator_id" property="creatorId" jdbcType="INTEGER" />
+    <result column="other_file" property="otherFile" jdbcType="VARCHAR" />  
+    <result column="is_guarante" property="isGuarante" jdbcType="INTEGER" />
+    <result column="guarantor_type" property="guarantorType" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    a.creator_id,a.name,a.short_name,s.aid, s.asset_type, s.borrower, s.scale, s.tenor_type, s.tenor, s.core_enterprise, s.industry_chain, 
+    s.industry, s.financing_cost, s.financing_type, s.major_business, s.trade_type, s.repayment_period, 
+    s.avg_ar_age, s.total_asset, s.total_debt, s.net_asset, s.inventory, s.ac_receiveable, s.prepayment, 
+    s.main_income, s.ar_rotation_ratio, s.inventory_ration, s.net_profit, s.gross_profit_ratio, 
+    s.trasaction_history, s.settlement_type, s.logistic_type, s.lisence_needed, s.line_granding_policy, 
+    s.rating, s.credit_enforce, s.lisence, s.org_inst_code, s.tax_reg, s.article, s.captial_ver, s.feasibility, 
+    s.audit_report, s.3year_transaction,s.finance_dvalid,s.other_file,s.is_guarante,s.guarantor_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from supply_chain_asset
+    where aid = #{aid,jdbcType=INTEGER}
+  </select> 
+  <select id="selectByAssetId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from supply_chain_asset s
+    left join assets a on a.id = s.aid 
+    where s.aid = #{assetId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from supply_chain_asset
+    where aid = #{aid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jinhui.model.SupplyChainAsset" >
+    insert into supply_chain_asset (aid, asset_type, borrower, 
+      scale, tenor_type, tenor, 
+      core_enterprise, industry_chain, industry, 
+      financing_cost, financing_type, major_business, 
+      trade_type, repayment_period, avg_ar_age, 
+      total_asset, total_debt, net_asset, 
+      inventory, ac_receiveable, prepayment, 
+      main_income, ar_rotation_ratio, inventory_ration, 
+      net_profit, gross_profit_ratio, trasaction_history, 
+      settlement_type, logistic_type, lisence_needed, 
+      line_granding_policy, rating, credit_enforce, is_guarante, guarantor_type,
+      lisence, org_inst_code, tax_reg, 
+      article, captial_ver, feasibility, 
+      audit_report, 3year_transaction,data_expiration_date)
+    values (#{aid,jdbcType=INTEGER}, #{assetType,jdbcType=INTEGER}, #{borrower,jdbcType=VARCHAR}, 
+      #{scale,jdbcType=DECIMAL}, #{tenorType,jdbcType=INTEGER}, #{tenor,jdbcType=INTEGER}, 
+      #{coreEnterprise,jdbcType=VARCHAR}, #{industryChain,jdbcType=VARCHAR}, #{industry,jdbcType=INTEGER}, 
+      #{financingCost,jdbcType=DECIMAL}, #{financingType,jdbcType=INTEGER}, #{majorBusiness,jdbcType=VARCHAR}, 
+      #{tradeType,jdbcType=VARCHAR}, #{repaymentPeriod,jdbcType=VARCHAR}, #{avgArAge,jdbcType=VARCHAR}, 
+      #{totalAsset,jdbcType=DECIMAL}, #{totalDebt,jdbcType=DECIMAL}, #{netAsset,jdbcType=DECIMAL}, 
+      #{inventory,jdbcType=DECIMAL}, #{acReceiveable,jdbcType=DECIMAL}, #{prepayment,jdbcType=DECIMAL}, 
+      #{mainIncome,jdbcType=DECIMAL}, #{arRotationRatio,jdbcType=DECIMAL}, #{inventoryRation,jdbcType=DECIMAL}, 
+      #{netProfit,jdbcType=DECIMAL}, #{grossProfitRatio,jdbcType=DECIMAL}, #{trasactionHistory,jdbcType=VARCHAR}, 
+      #{settlementType,jdbcType=INTEGER}, #{logisticType,jdbcType=INTEGER}, #{lisenceNeeded,jdbcType=VARCHAR}, 
+      #{lineGrandingPolicy,jdbcType=VARCHAR}, #{rating,jdbcType=INTEGER}, #{creditEnforce,jdbcType=INTEGER}, #{isGuarante,jdbcType=INTEGER},#{guarantorType,jdbcType=INTEGER},
+      #{lisence,jdbcType=VARCHAR}, #{orgInstCode,jdbcType=VARCHAR}, #{taxReg,jdbcType=VARCHAR}, 
+      #{article,jdbcType=VARCHAR}, #{captialVer,jdbcType=VARCHAR}, #{feasibility,jdbcType=VARCHAR}, 
+      #{auditReport,jdbcType=VARCHAR}, #{yearTransaction,jdbcType=VARCHAR},#{dataExpierationDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinhui.model.SupplyChainAsset" >
+    insert into supply_chain_asset
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="aid != null" >
+        aid,
+      </if>
+      <if test="assetType != null" >
+        asset_type,
+      </if>
+      <if test="borrower != null" >
+        borrower,
+      </if>
+      <if test="scale != null" >
+        scale,
+      </if>
+      <if test="tenorType != null" >
+        tenor_type,
+      </if>
+      <if test="tenor != null" >
+        tenor,
+      </if>
+      <if test="coreEnterprise != null" >
+        core_enterprise,
+      </if>
+      <if test="industryChain != null" >
+        industry_chain,
+      </if>
+      <if test="industry != null" >
+        industry,
+      </if>
+      <if test="financingCost != null" >
+        financing_cost,
+      </if>
+      <if test="financingType != null" >
+        financing_type,
+      </if>
+      <if test="majorBusiness != null" >
+        major_business,
+      </if>
+      <if test="tradeType != null" >
+        trade_type,
+      </if>
+      <if test="repaymentPeriod != null" >
+        repayment_period,
+      </if>
+      <if test="avgArAge != null" >
+        avg_ar_age,
+      </if>
+      <if test="totalAsset != null" >
+        total_asset,
+      </if>
+      <if test="totalDebt != null" >
+        total_debt,
+      </if>
+      <if test="netAsset != null" >
+        net_asset,
+      </if>
+      <if test="inventory != null" >
+        inventory,
+      </if>
+      <if test="acReceiveable != null" >
+        ac_receiveable,
+      </if>
+      <if test="prepayment != null" >
+        prepayment,
+      </if>
+      <if test="mainIncome != null" >
+        main_income,
+      </if>
+      <if test="arRotationRatio != null" >
+        ar_rotation_ratio,
+      </if>
+      <if test="inventoryRation != null" >
+        inventory_ration,
+      </if>
+      <if test="netProfit != null" >
+        net_profit,
+      </if>
+      <if test="grossProfitRatio != null" >
+        gross_profit_ratio,
+      </if>
+      <if test="trasactionHistory != null" >
+        trasaction_history,
+      </if>
+      <if test="settlementType != null" >
+        settlement_type,
+      </if>
+      <if test="logisticType != null" >
+        logistic_type,
+      </if>
+      <if test="lisenceNeeded != null" >
+        lisence_needed,
+      </if>
+      <if test="lineGrandingPolicy != null" >
+        line_granding_policy,
+      </if>
+      <if test="rating != null" >
+        rating,
+      </if>
+      <if test="creditEnforce != null" >
+        credit_enforce,
+      </if>
+      <if test="isGuarante != null" >
+        is_guarante,
+      </if>
+      <if test="guarantorType != null" >
+        guarantor_type,
+      </if>
+      <if test="lisence != null" >
+        lisence,
+      </if>
+      <if test="orgInstCode != null" >
+        org_inst_code,
+      </if>
+      <if test="taxReg != null" >
+        tax_reg,
+      </if>
+      <if test="article != null" >
+        article,
+      </if>
+      <if test="captialVer != null" >
+        captial_ver,
+      </if>
+      <if test="feasibility != null" >
+        feasibility,
+      </if>
+      <if test="auditReport != null" >
+        audit_report,
+      </if>
+      <if test="yearTransaction != null" >
+        3year_transaction,
+      </if>
+      <if test="financeDvalid != null" >
+        finance_dvalid,
+      </if>
+      <if test="otherFile != null" >
+       other_file,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="aid != null" >
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="assetType != null" >
+        #{assetType,jdbcType=INTEGER},
+      </if>
+      <if test="borrower != null" >
+        #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null" >
+        #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="tenorType != null" >
+        #{tenorType,jdbcType=INTEGER},
+      </if>
+      <if test="tenor != null" >
+        #{tenor,jdbcType=INTEGER},
+      </if>
+      <if test="coreEnterprise != null" >
+        #{coreEnterprise,jdbcType=VARCHAR},
+      </if>
+      <if test="industryChain != null" >
+        #{industryChain,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null" >
+        #{industry,jdbcType=INTEGER},
+      </if>
+      <if test="financingCost != null" >
+        #{financingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="financingType != null" >
+        #{financingType,jdbcType=INTEGER},
+      </if>
+      <if test="majorBusiness != null" >
+        #{majorBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null" >
+        #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentPeriod != null" >
+        #{repaymentPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="avgArAge != null" >
+        #{avgArAge,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAsset != null" >
+        #{totalAsset,jdbcType=DECIMAL},
+      </if>
+      <if test="totalDebt != null" >
+        #{totalDebt,jdbcType=DECIMAL},
+      </if>
+      <if test="netAsset != null" >
+        #{netAsset,jdbcType=DECIMAL},
+      </if>
+      <if test="inventory != null" >
+        #{inventory,jdbcType=DECIMAL},
+      </if>
+      <if test="acReceiveable != null" >
+        #{acReceiveable,jdbcType=DECIMAL},
+      </if>
+      <if test="prepayment != null" >
+        #{prepayment,jdbcType=DECIMAL},
+      </if>
+      <if test="mainIncome != null" >
+        #{mainIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="arRotationRatio != null" >
+        #{arRotationRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="inventoryRation != null" >
+        #{inventoryRation,jdbcType=DECIMAL},
+      </if>
+      <if test="netProfit != null" >
+        #{netProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="grossProfitRatio != null" >
+        #{grossProfitRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="trasactionHistory != null" >
+        #{trasactionHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementType != null" >
+        #{settlementType,jdbcType=INTEGER},
+      </if>
+      <if test="logisticType != null" >
+        #{logisticType,jdbcType=INTEGER},
+      </if>
+      <if test="lisenceNeeded != null" >
+        #{lisenceNeeded,jdbcType=VARCHAR},
+      </if>
+      <if test="lineGrandingPolicy != null" >
+        #{lineGrandingPolicy,jdbcType=VARCHAR},
+      </if>
+      <if test="rating != null" >
+        #{rating,jdbcType=INTEGER},
+      </if>
+      <if test="creditEnforce != null" >
+        #{creditEnforce,jdbcType=INTEGER},
+      </if>
+      <if test="isGuarante != null" >
+        #{isGuarante,jdbcType=INTEGER},
+      </if>
+      <if test="guarantorType != null" >
+       #{guarantorType,jdbcType=INTEGER},
+      </if>
+      <if test="lisence != null" >
+        #{lisence,jdbcType=VARCHAR},
+      </if>
+      <if test="orgInstCode != null" >
+        #{orgInstCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taxReg != null" >
+        #{taxReg,jdbcType=VARCHAR},
+      </if>
+      <if test="article != null" >
+        #{article,jdbcType=VARCHAR},
+      </if>
+      <if test="captialVer != null" >
+        #{captialVer,jdbcType=VARCHAR},
+      </if>
+      <if test="feasibility != null" >
+        #{feasibility,jdbcType=VARCHAR},
+      </if>
+      <if test="auditReport != null" >
+        #{auditReport,jdbcType=VARCHAR},
+      </if>
+      <if test="yearTransaction != null" >
+        #{yearTransaction,jdbcType=VARCHAR},
+      </if>
+      <if test="financeDvalid != null" >
+         #{financeDvalid,jdbcType=TIMESTAMP},
+      </if>
+      <if test="otherFile != null" >
+        #{otherFile,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinhui.model.SupplyChainAsset" >
+    update supply_chain_asset
+    <set >
+      <if test="assetType != null" >
+        asset_type = #{assetType,jdbcType=INTEGER},
+      </if>
+      <if test="borrower != null" >
+        borrower = #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null" >
+        scale = #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="tenorType != null" >
+        tenor_type = #{tenorType,jdbcType=INTEGER},
+      </if>
+      <if test="tenor != null" >
+        tenor = #{tenor,jdbcType=INTEGER},
+      </if>
+      <if test="coreEnterprise != null" >
+        core_enterprise = #{coreEnterprise,jdbcType=VARCHAR},
+      </if>
+      <if test="industryChain != null" >
+        industry_chain = #{industryChain,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null" >
+        industry = #{industry,jdbcType=INTEGER},
+      </if>
+      <if test="financingCost != null" >
+        financing_cost = #{financingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="financingType != null" >
+        financing_type = #{financingType,jdbcType=INTEGER},
+      </if>
+      <if test="majorBusiness != null" >
+        major_business = #{majorBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null" >
+        trade_type = #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentPeriod != null" >
+        repayment_period = #{repaymentPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="avgArAge != null" >
+        avg_ar_age = #{avgArAge,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAsset != null" >
+        total_asset = #{totalAsset,jdbcType=DECIMAL},
+      </if>
+      <if test="totalDebt != null" >
+        total_debt = #{totalDebt,jdbcType=DECIMAL},
+      </if>
+      <if test="netAsset != null" >
+        net_asset = #{netAsset,jdbcType=DECIMAL},
+      </if>
+      <if test="inventory != null" >
+        inventory = #{inventory,jdbcType=DECIMAL},
+      </if>
+      <if test="acReceiveable != null" >
+        ac_receiveable = #{acReceiveable,jdbcType=DECIMAL},
+      </if>
+      <if test="prepayment != null" >
+        prepayment = #{prepayment,jdbcType=DECIMAL},
+      </if>
+      <if test="mainIncome != null" >
+        main_income = #{mainIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="arRotationRatio != null" >
+        ar_rotation_ratio = #{arRotationRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="inventoryRation != null" >
+        inventory_ration = #{inventoryRation,jdbcType=DECIMAL},
+      </if>
+      <if test="netProfit != null" >
+        net_profit = #{netProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="grossProfitRatio != null" >
+        gross_profit_ratio = #{grossProfitRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="trasactionHistory != null" >
+        trasaction_history = #{trasactionHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementType != null" >
+        settlement_type = #{settlementType,jdbcType=INTEGER},
+      </if>
+      <if test="logisticType != null" >
+        logistic_type = #{logisticType,jdbcType=INTEGER},
+      </if>
+      <if test="lisenceNeeded != null" >
+        lisence_needed = #{lisenceNeeded,jdbcType=VARCHAR},
+      </if>
+      <if test="lineGrandingPolicy != null" >
+        line_granding_policy = #{lineGrandingPolicy,jdbcType=VARCHAR},
+      </if>
+      <if test="rating != null" >
+        rating = #{rating,jdbcType=INTEGER},
+      </if>
+      <if test="creditEnforce != null" >
+        credit_enforce = #{creditEnforce,jdbcType=INTEGER},
+      </if>
+      <if test="isGuarante != null" >
+        is_guarante = #{isGuarante,jdbcType=INTEGER},
+      </if>
+      <if test="guarantorType != null" >
+        guarantor_type = #{guarantorType,jdbcType=INTEGER},
+      </if>
+      <if test="lisence != null" >
+        lisence = #{lisence,jdbcType=VARCHAR},
+      </if>
+      <if test="orgInstCode != null" >
+        org_inst_code = #{orgInstCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taxReg != null" >
+        tax_reg = #{taxReg,jdbcType=VARCHAR},
+      </if>
+      <if test="article != null" >
+        article = #{article,jdbcType=VARCHAR},
+      </if>
+      <if test="captialVer != null" >
+        captial_ver = #{captialVer,jdbcType=VARCHAR},
+      </if>
+      <if test="feasibility != null" >
+        feasibility = #{feasibility,jdbcType=VARCHAR},
+      </if>
+      <if test="auditReport != null" >
+        audit_report = #{auditReport,jdbcType=VARCHAR},
+      </if>
+      <if test="yearTransaction != null" >
+        3year_transaction = #{yearTransaction,jdbcType=VARCHAR},
+      </if>
+      <if test="financeDvalid != null" >
+        finance_dvalid = #{financeDvalid,jdbcType=TIMESTAMP},
+      </if>
+      <if test="otherFile != null" >
+       other_file = #{otherFile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinhui.model.SupplyChainAsset" >
+    update supply_chain_asset
+    set asset_type = #{assetType,jdbcType=INTEGER},
+      borrower = #{borrower,jdbcType=VARCHAR},
+      scale = #{scale,jdbcType=DECIMAL},
+      tenor_type = #{tenorType,jdbcType=INTEGER},
+      tenor = #{tenor,jdbcType=INTEGER},
+      core_enterprise = #{coreEnterprise,jdbcType=VARCHAR},
+      industry_chain = #{industryChain,jdbcType=VARCHAR},
+      industry = #{industry,jdbcType=INTEGER},
+      financing_cost = #{financingCost,jdbcType=DECIMAL},
+      financing_type = #{financingType,jdbcType=INTEGER},
+      major_business = #{majorBusiness,jdbcType=VARCHAR},
+      trade_type = #{tradeType,jdbcType=VARCHAR},
+      repayment_period = #{repaymentPeriod,jdbcType=VARCHAR},
+      avg_ar_age = #{avgArAge,jdbcType=VARCHAR},
+      total_asset = #{totalAsset,jdbcType=DECIMAL},
+      total_debt = #{totalDebt,jdbcType=DECIMAL},
+      net_asset = #{netAsset,jdbcType=DECIMAL},
+      inventory = #{inventory,jdbcType=DECIMAL},
+      ac_receiveable = #{acReceiveable,jdbcType=DECIMAL},
+      prepayment = #{prepayment,jdbcType=DECIMAL},
+      main_income = #{mainIncome,jdbcType=DECIMAL},
+      ar_rotation_ratio = #{arRotationRatio,jdbcType=DECIMAL},
+      inventory_ration = #{inventoryRation,jdbcType=DECIMAL},
+      net_profit = #{netProfit,jdbcType=DECIMAL},
+      gross_profit_ratio = #{grossProfitRatio,jdbcType=DECIMAL},
+      trasaction_history = #{trasactionHistory,jdbcType=VARCHAR},
+      settlement_type = #{settlementType,jdbcType=INTEGER},
+      logistic_type = #{logisticType,jdbcType=INTEGER},
+      lisence_needed = #{lisenceNeeded,jdbcType=VARCHAR},
+      line_granding_policy = #{lineGrandingPolicy,jdbcType=VARCHAR},
+      rating = #{rating,jdbcType=INTEGER},
+      credit_enforce = #{creditEnforce,jdbcType=INTEGER},
+      is_guarante = #{isGuarante,jdbcType=INTEGER},
+      guarantor_type = #{guarantorType,jdbcType=INTEGER},
+      lisence = #{lisence,jdbcType=VARCHAR},
+      org_inst_code = #{orgInstCode,jdbcType=VARCHAR},
+      tax_reg = #{taxReg,jdbcType=VARCHAR},
+      article = #{article,jdbcType=VARCHAR},
+      captial_ver = #{captialVer,jdbcType=VARCHAR},
+      feasibility = #{feasibility,jdbcType=VARCHAR},
+      audit_report = #{auditReport,jdbcType=VARCHAR},
+      3year_transaction = #{yearTransaction,jdbcType=VARCHAR},
+      data_expiration_date = #{dataExpierationDate,jdbcType=DATE}
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByAssetsidSelective" parameterType="com.jinhui.model.SupplyChainAsset" >
+    update supply_chain_asset
+    <set >
+      <if test="assetType != null" >
+        asset_type = #{assetType,jdbcType=INTEGER},
+      </if>
+      <if test="borrower != null" >
+        borrower = #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null" >
+        scale = #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="tenorType != null" >
+        tenor_type = #{tenorType,jdbcType=INTEGER},
+      </if>
+      <if test="tenor != null" >
+        tenor = #{tenor,jdbcType=INTEGER},
+      </if>
+      <if test="coreEnterprise != null" >
+        core_enterprise = #{coreEnterprise,jdbcType=VARCHAR},
+      </if>
+      <if test="industryChain != null" >
+        industry_chain = #{industryChain,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null" >
+        industry = #{industry,jdbcType=INTEGER},
+      </if>
+      <if test="financingCost != null" >
+        financing_cost = #{financingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="financingType != null" >
+        financing_type = #{financingType,jdbcType=INTEGER},
+      </if>
+      <if test="majorBusiness != null" >
+        major_business = #{majorBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null" >
+        trade_type = #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentPeriod != null" >
+        repayment_period = #{repaymentPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="avgArAge != null" >
+        avg_ar_age = #{avgArAge,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAsset != null" >
+        total_asset = #{totalAsset,jdbcType=DECIMAL},
+      </if>
+      <if test="totalDebt != null" >
+        total_debt = #{totalDebt,jdbcType=DECIMAL},
+      </if>
+      <if test="netAsset != null" >
+        net_asset = #{netAsset,jdbcType=DECIMAL},
+      </if>
+      <if test="inventory != null" >
+        inventory = #{inventory,jdbcType=DECIMAL},
+      </if>
+      <if test="acReceiveable != null" >
+        ac_receiveable = #{acReceiveable,jdbcType=DECIMAL},
+      </if>
+      <if test="prepayment != null" >
+        prepayment = #{prepayment,jdbcType=DECIMAL},
+      </if>
+      <if test="mainIncome != null" >
+        main_income = #{mainIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="arRotationRatio != null" >
+        ar_rotation_ratio = #{arRotationRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="inventoryRation != null" >
+        inventory_ration = #{inventoryRation,jdbcType=DECIMAL},
+      </if>
+      <if test="netProfit != null" >
+        net_profit = #{netProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="grossProfitRatio != null" >
+        gross_profit_ratio = #{grossProfitRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="trasactionHistory != null" >
+        trasaction_history = #{trasactionHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementType != null" >
+        settlement_type = #{settlementType,jdbcType=INTEGER},
+      </if>
+      <if test="logisticType != null" >
+        logistic_type = #{logisticType,jdbcType=INTEGER},
+      </if>
+      <if test="lisenceNeeded != null" >
+        lisence_needed = #{lisenceNeeded,jdbcType=VARCHAR},
+      </if>
+      <if test="lineGrandingPolicy != null" >
+        line_granding_policy = #{lineGrandingPolicy,jdbcType=VARCHAR},
+      </if>
+      <if test="rating != null" >
+        rating = #{rating,jdbcType=INTEGER},
+      </if>
+      <if test="creditEnforce != null" >
+        credit_enforce = #{creditEnforce,jdbcType=INTEGER},
+      </if>
+      <if test="isGuarante != null" >
+        is_guarante = #{isGuarante,jdbcType=INTEGER},
+      </if>
+      <if test="guarantorType != null" >
+        guarantor_type = #{guarantorType,jdbcType=INTEGER},
+      </if>
+      <if test="lisence != null" >
+        lisence = #{lisence,jdbcType=VARCHAR},
+      </if>
+      <if test="orgInstCode != null" >
+        org_inst_code = #{orgInstCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taxReg != null" >
+        tax_reg = #{taxReg,jdbcType=VARCHAR},
+      </if>
+      <if test="article != null" >
+        article = #{article,jdbcType=VARCHAR},
+      </if>
+      <if test="captialVer != null" >
+        captial_ver = #{captialVer,jdbcType=VARCHAR},
+      </if>
+      <if test="feasibility != null" >
+        feasibility = #{feasibility,jdbcType=VARCHAR},
+      </if>
+      <if test="auditReport != null" >
+        audit_report = #{auditReport,jdbcType=VARCHAR},
+      </if>
+      <if test="yearTransaction != null" >
+        3year_transaction = #{yearTransaction,jdbcType=VARCHAR},
+      </if>
+      <if test="financeDvalid != null" >
+        finance_dvalid = #{financeDvalid,jdbcType=TIMESTAMP},
+      </if>
+      <if test="otherFile != null" >
+       other_file = #{otherFile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+</mapper>

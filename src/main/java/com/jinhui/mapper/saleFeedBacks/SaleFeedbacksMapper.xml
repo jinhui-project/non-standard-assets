@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.saleFeedBacks.SaleFeedbacksMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.SaleFeedbacks" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="asset_id" property="assetId" jdbcType="INTEGER" />
+    <result column="contents" property="contents" jdbcType="VARCHAR" />
+    <result column="feedbacker_id" property="feedbackerId" jdbcType="INTEGER" />
+    <result column="feedbakcer_name" property="feedbackerName" jdbcType="VARCHAR" />
+    <result column="feedback_time" property="feedbackTime" jdbcType="INTEGER" />
+    <result column="gid" property="gid" jdbcType="VARCHAR" />
+    <result column="gid" property="orgId" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="sale_type" property="saleType"  jdbcType="INTEGER" />
+    <result column="is_Underwriting" property="isUnderwriting" jdbcType="BIT" />
+    <result column="pack_price" property="packPrice" jdbcType="DECIMAL" />
+    <result column="num_distribution" property="numDistribution" jdbcType="DECIMAL" />
+    <result column="commission" property="commission" jdbcType="VARCHAR" />
+    <result column="self_funk" property="selfFunk"   jdbcType="INTEGER" />
+    <result column="contact_info" property="contactInfo" jdbcType="VARCHAR" />
+    <result column="presented" property="presented" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="VARCHAR" />
+    <result column="update_at" property="updateAt" jdbcType="INTEGER" />
+    <result column="feed_type" property="feedType" jdbcType="VARCHAR" />
+    <result column="short_name" property="shortName" jdbcType="VARCHAR" />
+    <result column="asset_type" property="assetType" jdbcType="INTEGER" />
+    <result column="borrower" property="borrower" jdbcType="VARCHAR" />
+    <result column="scale" property="scale" jdbcType="DECIMAL" />
+    <result column="financing_cost" property="financingCost" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, asset_id, contents, feedbacker_id, feedback_time, gid, org_name, sale_type, is_Underwriting, 
+    pack_price, num_distribution, commission, self_funk, contact_info, presented, from_unixtime(create_at,'%Y-%m-%d %H:%i:%s'), 
+    from_unixtime(update_at,'%Y-%m-%d %H:%i:%s'), feed_type
+  </sql>
+  
+  <sql id="feed_back_List" >
+    s.id, s.asset_id, s.contents, s.feedbacker_id, u.name as feedbakcer_name,s.feedback_time, s.gid, s.org_name, s.sale_type, s.is_Underwriting, 
+    s.pack_price, s.num_distribution, s.commission, s.self_funk, s.contact_info, s.presented, from_unixtime(s.create_at,'%Y-%m-%d %H:%i:%s') as create_at, 
+    from_unixtime(s.update_at,'%Y-%m-%d %H:%i:%s') as update_at, s.feed_type
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sale_feedbacks
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 查询产品的销售意向及反馈 -->
+  <select id="getFeedbacksListByProductId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="feed_back_List" />
+    from sale_feedbacks s
+    left join users u on s.feedbacker_id = u.id
+    where s.asset_id = #{productId,jdbcType=INTEGER} and s.feed_type != 2 and s.feed_type != 3
+    <if test="gid != null" >
+        and s.gid = #{gid}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sale_feedbacks
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.jinhui.model.SaleFeedbacks" >
+    insert into sale_feedbacks (id, asset_id, contents, 
+      feedbacker_id, feedback_time, gid, 
+      org_name, sale_type, is_Underwriting, 
+      pack_price, num_distribution, commission, 
+      self_funk, contact_info, presented, 
+      create_at, update_at, feed_type
+      )
+    values (#{id,jdbcType=INTEGER}, #{assetId,jdbcType=INTEGER}, #{contents,jdbcType=VARCHAR}, 
+      #{feedbackerId,jdbcType=INTEGER}, #{feedbackTime,jdbcType=INTEGER}, #{gid,jdbcType=INTEGER}, 
+      #{orgName,jdbcType=VARCHAR}, #{saleType,jdbcType=BIT}, #{isUnderwriting,jdbcType=BIT}, 
+      #{packPrice,jdbcType=DECIMAL}, #{numDistribution,jdbcType=DECIMAL}, #{commission,jdbcType=VARCHAR}, 
+      #{selfFunk,jdbcType=BIT}, #{contactInfo,jdbcType=VARCHAR}, #{presented,jdbcType=VARCHAR}, 
+      #{createAt,jdbcType=INTEGER}, #{updateAt,jdbcType=INTEGER}, #{feedType,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinhui.model.SaleFeedbacks" >
+    insert into sale_feedbacks
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="assetId != null" >
+        asset_id,
+      </if>
+      <if test="contents != null" >
+        contents,
+      </if>
+      <if test="feedbackerId != null" >
+        feedbacker_id,
+      </if>
+      <if test="1==1" >
+        feedback_time,
+      </if>
+      <if test="orgId != null" >
+        gid,
+      </if>
+      <if test="orgName != null" >
+        org_name,
+      </if>
+      <if test="saleType != null" >
+        sale_type,
+      </if>
+      <if test="isUnderwriting != null" >
+        is_Underwriting,
+      </if>
+      <if test="packPrice != null" >
+        pack_price,
+      </if>
+      <if test="numDistribution != null" >
+        num_distribution,
+      </if>
+      <if test="commission != null" >
+        commission,
+      </if>
+      <if test="selfFunk != null" >
+        self_funk,
+      </if>
+      <if test="contactInfo != null" >
+        contact_info,
+      </if>
+      <if test="presented != null" >
+        presented,
+      </if>
+      <if test="1==1" >
+        create_at,
+      </if>
+      <if test="1==1" >
+        update_at,
+      </if>
+      <if test="feedType != null" >
+        feed_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="assetId != null" >
+        #{assetId,jdbcType=INTEGER},
+      </if>
+      <if test="contents != null" >
+        #{contents,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackerId != null" >
+        #{feedbackerId,jdbcType=INTEGER},
+      </if>
+      <if test="1==1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="orgName != null" >
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="saleType != null" >
+        #{saleType,jdbcType=INTEGER},
+      </if>
+      <if test="isUnderwriting != null" >
+        #{isUnderwriting,jdbcType=BIT},
+      </if>
+      <if test="packPrice != null" >
+        #{packPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="numDistribution != null" >
+        #{numDistribution,jdbcType=DECIMAL},
+      </if>
+      <if test="commission != null" >
+        #{commission,jdbcType=VARCHAR},
+      </if>
+      <if test="selfFunk != null" >
+        #{selfFunk,jdbcType=INTEGER},
+      </if>
+      <if test="contactInfo != null" >
+        #{contactInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="presented != null" >
+        #{presented,jdbcType=VARCHAR},
+      </if>
+      <if test="1==1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+      <if test="1==1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+      <if test="feedType != null" >
+        #{feedType,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinhui.model.SaleFeedbacks" >
+    update sale_feedbacks
+    <set >
+      <if test="assetId != null" >
+        asset_id = #{assetId,jdbcType=INTEGER},
+      </if>
+      <if test="contents != null" >
+        contents = #{contents,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackerId != null" >
+        feedbacker_id = #{feedbackerId,jdbcType=INTEGER},
+      </if>
+      <if test="feedbackTime != null" >
+        feedback_time = #{feedbackTime,jdbcType=INTEGER},
+      </if>
+      <if test="gid != null" >
+        gid = #{gid,jdbcType=INTEGER},
+      </if>
+      <if test="orgName != null" >
+        org_name = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="saleType != null" >
+        sale_type = #{saleType,jdbcType=BIT},
+      </if>
+      <if test="isUnderwriting != null" >
+        is_Underwriting = #{isUnderwriting,jdbcType=BIT},
+      </if>
+      <if test="packPrice != null" >
+        pack_price = #{packPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="numDistribution != null" >
+        num_distribution = #{numDistribution,jdbcType=DECIMAL},
+      </if>
+      <if test="commission != null" >
+        commission = #{commission,jdbcType=VARCHAR},
+      </if>
+      <if test="selfFunk != null" >
+        self_funk = #{selfFunk,jdbcType=BIT},
+      </if>
+      <if test="contactInfo != null" >
+        contact_info = #{contactInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="presented != null" >
+        presented = #{presented,jdbcType=VARCHAR},
+      </if>
+      <if test="1==1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+      <if test="feedType != null" >
+        feed_type = #{feedType,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinhui.model.SaleFeedbacks" >
+    update sale_feedbacks
+    set asset_id = #{assetId,jdbcType=INTEGER},
+      contents = #{contents,jdbcType=VARCHAR},
+      feedbacker_id = #{feedbackerId,jdbcType=INTEGER},
+      feedback_time = #{feedbackTime,jdbcType=INTEGER},
+      gid = #{gid,jdbcType=INTEGER},
+      org_name = #{orgName,jdbcType=VARCHAR},
+      sale_type = #{saleType,jdbcType=BIT},
+      is_Underwriting = #{isUnderwriting,jdbcType=BIT},
+      pack_price = #{packPrice,jdbcType=DECIMAL},
+      num_distribution = #{numDistribution,jdbcType=DECIMAL},
+      commission = #{commission,jdbcType=VARCHAR},
+      self_funk = #{selfFunk,jdbcType=BIT},
+      contact_info = #{contactInfo,jdbcType=VARCHAR},
+      presented = #{presented,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=INTEGER},
+      update_at = #{updateAt,jdbcType=INTEGER},
+      feed_type = #{feedType,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

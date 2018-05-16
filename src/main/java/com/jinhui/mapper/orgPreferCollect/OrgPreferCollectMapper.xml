@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.orgPreferCollect.OrgPreferCollectMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.OrgPreferCollect" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="organization_id" property="organizationId" jdbcType="INTEGER" />
+    <result column="buyer_num" property="buyerNum" jdbcType="TINYINT" />
+    <result column="total_trade" property="totalTrade" jdbcType="TINYINT" />
+    <result column="month_trade" property="monthTrade" jdbcType="TINYINT" />
+    <result column="three_rate" property="threeRate" jdbcType="TINYINT" />
+    <result column="six_rate" property="sixRate" jdbcType="TINYINT" />
+    <result column="twelve_rate" property="twelveRate" jdbcType="TINYINT" />
+    <result column="other_rate" property="otherRate" jdbcType="TINYINT" />
+    <result column="asset_type_one" property="assetTypeOne" jdbcType="VARCHAR" />
+    <result column="goverment_two" property="govermentTwo" jdbcType="VARCHAR" />
+    <result column="listed_company_two" property="listedCompanyTwo" jdbcType="VARCHAR" />
+    <result column="financing_maturity" property="financingMaturity" jdbcType="VARCHAR" />
+    <result column="financing_ceiling" property="financingCeiling" jdbcType="VARCHAR" />
+    <result column="three_asset_package" property="threeAssetPackage" jdbcType="TINYINT" />
+    <result column="six_asset_package" property="sixAssetPackage" jdbcType="TINYINT" />
+    <result column="twelve_asset_package" property="twelveAssetPackage" jdbcType="TINYINT" />
+    <result column="other_asset_package" property="otherAssetPackage" jdbcType="TINYINT" />
+    <result column="creator_id" property="creatorId" jdbcType="INTEGER" />
+    <result column="editor_id" property="editorId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="editor_time" property="editorTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, organization_id,buyer_num, total_trade, month_trade, three_rate, six_rate, twelve_rate, other_rate, 
+    asset_type_one, goverment_two, listed_company_two, financing_maturity, financing_ceiling, 
+    three_asset_package, six_asset_package, twelve_asset_package, other_asset_package, 
+    from_unixtime(create_time,'%Y-%m-%d %H:%i:%s') as create_time,from_unixtime(editor_time,'%Y-%m-%d %H:%i:%s') as editor_time
+  </sql>
+  <select id="selectByOrgId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from org_prefer_collect
+    where organization_id = #{organizationId,jdbcType=INTEGER}
+  </select>
+  <insert id="insertSelective" parameterType="com.jinhui.model.OrgPreferCollect" >
+    insert into org_prefer_collect
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="organizationId != null" >
+        organization_id,
+      </if>
+      <if test="buyerNum != null" >
+        buyer_num,
+      </if>
+      <if test="totalTrade != null" >
+        total_trade,
+      </if>
+      <if test="monthTrade != null" >
+        month_trade,
+      </if>
+      <if test="threeRate != null" >
+        three_rate,
+      </if>
+      <if test="sixRate != null" >
+        six_rate,
+      </if>
+      <if test="twelveRate != null" >
+        twelve_rate,
+      </if>
+      <if test="otherRate != null" >
+        other_rate,
+      </if>
+      <if test="assetTypeOne != null" >
+        asset_type_one,
+      </if>
+      <if test="govermentTwo != null" >
+        goverment_two,
+      </if>
+      <if test="listedCompanyTwo != null" >
+        listed_company_two,
+      </if>
+      <if test="financingMaturity != null" >
+        financing_maturity,
+      </if>
+      <if test="financingCeiling != null" >
+        financing_ceiling,
+      </if>
+      <if test="threeAssetPackage != null" >
+        three_asset_package,
+      </if>
+      <if test="sixAssetPackage != null" >
+        six_asset_package,
+      </if>
+      <if test="twelveAssetPackage != null" >
+        twelve_asset_package,
+      </if>
+      <if test="otherAssetPackage != null" >
+        other_asset_package,
+      </if>
+      <if test="creatorId != null" >
+        creator_id,
+      </if>
+      <if test="creatorId != null" >
+        editor_id,
+      </if>
+      <if test="1 == 1" >
+        create_time,
+      </if>
+      <if test="1 == 1" >
+        editor_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="organizationId != null" >
+        #{organizationId,jdbcType=INTEGER},
+      </if>
+      <if test="buyerNum != null" >
+        #{buyerNum,jdbcType=BIT},
+      </if>
+      <if test="totalTrade != null" >
+        #{totalTrade,jdbcType=BIT},
+      </if>
+      <if test="monthTrade != null" >
+        #{monthTrade,jdbcType=BIT},
+      </if>
+      <if test="threeRate != null" >
+        #{threeRate,jdbcType=BIT},
+      </if>
+      <if test="sixRate != null" >
+        #{sixRate,jdbcType=BIT},
+      </if>
+      <if test="twelveRate != null" >
+        #{twelveRate,jdbcType=BIT},
+      </if>
+      <if test="otherRate != null" >
+        #{otherRate,jdbcType=BIT},
+      </if>
+      <if test="assetTypeOne != null" >
+        #{assetTypeOne,jdbcType=VARCHAR},
+      </if>
+      <if test="govermentTwo != null" >
+        #{govermentTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="listedCompanyTwo != null" >
+        #{listedCompanyTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="financingMaturity != null" >
+        #{financingMaturity,jdbcType=VARCHAR},
+      </if>
+      <if test="financingCeiling != null" >
+        #{financingCeiling,jdbcType=VARCHAR},
+      </if>
+      <if test="threeAssetPackage != null" >
+        #{threeAssetPackage,jdbcType=BIT},
+      </if>
+      <if test="sixAssetPackage != null" >
+        #{sixAssetPackage,jdbcType=BIT},
+      </if>
+      <if test="twelveAssetPackage != null" >
+        #{twelveAssetPackage,jdbcType=BIT},
+      </if>
+      <if test="otherAssetPackage != null" >
+        #{otherAssetPackage,jdbcType=BIT},
+      </if>
+      <if test="creatorId != null" >
+        #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="creatorId != null" >
+        #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="1 == 1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+      <if test="1 == 1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinhui.model.OrgPreferCollect" >
+    update org_prefer_collect
+    <set >
+      <if test="buyerNum != null" >
+        buyer_num = #{buyerNum,jdbcType=BIT},
+      </if>
+      <if test="totalTrade != null" >
+        total_trade = #{totalTrade,jdbcType=BIT},
+      </if>
+      <if test="monthTrade != null" >
+        month_trade = #{monthTrade,jdbcType=BIT},
+      </if>
+      <if test="threeRate != null" >
+        three_rate = #{threeRate,jdbcType=BIT},
+      </if>
+      <if test="sixRate != null" >
+        six_rate = #{sixRate,jdbcType=BIT},
+      </if>
+      <if test="twelveRate != null" >
+        twelve_rate = #{twelveRate,jdbcType=BIT},
+      </if>
+      <if test="otherRate != null" >
+        other_rate = #{otherRate,jdbcType=BIT},
+      </if>
+      <if test="assetTypeOne != null" >
+        asset_type_one = #{assetTypeOne,jdbcType=VARCHAR},
+      </if>
+      <if test="govermentTwo != null" >
+        goverment_two = #{govermentTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="listedCompanyTwo != null" >
+        listed_company_two = #{listedCompanyTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="financingMaturity != null" >
+        financing_maturity = #{financingMaturity,jdbcType=VARCHAR},
+      </if>
+      <if test="financingCeiling != null" >
+        financing_ceiling = #{financingCeiling,jdbcType=VARCHAR},
+      </if>
+      <if test="threeAssetPackage != null" >
+        three_asset_package = #{threeAssetPackage,jdbcType=BIT},
+      </if>
+      <if test="sixAssetPackage != null" >
+        six_asset_package = #{sixAssetPackage,jdbcType=BIT},
+      </if>
+      <if test="twelveAssetPackage != null" >
+        twelve_asset_package = #{twelveAssetPackage,jdbcType=BIT},
+      </if>
+      <if test="otherAssetPackage != null" >
+        other_asset_package = #{otherAssetPackage,jdbcType=BIT},
+      </if>
+      <if test="editorId != null" >
+        editor_id = #{editorId,jdbcType=INTEGER},
+      </if>
+      <if test="1 == 1" >
+        editor_time = UNIX_TIMESTAMP(now()),
+      </if>
+    </set>
+    where organization_id = #{organizationId,jdbcType=INTEGER}
+  </update>
+</mapper>

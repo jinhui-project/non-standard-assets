@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.abs.PeFundChangeHistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.abs.PeFundChangeHistory" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="aid" property="aid" jdbcType="INTEGER" />
+    <result column="base_asset_id" property="baseAssetId" jdbcType="INTEGER" />
+    <result column="account_name" property="accountName" jdbcType="VARCHAR" />
+    <result column="account_no" property="accountNo" jdbcType="VARCHAR" />
+    <result column="payback_amount" property="paybackAmount" jdbcType="DECIMAL" />
+    <result column="payto_amount" property="paytoAmount" jdbcType="DECIMAL" />
+    <result column="balance_amount" property="balanceAmount" jdbcType="DECIMAL" />
+    <result column="is_enabled" property="isEnabled" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_name" property="createName" jdbcType="VARCHAR" />
+    <result column="change_type" jdbcType="CHAR" property="changeType" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, aid, base_asset_id, account_name, account_no, payback_amount, payto_amount, balance_amount,change_type,
+    is_enabled, create_time, create_name
+  </sql>
+  <select id="selectNewestRecord" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from pe_fund_change_history
+    where aid = #{aid}
+    order by  id desc limit 0,1
+  </select>
+
+  <insert id="insertSelective" parameterType="com.jinhui.model.abs.PeFundChangeHistory" >
+    insert into pe_fund_change_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="aid != null" >
+        aid,
+      </if>
+      <if test="baseAssetId != null" >
+        base_asset_id,
+      </if>
+      <if test="accountName != null" >
+        account_name,
+      </if>
+      <if test="accountNo != null" >
+        account_no,
+      </if>
+      <if test="paybackAmount != null" >
+        payback_amount,
+      </if>
+      <if test="paytoAmount != null" >
+        payto_amount,
+      </if>
+      <if test="balanceAmount != null" >
+        balance_amount,
+      </if>
+      <if test="isEnabled != null" >
+        is_enabled,
+      </if>
+      <if test="changeType != null">
+        change_type,
+      </if>
+      <if test="1 == 1" >
+        create_time,
+      </if>
+      <if test="createName != null" >
+        create_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="aid != null" >
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="baseAssetId != null" >
+        #{baseAssetId,jdbcType=INTEGER},
+      </if>
+      <if test="accountName != null" >
+        #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNo != null" >
+        #{accountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="paybackAmount != null" >
+        #{paybackAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="paytoAmount != null" >
+        #{paytoAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceAmount != null" >
+        #{balanceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="isEnabled != null" >
+        #{isEnabled,jdbcType=CHAR},
+      </if>
+      <if test="changeType != null">
+        #{changeType,jdbcType=CHAR},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+      <if test="createName != null" >
+        #{createName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

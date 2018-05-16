@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.saleFeedBacks.PlatFeedbacksMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.PlatFeedbacks" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="plat_id" property="platId" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="INTEGER" />
+    <result column="update_at" property="updateAt" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, content, plat_id, from_unixtime(create_at,'%Y-%m-%d %H:%i:%s') as create_at, from_unixtime(update_at,'%Y-%m-%d %H:%i:%s') as update_at 
+  </sql>
+ <select id="getPlatbacksListByAssetId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from plat_feedbacks
+    where plat_id = #{assetId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from plat_feedbacks
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from plat_feedbacks
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jinhui.model.PlatFeedbacks" >
+    insert into plat_feedbacks (id, content, plat_id, 
+      create_at, update_at)
+    values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{platId,jdbcType=INTEGER}, 
+      #{createAt,jdbcType=INTEGER}, #{updateAt,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinhui.model.PlatFeedbacks" >
+    insert into plat_feedbacks
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="platId != null" >
+        plat_id,
+      </if>
+      <if test="1==1" >
+        create_at,
+      </if>
+      <if test="1==1" >
+        update_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="platId != null" >
+        #{platId,jdbcType=INTEGER},
+      </if>
+      <if test="1==1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+      <if test="1==1" >
+        UNIX_TIMESTAMP(now()),
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinhui.model.PlatFeedbacks" >
+    update plat_feedbacks
+    <set >
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="platId != null" >
+        plat_id = #{platId,jdbcType=INTEGER},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=INTEGER},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinhui.model.PlatFeedbacks" >
+    update plat_feedbacks
+    set content = #{content,jdbcType=VARCHAR},
+      plat_id = #{platId,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=INTEGER},
+      update_at = #{updateAt,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

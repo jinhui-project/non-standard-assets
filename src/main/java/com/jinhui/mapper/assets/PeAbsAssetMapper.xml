@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.assets.PeAbsAssetMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.PeAbsAsset" >
+    <id column="aid" property="aid" jdbcType="INTEGER" />
+    <result column="asset_type" property="assetType" jdbcType="INTEGER" />
+    <result column="borrower" property="borrower" jdbcType="VARCHAR" />
+    <result column="scale" property="scale" jdbcType="DECIMAL" />
+    <result column="tenor_type" property="tenorType" jdbcType="INTEGER" />
+    <result column="tenor" property="tenor" jdbcType="INTEGER" />
+    <result column="asset_mgr" property="assetMgr" jdbcType="VARCHAR" />
+    <result column="set_trench" property="setTrench" jdbcType="BIT" />
+    <result column="senior_percent" property="seniorPercent" jdbcType="VARCHAR" />
+    <result column="senior_rating" property="seniorRating" jdbcType="INTEGER" />
+    <result column="asset_sub_type" property="assetSubType" jdbcType="INTEGER" />
+    <result column="rate" property="rate" jdbcType="DECIMAL" />
+    <result column="ABS_rating_report" property="absRatingReport" jdbcType="VARCHAR" />
+    <result column="issue_date" property="issueDate" jdbcType="TIMESTAMP" /> 
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="short_name" property="shortName" jdbcType="VARCHAR" /> 
+    <result column="creator_id" property="creatorId" jdbcType="INTEGER" />   
+    <result column="other_file" property="otherFile" jdbcType="VARCHAR" />
+    <result column="is_guarante" property="isGuarante" jdbcType="INTEGER" />
+    <result column="guarantor_type" property="guarantorType" jdbcType="INTEGER" />   
+  </resultMap>
+  <sql id="Base_Column_List" >
+    a.creator_id,a.name,a.short_name,p.aid, p.asset_type, p.borrower, p.scale, p.tenor_type, p.tenor, p.asset_mgr, p.set_trench, p.senior_percent, 
+    p.senior_rating, p.asset_sub_type, p.rate, p.ABS_rating_report, p.issue_date,p.other_file,p.is_guarante,p.guarantor_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pe_abs_asset
+    where aid = #{aid,jdbcType=INTEGER}
+  </select> 
+   <select id="selectByAssetId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pe_abs_asset p
+    left join assets a on a.id = p.aid 
+    where p.aid = #{assetId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pe_abs_asset
+    where aid = #{aid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jinhui.model.PeAbsAsset" >
+    insert into pe_abs_asset (aid, asset_type, borrower, 
+      scale, tenor_type, tenor, 
+      asset_mgr, set_trench, senior_percent, 
+      senior_rating, asset_sub_type, rate, 
+      ABS_rating_report,is_guarante,guarantor_type)
+    values (#{aid,jdbcType=INTEGER}, #{assetType,jdbcType=INTEGER}, #{borrower,jdbcType=VARCHAR}, 
+      #{scale,jdbcType=DECIMAL}, #{tenorType,jdbcType=INTEGER}, #{tenor,jdbcType=INTEGER}, 
+      #{assetMgr,jdbcType=VARCHAR}, #{setTrench,jdbcType=BIT}, #{seniorPercent,jdbcType=VARCHAR}, 
+      #{seniorRating,jdbcType=INTEGER}, #{assetSubType,jdbcType=INTEGER}, #{rate,jdbcType=DECIMAL}, 
+      #{absRatingReport,jdbcType=VARCHAR},#{isGuarante,jdbcType=INTEGER},#{guarantorType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinhui.model.PeAbsAsset" >
+    insert into pe_abs_asset
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="aid != null" >
+        aid,
+      </if>
+      <if test="assetType != null" >
+        asset_type,
+      </if>
+      <if test="borrower != null" >
+        borrower,
+      </if>
+      <if test="scale != null" >
+        scale,
+      </if>
+      <if test="tenorType != null" >
+        tenor_type,
+      </if>
+      <if test="tenor != null" >
+        tenor,
+      </if>
+      <if test="assetMgr != null" >
+        asset_mgr,
+      </if>
+      <if test="setTrench != null" >
+        set_trench,
+      </if>
+      <if test="seniorPercent != null" >
+        senior_percent,
+      </if>
+      <if test="seniorRating != null" >
+        senior_rating,
+      </if>
+      <if test="assetSubType != null" >
+        asset_sub_type,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+      <if test="absRatingReport != null" >
+        ABS_rating_report,
+      </if>
+      <if test="isGuarante != null" >
+        is_guarante,
+      </if>
+      <if test="guarantorType != null" >
+        guarantor_type,
+      </if>
+      <if test="issueDate != null" >
+        issue_date,
+      </if>
+      <if test="otherFile != null" >
+        other_file,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="aid != null" >
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="assetType != null" >
+        #{assetType,jdbcType=INTEGER},
+      </if>
+      <if test="borrower != null" >
+        #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null" >
+        #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="tenorType != null" >
+        #{tenorType,jdbcType=INTEGER},
+      </if>
+      <if test="tenor != null" >
+        #{tenor,jdbcType=INTEGER},
+      </if>
+      <if test="assetMgr != null" >
+        #{assetMgr,jdbcType=VARCHAR},
+      </if>
+      <if test="setTrench != null" >
+        #{setTrench,jdbcType=BIT},
+      </if>
+      <if test="seniorPercent != null" >
+        #{seniorPercent,jdbcType=VARCHAR},
+      </if>
+      <if test="seniorRating != null" >
+        #{seniorRating,jdbcType=INTEGER},
+      </if>
+      <if test="assetSubType != null" >
+        #{assetSubType,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="absRatingReport != null" >
+        #{absRatingReport,jdbcType=VARCHAR},
+      </if>
+      <if test="isGuarante != null" >
+        #{isGuarante,jdbcType=INTEGER},
+      </if>
+      <if test="guarantorType != null" >
+       #{guarantorType,jdbcType=INTEGER},
+      </if>
+      <if test="issueDate != null" >
+        #{issueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="otherFile != null" >
+        #{otherFile,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinhui.model.PeAbsAsset" >
+    update pe_abs_asset
+    <set >
+      <if test="assetType != null" >
+        asset_type = #{assetType,jdbcType=INTEGER},
+      </if>
+      <if test="borrower != null" >
+        borrower = #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null" >
+        scale = #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="tenorType != null" >
+        tenor_type = #{tenorType,jdbcType=INTEGER},
+      </if>
+      <if test="tenor != null" >
+        tenor = #{tenor,jdbcType=INTEGER},
+      </if>
+      <if test="assetMgr != null" >
+        asset_mgr = #{assetMgr,jdbcType=VARCHAR},
+      </if>
+      <if test="setTrench != null" >
+        set_trench = #{setTrench,jdbcType=BIT},
+      </if>
+      <if test="seniorPercent != null" >
+        senior_percent = #{seniorPercent,jdbcType=VARCHAR},
+      </if>
+      <if test="seniorRating != null" >
+        senior_rating = #{seniorRating,jdbcType=INTEGER},
+      </if>
+      <if test="assetSubType != null" >
+        asset_sub_type = #{assetSubType,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        rate = #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="absRatingReport != null" >
+        ABS_rating_report = #{absRatingReport,jdbcType=VARCHAR},
+      </if>
+      <if test="isGuarante != null" >
+        is_guarante = #{isGuarante,jdbcType=INTEGER},
+      </if>
+      <if test="guarantorType != null" >
+        guarantor_type = #{guarantorType,jdbcType=INTEGER},
+      </if>
+      <if test="issueDate != null" >
+        issue_date = #{issueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="otherFile != null" >
+        #{other_file,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinhui.model.PeAbsAsset" >
+    update pe_abs_asset
+    set asset_type = #{assetType,jdbcType=INTEGER},
+      borrower = #{borrower,jdbcType=VARCHAR},
+      scale = #{scale,jdbcType=DECIMAL},
+      tenor_type = #{tenorType,jdbcType=INTEGER},
+      tenor = #{tenor,jdbcType=INTEGER},
+      asset_mgr = #{assetMgr,jdbcType=VARCHAR},
+      set_trench = #{setTrench,jdbcType=BIT},
+      senior_percent = #{seniorPercent,jdbcType=VARCHAR},
+      senior_rating = #{seniorRating,jdbcType=INTEGER},
+      asset_sub_type = #{assetSubType,jdbcType=INTEGER},
+      rate = #{rate,jdbcType=DECIMAL},
+      ABS_rating_report = #{absRatingReport,jdbcType=VARCHAR},
+      is_guarante = #{isGuarante,jdbcType=INTEGER},
+      guarantor_type = #{guarantorType,jdbcType=INTEGER}
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByAssetsidSelective" parameterType="com.jinhui.model.PeAbsAsset" >
+    update pe_abs_asset
+    <set >
+      <if test="assetType != null" >
+        asset_type = #{assetType,jdbcType=INTEGER},
+      </if>
+      <if test="borrower != null" >
+        borrower = #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null" >
+        scale = #{scale,jdbcType=DECIMAL},
+      </if>
+      <if test="tenorType != null" >
+        tenor_type = #{tenorType,jdbcType=INTEGER},
+      </if>
+      <if test="tenor != null" >
+        tenor = #{tenor,jdbcType=INTEGER},
+      </if>
+      <if test="assetMgr != null" >
+        asset_mgr = #{assetMgr,jdbcType=VARCHAR},
+      </if>
+      <if test="setTrench != null" >
+        set_trench = #{setTrench,jdbcType=BIT},
+      </if>
+      <if test="seniorPercent != null" >
+        senior_percent = #{seniorPercent,jdbcType=VARCHAR},
+      </if>
+      <if test="seniorRating != null" >
+        senior_rating = #{seniorRating,jdbcType=INTEGER},
+      </if>
+      <if test="assetSubType != null" >
+        asset_sub_type = #{assetSubType,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        rate = #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="absRatingReport != null" >
+        ABS_rating_report = #{absRatingReport,jdbcType=VARCHAR},
+      </if>
+      <if test="isGuarante != null" >
+        is_guarante = #{isGuarante,jdbcType=INTEGER},
+      </if>
+      <if test="guarantorType != null" >
+        guarantor_type = #{guarantorType,jdbcType=INTEGER},
+      </if>
+      <if test="issueDate != null" >
+        issue_date = #{issueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="otherFile != null" >
+       other_file = #{otherFile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+</mapper>

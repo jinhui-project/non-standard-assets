@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.assets.RecordLogMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.RecordLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="aid" property="aid" jdbcType="INTEGER" />
+    <result column="step_id" property="stepId" jdbcType="INTEGER" />
+    <result column="file_str" property="fileStr" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="INTEGER" />
+    <result column="update_at" property="updateAt" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, aid, step_id, file_str, create_at, update_at
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from record_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 查询资产在某个步骤的协议文档 -->
+  <select id="queryRecordLog" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from record_log
+    where aid = #{assetId} and step_id=#{stepId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from record_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jinhui.model.RecordLog" >
+    insert into record_log (id, aid, step_id, 
+      file_str, create_at, update_at
+      )
+    values (#{id,jdbcType=INTEGER}, #{aid,jdbcType=INTEGER}, #{stepId,jdbcType=INTEGER}, 
+      #{fileStr,jdbcType=VARCHAR}, UNIX_TIMESTAMP(now()), UNIX_TIMESTAMP(now())
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinhui.model.RecordLog" >
+    insert into record_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="aid != null" >
+        aid,
+      </if>
+      <if test="stepId != null" >
+        step_id,
+      </if>
+      <if test="fileStr != null" >
+        file_str,
+      </if>
+      <if test="createAt != null" >
+        create_at,
+      </if>
+      <if test="updateAt != null" >
+        update_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="aid != null" >
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="stepId != null" >
+        #{stepId,jdbcType=INTEGER},
+      </if>
+      <if test="fileStr != null" >
+        #{fileStr,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        #{createAt,jdbcType=INTEGER},
+      </if>
+      <if test="updateAt != null" >
+        #{updateAt,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinhui.model.RecordLog" >
+    update record_log
+    <set >
+      <if test="aid != null" >
+        aid = #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="stepId != null" >
+        step_id = #{stepId,jdbcType=INTEGER},
+      </if>
+      <if test="fileStr != null" >
+        file_str = #{fileStr,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=INTEGER},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinhui.model.RecordLog" >
+    update record_log
+    set aid = #{aid,jdbcType=INTEGER},
+      step_id = #{stepId,jdbcType=INTEGER},
+      file_str = #{fileStr,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=INTEGER},
+      update_at = #{updateAt,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhui.mapper.address.ChnProvinceMapper" >
+  <resultMap id="BaseResultMap" type="com.jinhui.model.ChnProvince" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="province_code" property="provinceCode" jdbcType="VARCHAR" />
+    <result column="province_name" property="provinceName" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, province_code, province_name, created_at
+  </sql>
+  <select id="selectByProvinceCode" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from chn_province
+    where province_code = #{provinceCode,jdbcType=VARCHAR}
+  </select>
+  <select id="selectProvinceList" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from chn_province
+  </select>
+</mapper>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinhui.mapper.user.UserMapper" >
+<!-- Result Map com.jinhui.users.vo.Users-->
+<resultMap id="Users" type="com.jinhui.model.Users" > 
+	<result column="id"  property="id"/> 
+	<result column="gid"  property="gid"/> 
+	<result column="username"  property="username"/> 
+	<result column="password"  property="password"/> 
+	<result column="gname"  property="gname"/> 
+	<result column="power"  property="power"/> 
+	<result column="name"  property="name"/> 
+	<result column="gender"  property="gender"/> 
+	<result column="mobile"  property="mobile"/> 
+	<result column="tel"  property="tel"/> 
+	<result column="email"  property="email"/> 
+	<result column="id_no"  property="idNo"/> 
+	<result column="birthday"  property="birthday"/> 
+	<result column="department"  property="department"/> 
+	<result column="position"  property="position"/> 
+	<result column="card_path"  property="cardPath"/> 
+	<result column="address"  property="address"/> 
+	<result column="creator_id"  property="creatorId"/> 
+	<result column="create_time"  property="createTime"/> 
+	<result column="editor_id"  property="editorId"/> 
+	<result column="editor_time"  property="editorTime"/> 
+	<result column="auditor_id"  property="auditorId"/> 
+	<result column="audit_time"  property="auditTime"/> 
+	<result column="audit_status"  property="auditStatus"/> 
+	
+</resultMap>
+
+<!-- users table all fields -->
+<sql id="Base_Column_List" >
+	 t.id,t.gid,t.username,t.password,t.gname,t.power,t.name,t.gender,t.mobile,t.tel,t.email,t.id_no,t.birthday,t.department,t.position,t.card_path,t.address,t.creator_id,t.create_time,t.editor_id,t.editor_time,t.auditor_id,t.audit_time,t.audit_status
+</sql>
+<sql id="Base_Column_NotPwd" >
+ 	 t.id,t.gid,t.username,t.gname,t.power,t.name,t.gender,t.mobile,t.tel,t.email,t.id_no,t.birthday,t.department,t.position,t.card_path,t.address,t.creator_id,t.create_time,t.editor_id,t.editor_time,t.auditor_id,t.audit_time,t.audit_status 
+</sql>
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+	 <where>
+		 <if test="username != null  and username != '' ">
+				and t.username like   CONCAT('%',#{username},'%' )   
+		 </if>
+		 <if test="email != null  and email != '' ">
+				and t.email like   CONCAT('%',#{email},'%' )   
+		 </if>
+		 
+		 
+		 <if test="mobile != null  and mobile != '' ">
+				and t.mobile like   CONCAT('%',#{mobile},'%' )   
+		 </if>
+		 <if test="gname != null  and gname != '' ">
+				and t.gname like   CONCAT('%',#{gname},'%' )   
+		 </if>
+		 <if test="name != null  and name != '' ">
+				and t.name like   CONCAT('%',#{name},'%' )   
+		 </if>
+		 <if test="auditStatus != null   ">
+				and t.audit_status =  #{auditStatus} 
+		 </if>
+		 
+		 
+		 <if test="creatStartTime != null  ">
+				 <![CDATA[and t.create_time>=#{creatStartTime} ]]>	
+		 </if>
+		 <if test="creatEndTime != null  ">
+				 <![CDATA[ and t.create_time<= #{creatEndTime}]]>	
+		 </if>
+		  <if test="modifStartTime != null  ">
+				 <![CDATA[and t.editor_time >=  #{modifStartTime} ]]>	
+		 </if>
+		 <if test="modifEndTime != null ">
+				 <![CDATA[ and t.editor_time <= #{modifEndTime}]]>	
+		 </if>
+		 
+	 </where>
+
+</sql>
+
+
+	<!-- 微信授权登录 start -->
+	<update id="authorizeWechat" parameterType="java.util.Map">
+		UPDATE users set openid=#{openid} WHERE username=#{username}
+	</update>
+	<select id="findByOpenId"  resultMap="Users" parameterType="java.lang.String">
+		select t.username, t.password, t.mobile
+		from users t where t.openid=#{openid}
+	</select>
+	<!-- end -->
+
+   <!-- 根据id查询 用户表 -->
+<select id="selectById"  resultMap="Users" parameterType="com.jinhui.model.Users">
+	select 
+	<include refid="Base_Column_NotPwd" />
+	 from users t where t.id = #{id}
+
+</select>
+
+<!-- 用户名查询是否存在 -->
+<select id="selectByName"  resultMap="Users" parameterType="com.jinhui.model.Users">
+	select <include refid="Base_Column_List" />
+	 from users t where t.mobile=#{record.mobile}
+</select>
+
+<!-- 账号名查询用户信息 -->
+<select id="selectByuserName"  resultMap="Users" parameterType="com.jinhui.model.Users">
+	select <include refid="Base_Column_List" />
+	 from users t where t.username=#{record.username}
+</select>
+
+   <!-- 登录查询 用户表 -->
+<select id="queryUsersInfo"  resultMap="Users" parameterType="com.jinhui.model.Users">
+	select <include refid="Base_Column_NotPwd" /> 
+	 from users t where t.mobile =  #{record.mobile} and t.password = #{record.password}
+</select>
+
+<!-- 插入记录 [说明：如果要返回当前对象，需要如下配置：<insert id="addVo" parameterType="Object" useGeneratedKeys="true" keyProperty="id">] -->
+<insert id="insert" parameterType="com.jinhui.model.Users" useGeneratedKeys="true" keyProperty="record.id">
+  insert into users(gid,username,password,gname,power,name,gender,mobile,tel,email,id_no,birthday,department,position,card_path,address,creator_id,create_time,editor_id,editor_time,auditor_id,audit_time,audit_status)
+ values(
+		 #{record.gid},
+		 #{record.username},
+		 #{record.password},
+		 #{record.gname},
+		 #{record.power},
+		 #{record.name},
+		 #{record.gender},
+		 #{record.mobile},
+		 #{record.tel},
+		 #{record.email},
+		 #{record.idNo},
+		 #{record.birthday},
+		 #{record.department},
+		 #{record.position},
+		 #{record.cardPath},
+		 #{record.address},
+		 #{record.creatorId},
+		 #{record.createTime},
+		 #{record.editorId},
+		 #{record.editorTime},
+		 #{record.auditorId},
+		 #{record.auditTime},
+		 #{record.auditStatus}
+ )
+</insert>
+<!-- 分页 -->
+<select id="queryUsersPage"  resultMap="Users" parameterType="com.jinhui.model.Users">
+	select 
+	<include refid="Base_Column_NotPwd" />
+	 from users t 
+	<include refid="Example_Where_Clause" />
+	  order by t.create_time desc limit #{offset},#{limit}
+</select>
+
+<select id="queryUsersCount"  resultType="java.lang.Integer" parameterType="com.jinhui.model.Users">
+	select count(1) from 
+	  users t  <include refid="Example_Where_Clause" />
+</select>
+
+
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateNotNullInfo" parameterType="com.jinhui.model.Users" >
+	update users set 
+	<trim  suffixOverrides="," >
+	<if test="record.gid != null  ">
+		gid=#{record.gid},
+	</if>
+	<if test="record.username != null  and record.username != '' ">
+		username=#{record.username},
+	</if>
+	<if test="record.password != null  and record.password != '' ">
+		password=#{record.password},
+	</if>
+	<if test="record.gname != null  and record.gname != '' ">
+		gname=#{record.gname},
+	</if>
+	<if test="record.power != null  and record.power != '' ">
+		power=#{record.power},
+	</if>
+	<if test="record.name != null  and record.name != '' ">
+		name=#{record.name},
+	</if>
+	<if test="record.gender != null  ">
+		gender=#{record.gender},
+	</if>
+	<if test="record.mobile != null  and record.mobile != '' ">
+		mobile=#{record.mobile},
+	</if>
+	<if test="record.tel != null  and record.tel != '' ">
+		tel=#{record.tel},
+	</if>
+	<if test="record.email != null  and record.email != '' ">
+		email=#{record.email},
+	</if>
+	<if test="record.idNo != null  and record.idNo != '' ">
+		id_no=#{record.idNo},
+	</if>
+	<if test="record.birthday != null  ">
+		birthday=#{record.birthday},
+	</if>
+	<if test="record.department != null  and record.department != '' ">
+		department=#{record.department},
+	</if>
+	<if test="record.position != null  and record.position != '' ">
+		position=#{record.position},
+	</if>
+	<if test="record.cardPath != null  and record.cardPath != '' ">
+		card_path=#{record.cardPath},
+	</if>
+	<if test="record.address != null  and record.address != '' ">
+		address=#{record.address},
+	</if>
+	<if test="record.creatorId != null  ">
+		creator_id=#{record.creatorId},
+	</if>
+	<if test="record.createTime != null  ">
+		create_time=#{record.createTime},
+	</if>
+	<if test="record.editorId != null  ">
+		editor_id=#{record.editorId},
+	</if>
+	<if test="record.editorTime != null  ">
+		editor_time=#{record.editorTime},
+	</if>
+	<if test="record.auditorId != null  ">
+		auditor_id=#{record.auditorId},
+	</if>
+	<if test="record.auditTime != null  ">
+		audit_time=#{record.auditTime},
+	</if>
+	<if test="record.auditStatus != null  ">
+		audit_status=#{record.auditStatus},
+	</if>
+	</trim> where id=#{record.id}
+</update>
+
+
+
+
+
+
+</mapper>
